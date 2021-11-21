@@ -32,3 +32,6 @@ The ability to get the current CPU frequency of a specific core, rather than pul
 
 ## Bugs and Issues
 If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
+
+## Credits
+[https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp](https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp)
