@@ -30,7 +30,7 @@ Here is the output of the example:
 ## Future Features
 The ability to get the current CPU frequency of a specific core, rather than pulling a total from all cores.
 
-This is partially supported by running `osx-cpufreq` through [this script](https://github.com/BitesPotatoBacks/CPU-Lock).
+This is _partially_ supported by running `osx-cpufreq` through [this script](https://github.com/BitesPotatoBacks/CPU-Lock), which lets you lock `osx-cpufreq` to the performance or efficiency cores on Apple Silicon.
 
 ## Bugs and Issues
 If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
