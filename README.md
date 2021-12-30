@@ -1,5 +1,17 @@
-# osx-cpufreq
-Get the current average CPU frequency on MacOS. Supports Intel (x86) and Apple Silicon (arm64).
+<h1 align="center">osx-cpufreq</h1>
+
+<p align="center">
+    Get the current average CPU frequency on MacOS.
+</p>
+<p align="center">
+    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Version" src="https://img.shields.io/badge/version-1.1.0-orange.svg"/></a>
+        <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Supported Architectures" src="https://img.shields.io/badge/supported_architectures-Apple_Silicon,_Intel-default.svg"/></a>
+            <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/></a>
+    <br>
+    
+</p>
+
+
 ## Usage
 Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases) and run it in the terminal like so: `./osx-cpufreq`
 
