@@ -1,48 +1,53 @@
 <h1 align="center">osx-cpufreq</h1>
 
 <p align="center">
-    Get the current average CPU frequency on MacOS.
+    Get the current average CPU frequency (all cores or efficiency cores only) on MacOS.
 </p>
 <p align="center">
-    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Version" src="https://img.shields.io/badge/version-1.1.0-orange.svg"/></a>
-        <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Supported Architectures" src="https://img.shields.io/badge/supported_architectures-Apple_Silicon,_Intel-default.svg"/></a>
-            <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/></a>
+            <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Supported Architectures" src="https://img.shields.io/badge/architectures-Apple_Silicon,_Intel-default.svg"/></a><a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/></a> <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/></a>
     <br>
-    
 </p>
 
-
 ## Usage
-Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases) and run it in the terminal like so: `./osx-cpufreq`
+Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases) and run it in the terminal like so:
+```
+./osx-cpufreq
+```
 
-The default output is formatted in hertz. Available command line options are:
+The default output is formatted in hertz (Hz). Available command line options are:
 ```
     -k         : output in kilohertz (kHz)
     -m         : output in megahertz (mHz)
     -g         : output in gigahertz (gHz)
+    -e         : get E-Cluster frequency (arm64 only)
+    -v         : print version number
     -h         : help
 ```
-If you would like to add the binary to your `usr/local/bin/`, you may run the following: `sudo cp ./osx-cpufreq /usr/local/bin`
+If you would like to add the binary to your `usr/local/bin/`, you may run the following:
+```
+sudo cp ./osx-cpufreq /usr/local/bin
+```
 
 ## Example
 
-Here is an example using the `-m` option contained in a shell loop: `while true; do ./osx-cpufreq -m; sleep 2; done`
+Here is an example running `./osx-cpufreq -m` in a for loop.
 
-Here is the output of the example:
-```zsh
+Output on an M1 Mac Mini:
+```
 829 mHz
 2064 mHz
 2064 mHz
 1702 mHz
 1333 mHz
-0 mHz
-1702 mHz
-1695 mHz
 ```
-## Future Features
-The ability to get the current CPU frequency of a specific core, rather than pulling a total from all cores.
-
-This is _partially_ supported by running `osx-cpufreq` through [this script](https://github.com/BitesPotatoBacks/CPU-Lock), which lets you lock `osx-cpufreq` to the performance or efficiency cores on Apple Silicon.
+Output on an Intel Macbook Pro:
+```
+3001 mHz
+3015 mHz
+3001 mHz
+3008 mHz
+3003 mHz
+```
 
 ## Bugs and Issues
 If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
