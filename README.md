@@ -1,7 +1,7 @@
 <h1 align="center" style="">osx-cpufreq</h1>
 
 <p align="center">
-    Get the current average CPU frequency (all cores or efficiency cores only) on MacOS.
+    Get the current average CPU frequency on macOS (all cores or efficiency cores).
 </p>
 <p align="center">
             <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
@@ -17,8 +17,12 @@
     <br>
 </p>
 
+## Preparation 
+Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases) and run these commands to fix the binary permissions:
+```
+chmod 755 ./osx-cpufreq | xattr -cr ./osx-cpufreq
+```
 ## Usage
-Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases) and run it in the terminal like so:
 ```
 ./osx-cpufreq
 ```
@@ -32,10 +36,10 @@ The default output is formatted in hertz (Hz). Available command line options ar
     -v         : print version number
     -h         : help
 ```
-If you would like to add the binary to your `usr/local/bin/`, you may run the following:
+<!-- If you would like to add the binary to your `usr/local/bin/`, you may also run the following:
 ```
 sudo cp ./osx-cpufreq /usr/local/bin
-```
+``` -->
 
 ## Example
 
