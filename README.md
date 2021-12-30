@@ -1,10 +1,19 @@
-<h1 align="center">osx-cpufreq</h1>
+<h1 align="center" style="">osx-cpufreq</h1>
 
 <p align="center">
     Get the current average CPU frequency (all cores or efficiency cores only) on MacOS.
 </p>
 <p align="center">
-            <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Supported Architectures" src="https://img.shields.io/badge/architectures-Apple_Silicon,_Intel-default.svg"/></a><a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases"><img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/></a> <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/></a>
+            <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
+                <img alt="Supported Architectures" src="https://img.shields.io/badge/architectures-Apple_Silicon,_Intel-orange.svg"/>
+    </a>
+    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
+        <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/>
+    </a>
+    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
+    </a>
+    <!-- <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/></a>-->
     <br>
 </p>
 
@@ -54,5 +63,3 @@ If you can't diagnose the problem yourself, feel free to open an Issue. I'll try
 
 ## Credits
 [https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp](https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp)
-
-[https://github.com/somdipdey/osx-temp-freq/blob/master/smc.c](https://github.com/somdipdey/osx-temp-freq/blob/master/smc.c)
