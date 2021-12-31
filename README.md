@@ -1,11 +1,11 @@
 <h1 align="center" style="">osx-cpufreq</h1>
 
 <p align="center">
-    Get the current average CPU frequency on macOS (all cores or efficiency cores).
+    Get your CPUs current frequency (all cores or efficiency cores) on macOS.
 </p>
 <p align="center">
-            <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
-                <img alt="Supported Architectures" src="https://img.shields.io/badge/architectures-Apple_Silicon,_Intel-orange.svg"/>
+            <a href="">
+                <img alt="Architectures" src="https://img.shields.io/badge/architectures-Apple_Silicon,_Intel-orange.svg"/>
     </a>
     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/>
@@ -18,7 +18,7 @@
 </p>
 
 ## Preparation 
-Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases) and run these commands to fix the binary permissions:
+Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions:
 ```
 chmod 755 ./osx-cpufreq | xattr -cr ./osx-cpufreq
 ```
@@ -29,10 +29,10 @@ chmod 755 ./osx-cpufreq | xattr -cr ./osx-cpufreq
 
 The default output is formatted in hertz (Hz). Available command line options are:
 ```
-    -k         : output in kilohertz (kHz)
-    -m         : output in megahertz (mHz)
-    -g         : output in gigahertz (gHz)
-    -e         : get E-Cluster frequency (arm64 only)
+    -k         : print output in kilohertz (kHz)
+    -m         : print output in megahertz (mHz)
+    -g         : print output in gigahertz (gHz)
+    -e         : get frequency of efficiency cores (arm64 only)
     -v         : print version number
     -h         : help
 ```
@@ -60,6 +60,24 @@ Output on an Intel Macbook Pro:
 3001 mHz
 3008 mHz
 3003 mHz
+```
+
+## Changelog
+
+```markdown
+## [1.2.1]
+- Improved readability regarding efficiency cores
+
+## [1.2.0]
+- Translated to Objective-C
+- Added E-Cluster frequency fetching on arm64
+
+## [1.1.0]
+- Intel (x86) support
+- Rename to reflect universal support
+
+## [1.0.0}
+- Initial Release
 ```
 
 ## Bugs and Issues
