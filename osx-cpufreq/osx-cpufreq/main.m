@@ -82,10 +82,10 @@ int main(int argc, char * argv[])
             case 'e':   qosOpt = 1; break;
             case 'v':   argOpt = 4; break;
             case 'h':   printf("Usage: %s [-kmgevh]\n", argv[0]);
-                        printf("    -k         : output in kilohertz (kHz)\n");
-                        printf("    -m         : output in megahertz (mHz)\n");
-                        printf("    -g         : output in gigahertz (gHz)\n");
-                        printf("    -e         : get E-Cluster frequency (arm64 only)\n");
+                        printf("    -k         : print output in kilohertz (kHz)\n");
+                        printf("    -m         : print output in megahertz (mHz)\n");
+                        printf("    -g         : print output in gigahertz (gHz)\n");
+                        printf("    -e         : get frequency of efficiency cores (arm64 only)\n");
                         printf("    -v         : print version number\n");
                         printf("    -h         : help\n");
                         return 0;
@@ -126,7 +126,7 @@ int main(int argc, char * argv[])
     {
         #if defined(__x86_64__)
             
-        printf("System Architecture is x86_64: E-Cluster arg unavailable\n");
+        printf("System architecture is x86_64: efficiency cores unavailable\n");
         return 0;
             
         #elif defined(__aarch64__)
