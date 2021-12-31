@@ -65,18 +65,18 @@ Output on an Intel Macbook Pro:
 ## Changelog
 
 ```markdown
-## [1.2.1]
+## [1.2.1] - Dec 31, 2021
 - Improved readability regarding efficiency cores
 
-## [1.2.0]
+## [1.2.0] - Dec 30, 2021
 - Translated to Objective-C
 - Added E-Cluster frequency fetching on arm64
 
-## [1.1.0]
+## [1.1.0] - Dec 26, 2021
 - Intel (x86) support
 - Rename to reflect universal support
 
-## [1.0.0}
+## [1.0.0] - Nov 21, 2021
 - Initial Release
 ```
 
