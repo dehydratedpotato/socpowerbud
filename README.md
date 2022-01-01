@@ -13,6 +13,9 @@
     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
     </a>
+        <a href="https://cash.app/$bitespotatobacks">
+        <img alt="License" src="https://img.shields.io/badge/donate-Cash_App-default.svg"/>
+    </a>
     <!-- <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/></a>-->
     <br>
 </p>
@@ -79,7 +82,9 @@ Output on an Intel Macbook Pro:
 ## [1.0.0] - Nov 21, 2021
 - Initial Release
 ```
-
+## Support ❤️
+If you would like to support me, you can donate to my [Cash App](https://cash.app/$bitespotatobacks)
+<a href="https://cash.app/$bitespotatobacks"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png" alt="Cash App" width="17" height="17"></a>
 ## Bugs and Issues
 If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
 
