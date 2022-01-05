@@ -1,86 +1,68 @@
-
 // building:    clang main.m -fobjc-arc -arch arm64 -arch x86_64 -o osx-cpufreq
 
 #include <Foundation/Foundation.h>
 #include <mach/mach_time.h>
 
-double getCurrentFrequency(void);
-
 #if defined(__x86_64__)
 
-uint64_t rdtsc(void)
-{
-    uint32_t a, d;
-    asm volatile("rdtsc" : "=a"(a), "=d"(d));
-
-    return ((uint64_t)d << 32) | a;
-}
-
-double getCurrentFrequency(void)
-{
-    uint64_t startCount = rdtsc();
-    sleep(1);
-    uint64_t endCount = rdtsc();
-
-    uint64_t frequency = (endCount - startCount);
-
-    return frequency;
-}
+#define FIRST_CYCLE_MEASURE { asm volatile("firstmeasure:\ndec %[counter]\njnz firstmeasure\n " : [counter] "+r"(cycles)); } // decrements 'counter' (131072) and loops until zero
+#define LAST_CYCLE_MEASURE { asm volatile("lastmeasure:\ndec %[counter]\njnz lastmeasure\n " : [counter] "+r"(cycles)); }
 
 #elif defined(__aarch64__)
+
+#define FIRST_CYCLE_MEASURE { asm volatile(".align 4\n firstmeasure:\nsubs %[counter],%[counter],#1\nbne firstmeasure\n " : [counter] "+r"(cycles)); }
+#define LAST_CYCLE_MEASURE { asm volatile(".align 4\n lastmeasure:\nsubs %[counter],%[counter],#1\nbne lastmeasure\n " : [counter] "+r"(cycles)); }
+
+#endif
 
 double getCurrentFrequency(void)
 {
     mach_timebase_info_data_t info;
     mach_timebase_info(&info);
+    size_t cycles;
     
-    const size_t testDurationFromCycles = 65536;
-    __auto_type firstSampleBegin = mach_absolute_time();
-    size_t cycles = 2 * testDurationFromCycles;
+    uint64_t firstSampleBegin = mach_absolute_time();
     
-    asm volatile(".align 4\n Lcyclemeasure1:\nsubs %[counter],%[counter],#1\nbne Lcyclemeasure1\n " : [counter] "+r"(cycles));
+    cycles = 131072;
+    FIRST_CYCLE_MEASURE
     
-    __auto_type firstSampleEnd = mach_absolute_time();
+    uint64_t firstSampleEnd = mach_absolute_time();
     double firstNanosecondSet = (double) (firstSampleEnd - firstSampleBegin) * (double)info.numer / (double)info.denom;
-    __auto_type lastSampleBegin = mach_absolute_time();
+    uint64_t lastSampleBegin = mach_absolute_time();
     
-    cycles = testDurationFromCycles;
+    cycles = 65536;
+    LAST_CYCLE_MEASURE
     
-    asm volatile(".align 4\n Lcyclemeasure2:\nsubs %[counter],%[counter],#1\nbne Lcyclemeasure2\n " : [counter] "+r"(cycles));
-    
-    __auto_type lastSampleEnd = mach_absolute_time();
+    uint64_t lastSampleEnd = mach_absolute_time();
     double lastNanosecondSet = (double) (lastSampleEnd - lastSampleBegin) * (double)info.numer / (double)info.denom;
     double nanoseconds = (firstNanosecondSet - lastNanosecondSet);
     
     if ((fabs(nanoseconds - firstNanosecondSet / 2) > 0.05 * nanoseconds) || (fabs(nanoseconds - lastNanosecondSet) > 0.05 * nanoseconds)) { return 0; }
 
-    double frequency = (double)(testDurationFromCycles) / nanoseconds;
-    
+    double frequency = (double)(65536 / nanoseconds);
     return frequency;
 }
 
-#endif
-
 int main(int argc, char * argv[])
 {
-    int arg;
-    int argOpt = 0;
-    int qosOpt = 0;
-    double freqFormat = 1;
+    int option;
+    int optionID = 0;
+    int qosID = 0;
     
-    NSString *freqMeasurement = @"Hz";
+    double frequencyFormat = 1;
+
+    NSString *frequencyMeasurement = @"Hz";
+    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    
-    while((arg = getopt(argc, argv, "kmgevh")) != -1)
+    while((option = getopt(argc, argv, "kmgevh")) != -1)
     {
-        switch(arg)
+        switch(option)
         {
-            case 'k':   argOpt = 1; break;
-            case 'm':   argOpt = 2; break;
-            case 'g':   argOpt = 3; break;
-            case 'e':   qosOpt = 1; break;
-            case 'v':   argOpt = 4; break;
+            case 'e':   qosID = 1; break;
+            case 'k':   optionID = 1; break;
+            case 'm':   optionID = 2; break;
+            case 'g':   optionID = 3; break;
+            case 'v':   optionID = 4; break;
             case 'h':   printf("Usage: %s [-kmgevh]\n", argv[0]);
                         printf("    -k         : print output in kilohertz (kHz)\n");
                         printf("    -m         : print output in megahertz (mHz)\n");
@@ -93,59 +75,39 @@ int main(int argc, char * argv[])
         }
     }
 
-    switch(argOpt)
+    switch(optionID)
     {
-        #if defined(__x86_64__)
-            
-        case 0: freqFormat = 1; break;
-        case 1: freqFormat = .001; break;
-        case 2: freqFormat = .000001; break;
-        case 3: freqFormat = .000000001; break;
-            
-        #elif defined(__aarch64__)
-            
-        case 0: freqFormat = 1000000000; break;
-        case 1: freqFormat = 1000000; break;
-        case 2: freqFormat = 1000; break;
-        case 3: freqFormat = 1; break;
-            
-        #endif
-            
-        case 4: printf("osx-cpufreq: version 1.2.0\n"); return 0; break;
+        case 0: frequencyFormat = 1000000000; frequencyMeasurement = @"Hz"; break;
+        case 1: frequencyFormat = 1000000; frequencyMeasurement = @"kHz"; break;
+        case 2: frequencyFormat = 1000; frequencyMeasurement = @"mHz"; break;
+        case 3: frequencyFormat = 1; frequencyMeasurement = @"gHz"; break;
+        case 4: printf("%s: version 1.3.0\n", argv[0]); return 0; break;
     }
     
-    switch(argOpt)
-    {
-        case 0: freqMeasurement = @"Hz"; break;
-        case 1: freqMeasurement = @"kHz"; break;
-        case 2: freqMeasurement = @"mHz"; break;
-        case 3: freqMeasurement = @"gHz"; break;
-    }
-    
-    if (qosOpt == 1)
+    if (qosID == 1)
     {
         #if defined(__x86_64__)
-            
-        printf("System architecture is x86_64: efficiency cores unavailable\n");
+
+        printf("%s: efficiency cores unavailable on x86\n", argv[0]);
         return 0;
             
         #elif defined(__aarch64__)
             
-        [queue setQualityOfService:NSQualityOfServiceBackground];
+        [operationQueue setQualityOfService:NSQualityOfServiceBackground];
             
         #endif
     }
     
-    NSOperation *operation = [NSBlockOperation blockOperationWithBlock: ^{
-                                switch(argOpt)
-                                {
-                                    case 3: printf("%.4f %s\n", getCurrentFrequency()*freqFormat, [freqMeasurement UTF8String]); break;
-                                    default: printf("%.0f %s\n", getCurrentFrequency()*freqFormat, [freqMeasurement UTF8String]); break;
-                                }
+    NSOperation *mainOperation = [NSBlockOperation blockOperationWithBlock: ^{
+                                    switch(optionID)
+                                    {
+                                        case 3: printf("%.4f %s\n", getCurrentFrequency()*frequencyFormat, [frequencyMeasurement UTF8String]); break;
+                                        default: printf("%.0f %s\n", getCurrentFrequency()*frequencyFormat, [frequencyMeasurement UTF8String]); break;
+                                    }
                               }];
     
-    [queue addOperation:operation];
-    [queue waitUntilAllOperationsAreFinished];
+    [operationQueue addOperation:mainOperation];
+    [operationQueue waitUntilAllOperationsAreFinished];
     
     return 0;
 }
