@@ -56,18 +56,21 @@ Output on an M1 Mac Mini:
 1702 mHz
 1333 mHz
 ```
-Output on an Intel Macbook Pro:
+Output on an Intel Macbook Pro: <!--updated to reflect changes in version 1.3.0-->
 ```
-3001 mHz
-3015 mHz
-3001 mHz
-3008 mHz
+3402 mHz
 3003 mHz
+3202 mHz
+2997 mHz
+3001 mHz
 ```
 
 ## Changelog
 
 ```markdown
+## [1.3.0] - Jan 4, 2022
+- Removed rdtsc() in favor of inline asm to improve accuracy on x86
+
 ## [1.2.1] - Dec 31, 2021
 - Improved readability regarding efficiency cores
 
