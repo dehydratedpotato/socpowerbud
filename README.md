@@ -36,6 +36,8 @@ The default output is formatted in hertz (Hz). Available command line options ar
     -m         : print output in megahertz (mHz)
     -g         : print output in gigahertz (gHz)
     -e         : get frequency of efficiency cores (arm64 only)
+    -x         : get static frequency instead of current frequency
+    -d         : disable return static frequency on error
     -v         : print version number
     -h         : help
 ```
@@ -68,6 +70,10 @@ Output on an Intel Macbook Pro: <!--updated to reflect changes in version 1.3.0-
 ## Changelog
 
 ```markdown
+## [1.4.0] - Jan 11, 2022
+- Added option to print static frequency rather than the current frequency
+- Fixed frequency returning `0` on errors
+
 ## [1.3.0] - Jan 4, 2022
 - Removed rdtsc() in favor of inline asm to improve accuracy on x86
 
@@ -76,7 +82,7 @@ Output on an Intel Macbook Pro: <!--updated to reflect changes in version 1.3.0-
 
 ## [1.2.0] - Dec 30, 2021
 - Translated to Objective-C
-- Added E-Cluster frequency fetching on arm64
+- Added frequency fetching for efficiency cores on arm64
 
 ## [1.1.0] - Dec 26, 2021
 - Intel (x86) support
@@ -92,4 +98,6 @@ If you would like to support me, you can donate to my [Cash App](https://cash.ap
 If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
 
 ## Credits
-[https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp](https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp)
+[https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp](https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp) <!--for the decrementing loop idea-->
+
+[http://uob-hpc.github.io/2017/11/22/arm-clock-freq.html](http://uob-hpc.github.io/2017/11/22/arm-clock-freq.html) <!--for fetching static freqs on arm-->
