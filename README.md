@@ -10,6 +10,9 @@
     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/>
     </a>
+     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers">
+        <img alt="License" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/>
+    </a>
     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
     </a>
@@ -36,11 +39,19 @@ The default output is formatted in hertz (Hz). Available command line options ar
     -m         : print output in megahertz (mHz)
     -g         : print output in gigahertz (gHz)
     -e         : get frequency of efficiency cores (arm64 only)
-    -x         : get static frequency instead of current frequency
-    -d         : disable return static frequency on error
+    -x         : get estimated static frequency (experimental)
+    -s         : return static frequency on error (experimental)
     -v         : print version number
     -h         : help
 ```
+
+If you get an output like this:
+
+```
+./osx-cpufreq: encountered an error while estimating current frequency
+```
+
+This means there was an issue in the calculations. Try to run the command again.
 <!-- If you would like to add the binary to your `usr/local/bin/`, you may also run the following:
 ```
 sudo cp ./osx-cpufreq /usr/local/bin
@@ -70,9 +81,16 @@ Output on an Intel Macbook Pro: <!--updated to reflect changes in version 1.3.0-
 ## Changelog
 
 ```markdown
+## [1.4.1] - Jan 11, 2022
+- (arm64) Fixed static frequency estimation issue when trying to set efficiency cores only option 
+- (arm64) Fixed static frequency returning incorrect double length
+- Added error handling for faulty static frequency estimations
+- Modified current frequency returning the static frequency on error to be disabled by default (can be reenabled using `-s`)
+- Marked static frequency options as experimental due to accuracy issues
+
 ## [1.4.0] - Jan 11, 2022
 - Added option to print static frequency rather than the current frequency
-- Fixed frequency returning `0` on errors
+- Fixed current frequency returning `0` on errors by returning the static frequency on error (can be disabled using `-d`)
 
 ## [1.3.0] - Jan 4, 2022
 - Removed rdtsc() in favor of inline asm to improve accuracy on x86
