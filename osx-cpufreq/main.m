@@ -20,7 +20,7 @@
 
 #endif
 
-double getCurrentFrequency(void)
+double getCurrentFrequency(char * argv)
 {
     int magicNumber = 2 << 16; // 65536
     
@@ -44,13 +44,13 @@ double getCurrentFrequency(void)
     double lastNanosecondSet = (double) (lastSampleEnd - lastSampleBegin) * (double)info.numer / (double)info.denom;
     double nanoseconds = (firstNanosecondSet - lastNanosecondSet);
     
-    if ((fabs(nanoseconds - firstNanosecondSet / 2) > 0.05 * nanoseconds) || (fabs(nanoseconds - lastNanosecondSet) > 0.05 * nanoseconds)) { return 0; }
+    if ((fabs(nanoseconds - firstNanosecondSet / 2) > 0.05 * nanoseconds) || (fabs(nanoseconds - lastNanosecondSet) > 0.05 * nanoseconds)) { printf("%s: encountered an error while estimating current frequency\n", argv); exit(0); }
 
     double frequency = (double)(magicNumber / nanoseconds);
     return frequency;
 }
 
-double getStaticFrequency(void)
+double getStaticFrequency(char * argv)
 {
     double frequency;
     
@@ -79,7 +79,9 @@ double getStaticFrequency(void)
     
     #endif
     
-    return frequency;
+    if (frequency <= 0) { printf("%s: encountered an error while estimating static frequency\n", argv); exit(0); }
+    
+    return frequency * 1e-3;
 }
 
 int main(int argc, char * argv[])
@@ -95,24 +97,24 @@ int main(int argc, char * argv[])
     NSString *frequencyMeasurement = @"Hz";
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     
-    while((option = getopt(argc, argv, "kmgexdvh")) != -1)
+    while((option = getopt(argc, argv, "kmgexsvh")) != -1)
     {
         switch(option)
         {
             case 'e':   qosID = 1; break;
             case 'x':   freqTypeID = 1; break;
-            case 'd':   returnTypeID = 1; break;
+            case 's':   returnTypeID = 1; break;
             case 'k':   formatID = 1; break;
             case 'm':   formatID = 2; break;
             case 'g':   formatID = 3; break;
             case 'v':   formatID = 4; break;
-            case 'h':   printf("Usage: %s [-kmgexdvh]\n", argv[0]);
+            case 'h':   printf("Usage: %s [-kmgexsvh]\n", argv[0]);
                         printf("    -k         : print output in kilohertz (kHz)\n");
                         printf("    -m         : print output in megahertz (mHz)\n");
                         printf("    -g         : print output in gigahertz (gHz)\n");
                         printf("    -e         : get frequency of efficiency cores (arm64 only)\n");
-                        printf("    -x         : get static frequency instead of current frequency\n");
-                        printf("    -d         : disable return static frequency on error\n");
+                        printf("    -x         : get estimated static frequency (experimental)\n");
+                        printf("    -s         : return static frequency on error (experimental)\n");
                         printf("    -v         : print version number\n");
                         printf("    -h         : help\n");
                         return 0;
@@ -126,7 +128,7 @@ int main(int argc, char * argv[])
         case 1: frequencyFormat = 1e+6; frequencyMeasurement = @"kHz"; break;
         case 2: frequencyFormat = 1e+3; frequencyMeasurement = @"mHz"; break;
         case 3: frequencyFormat = 1; frequencyMeasurement = @"gHz"; break;
-        case 4: printf("%s: version 1.4.0\n", argv[0]); return 0; break;
+        case 4: printf("%s: version 1.4.1\n", argv[0]); return 0; break;
     }
     
     if (qosID == 1)
@@ -146,15 +148,26 @@ int main(int argc, char * argv[])
     NSOperation *mainOperation = [NSBlockOperation blockOperationWithBlock: ^{
         
                                     double frequency;
-            
-                                    switch(freqTypeID)
+        
+                                    if (qosID == 0)
                                     {
-                                        case 1: frequency = getStaticFrequency() * frequencyFormat; break;
-                                        default: frequency = getCurrentFrequency() * frequencyFormat; break;
+                                        switch(freqTypeID)
+                                        {
+                                            case 1: frequency = getStaticFrequency(argv[0]) * frequencyFormat; break;
+                                            default: frequency = getCurrentFrequency(argv[0]) * frequencyFormat; break;
+                                        }
+                                        
+                                        if (frequency <= 0 && returnTypeID == 1) {
+                                            frequency = getStaticFrequency(argv[0]) * frequencyFormat;
+                                        }
                                     }
-                                    
-                                    if (frequency <= 0 && returnTypeID == 0) {
-                                        frequency = getStaticFrequency() * frequencyFormat;
+                                    else
+                                    {
+                                        switch(freqTypeID)
+                                        {
+                                            case 1: printf("%s: static frequency unavailable on efficency cores\n", argv[0]); exit(0);
+                                            default: frequency = getCurrentFrequency(argv[0]) * frequencyFormat; break;
+                                        }
                                     }
                                     
                                     switch(formatID)
