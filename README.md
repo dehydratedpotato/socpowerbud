@@ -27,7 +27,7 @@
 </p>
 
 ## What It Does and How It Works
-This project is designed to get the current frequency (or clock speed) that your CPU cores and clusters are running at when sampled, without having to be the system super user or having to use a kernel extension. This near-impossible feat is achieved by accessing the CPU performance state values hidden away in `IOReport`, and performing some calculations based on them during a specified time interval (default 1 second). 
+This project is designed to get the current frequency (or clock speed) of your CPU cores and clusters, without requiring `sudo` or a kernel extension. This near-impossible feat is achieved by accessing the CPU performance state values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 1 second). 
 
 This method is not only extremely accurate, but it is also the same concept used by [OS X Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
 ## Usage
