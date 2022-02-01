@@ -32,7 +32,7 @@ This project is designed to get the current frequency (or clock speed) of your C
 This method is not only extremely accurate, but it is also the same concept used by [OS X Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
 ## Usage
 ### Preparation:
-Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions (If you do not, macOS will not let you run the command due to the lack of codesign on the bianry 😞):
+Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions:
 ```
 chmod 755 ./osx-cpufreq
 xattr -cr ./osx-cpufreq
