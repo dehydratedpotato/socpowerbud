@@ -37,6 +37,7 @@ Download the precompiled binary from the [releases](https://github.com/BitesPota
 chmod 755 ./osx-cpufreq
 xattr -cr ./osx-cpufreq
 ```
+Now you can simply run `./osx-cpufreq`.
 
 ### Example:
 Here is an example running `./osx-cpufreq` on an M1 Mac Mini during a Geekbench run:
