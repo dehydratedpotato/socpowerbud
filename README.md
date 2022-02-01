@@ -69,13 +69,16 @@ Available command line options are:
     -h         : help
 ```
 
-## Known Issues and Future Improvements
-I am aware of limited x86 supported as of the latest release, but I'm hoping to bring full support in one of the next releases.
+## Bugs and Issues
+### Known Problems:
+- The latest version has very limited x86 support, but further support will be implemented as soon as possible
+- Support for M1 Pro/Max is unofficial
+
+If any other bugs or issues are identified, please let me know!
 
 ## Support ❤️
 If you would like to support me, you can donate to my [Cash App](https://cash.app/$bitespotatobacks).
-## Bugs and Issues
-If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
+
 ## Changelog
 
 ```markdown
