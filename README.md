@@ -1,20 +1,23 @@
 <h1 align="center" style="">osx-cpufreq</h1>
 
 <p align="center">
-    Get your CPUs current frequency (all cores or efficiency cores) on macOS.
+    Get your CPUs current frequency, per core and per cluster
 </p>
 <p align="center">
-            <a href="">
-                <img alt="Architectures" src="https://img.shields.io/badge/architectures-Apple_Silicon,_Intel-orange.svg"/>
+    <a href="">
+       <img alt="Apple Silicon" src="https://img.shields.io/badge/Apple_Silicon-Full_Support-red.svg"/>
+    </a>
+    <a href="">
+       <img alt="Intel" src="https://img.shields.io/badge/Intel-Limited_Support-blue.svg"/>
+    </a>
+        <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
+    </a>
+    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers">
+        <img alt="License" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/>
     </a>
     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/>
-    </a>
-     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers">
-        <img alt="License" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/>
-    </a>
-    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
-        <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
     </a>
         <a href="https://cash.app/$bitespotatobacks">
         <img alt="License" src="https://img.shields.io/badge/donate-Cash_App-default.svg"/>
@@ -23,64 +26,64 @@
     <br>
 </p>
 
-## Preparation 
-Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions:
-```
-chmod 755 ./osx-cpufreq | xattr -cr ./osx-cpufreq
-```
+## What It Does and How It Works
+This project is designed to get the current frequency (or clock speed) that your CPU cores and clusters are running at when sampled, without having to be the system super user or having to use a kernel extension. This near-impossible feat is achieved by accessing the CPU performance state values hidden away in `IOReport`, and performing some calculations based on them during a specified time interval (default 1 second). 
+
+This method is not only extremely accurate, but it is also the same concept used by [OS X Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
 ## Usage
+### Preparation:
+Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions (If you do not, macOS will not let you run the command due to the lack of codesign on the bianry 😞):
 ```
-./osx-cpufreq
+chmod 755 ./osx-cpufreq
+xattr -cr ./osx-cpufreq
 ```
 
-The default output is formatted in hertz (Hz). Available command line options are:
+### Example:
+Here is an example running `./osx-cpufreq` on an M1 Mac Mini during a Geekbench run:
 ```
-    -k         : print output in kilohertz (kHz)
-    -m         : print output in megahertz (mHz)
-    -g         : print output in gigahertz (gHz)
-    -e         : get frequency of efficiency cores (arm64 only)
-    -x         : get estimated static frequency (experimental)
-    -s         : return static frequency on error (experimental)
+CPU         Frequency     Percent
+
+ECPU:      2060.14 MHz     99.81%
+PCPU:      1670.64 MHz     52.14%
+
+ECPU 1:    1356.76 MHz     65.73%
+ECPU 2:     892.25 MHz     43.23%
+ECPU 3:    2064.00 MHz    101.65%
+ECPU 4:    2025.28 MHz     98.12%
+
+PCPU 1:    3171.96 MHz     99.00%
+PCPU 2:    3106.88 MHz     96.97%
+PCPU 3:    1026.78 MHz     32.05%
+PCPU 4:       0.51 MHz      0.02%
+```
+### Options
+Available command line options are:
+```
+    -i <int>   : set sampling interval (may effect accuracy)   (arm64)
+    -c         : print active frequency for all cores          (arm64)
+    -e         : print active frequency for efficiency cores   (arm64)
+    -p         : print active frequency for performance cores  (arm64)
+    -l         : print active frequency for all clusters
+    -m         : print maximum frequency for all clusters
     -v         : print version number
     -h         : help
 ```
 
-If you get an output like this:
+## Known Issues and Future Improvements
+I am aware of limited x86 supported as of the latest release, but I'm hoping to bring full support in one of the next releases.
 
-```
-./osx-cpufreq: encountered an error while estimating current frequency
-```
-
-This means there was an issue in the calculations. Try to run the command again.
-<!-- If you would like to add the binary to your `usr/local/bin/`, you may also run the following:
-```
-sudo cp ./osx-cpufreq /usr/local/bin
-``` -->
-
-## Example
-
-Here is an example running `./osx-cpufreq -m` in a for loop.
-
-Output on an M1 Mac Mini:
-```
-829 mHz
-2064 mHz
-2064 mHz
-1702 mHz
-1333 mHz
-```
-Output on an Intel Macbook Pro: <!--updated to reflect changes in version 1.3.0-->
-```
-3402 mHz
-3003 mHz
-3202 mHz
-2997 mHz
-3001 mHz
-```
-
+## Support ❤️
+If you would like to support me, you can donate to my [Cash App](https://cash.app/$bitespotatobacks).
+## Bugs and Issues
+If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
 ## Changelog
 
 ```markdown
+## [2.0.0] - Feb 1, 2022:
+- (arm64) Support to get current CPU frequency _per core_
+- (arm64) Support to get current CPU frequency _per cluster_
+- Previous version experimental features have been removed due to inaccuracies
+
 ## [1.4.1] - Jan 11, 2022
 - (arm64) Fixed static frequency estimation issue when trying to set efficiency cores only option 
 - (arm64) Fixed static frequency returning incorrect double length
@@ -109,13 +112,8 @@ Output on an Intel Macbook Pro: <!--updated to reflect changes in version 1.3.0-
 ## [1.0.0] - Nov 21, 2021
 - Initial Release
 ```
-## Support ❤️
-If you would like to support me, you can donate to my [Cash App](https://cash.app/$bitespotatobacks)
-<a href="https://cash.app/$bitespotatobacks"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png" alt="Cash App" width="17" height="17"></a>
-## Bugs and Issues
-If you can't diagnose the problem yourself, feel free to open an Issue. I'll try to figure out what's going on as soon as possible.
-
-## Credits
-[https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp](https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp) <!--for the decrementing loop idea-->
-
-[http://uob-hpc.github.io/2017/11/22/arm-clock-freq.html](http://uob-hpc.github.io/2017/11/22/arm-clock-freq.html) <!--for fetching static freqs on arm-->
+<!-- 
+Removing credits from public readme due to no longer using the methods derived from the following:
+https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp
+http://uob-hpc.github.io/2017/11/22/arm-clock-freq.html
+-->
