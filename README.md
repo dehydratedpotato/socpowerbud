@@ -5,7 +5,7 @@
 </p>
 <p align="center">
     <a href="">
-       <img alt="Apple Silicon" src="https://img.shields.io/badge/Apple_Silicon-Full_Support-red.svg"/>
+       <img alt="Apple Silicon" src="https://img.shields.io/badge/Apple_Silicon-M1_Support-red.svg"/>
     </a>
     <a href="">
        <img alt="Intel" src="https://img.shields.io/badge/Intel-Limited_Support-blue.svg"/>
