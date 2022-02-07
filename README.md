@@ -13,9 +13,9 @@
         <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
     </a>
-    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers">
+<!--     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/stargazers">
         <img alt="License" src="https://img.shields.io/github/stars/BitesPotatoBacks/osx-cpufreq.svg"/>
-    </a>
+    </a> -->
     <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/>
     </a>
@@ -42,30 +42,33 @@ Now you can simply run `./osx-cpufreq`.
 ### Example:
 Here is an example running `./osx-cpufreq` on an M1 Mac Mini during a Geekbench run:
 ```
-CPU         Frequency     Percent
+Name      Type      Max Freq     Active Freq    Freq %
 
-ECPU:      2060.14 MHz     99.81%
-PCPU:      1670.64 MHz     52.14%
+CPU      Average   3204.00 MHz   1741.50 MHz    54.35%
+ECPU     Cluster   2064.00 MHz   2061.42 MHz    99.88%
+PCPU     Cluster   3204.00 MHz   3204.00 MHz   100.00%
 
-ECPU 1:    1356.76 MHz     65.73%
-ECPU 2:     892.25 MHz     43.23%
-ECPU 3:    2064.00 MHz    101.65%
-ECPU 4:    2025.28 MHz     98.12%
+ECPU 1      Core   2064.00 MHz   2038.20 MHz    98.75%
+ECPU 2      Core   2064.00 MHz    363.53 MHz    17.61%
+ECPU 3      Core   2064.00 MHz   1649.83 MHz    79.93%
+ECPU 4      Core   2064.00 MHz    952.71 MHz    46.16%
 
-PCPU 1:    3171.96 MHz     99.00%
-PCPU 2:    3106.88 MHz     96.97%
-PCPU 3:    1026.78 MHz     32.05%
-PCPU 4:       0.51 MHz      0.02%
+PCPU 1      Core   3204.00 MHz   1714.70 MHz    53.52%
+PCPU 2      Core   3204.00 MHz   3204.00 MHz   100.00%
+PCPU 3      Core   3204.00 MHz   3180.97 MHz    99.28%
+PCPU 4      Core   3204.00 MHz    116.81 MHz     3.65%
 ```
 ### Options
 Available command line options are:
 ```
-    -i <int>   : set sampling interval (may effect accuracy)   (arm64)
-    -c         : print active frequency for all cores          (arm64)
-    -e         : print active frequency for efficiency cores   (arm64)
-    -p         : print active frequency for performance cores  (arm64)
-    -l         : print active frequency for all clusters
-    -m         : print maximum frequency for all clusters
+    -l <value> : loop output (0 = infinite)
+    -i <value> : set sampling interval (may effect accuracy)
+    -c         : print frequency information for all cores         (arm64)
+    -e         : print frequency information for efficiency cores  (arm64)
+    -p         : print frequency information for performance cores (arm64)
+    -q         : print frequency information for all clusters
+    -r         : remove average frequency estimation from output   (arm64)
+    -a         : print average frequency estimation only
     -v         : print version number
     -h         : help
 ```
@@ -80,42 +83,29 @@ If any other bugs or issues are identified, please let me know!
 ## Support ❤️
 If you would like to support me, you can donate to my [Cash App](https://cash.app/$bitespotatobacks).
 
-## Changelog
+<!-- ## Major Version Changelog
 
 ```markdown
+## [2.1.0] - Feb 7, 2022:
+Code Cleanup:
+- Fixed a couple of DRY rule violations
+- Improved handling of command line options
+- Improved handling of maximum and nominal frequencies
+Features:
+- Added CPU type column to output
+- Added maximum frequency column to output
+- Added option to loop output an infinite or set amount of times (option `-l`)
+- (arm64) Added average CPU frequency information to output (can be removed with `-r`)
+- (x86) Added sampling interval support
+Bug Fixes:
+- Fixed possibility for CPU frequency percentage to print value over 100%
+- Fixed possibility for CPU frequency to print as NAN
+
 ## [2.0.0] - Feb 1, 2022:
 - (arm64) Support to get current CPU frequency _per core_
 - (arm64) Support to get current CPU frequency _per cluster_
 - Previous version experimental features have been removed due to inaccuracies
-
-## [1.4.1] - Jan 11, 2022
-- (arm64) Fixed static frequency estimation issue when trying to set efficiency cores only option 
-- (arm64) Fixed static frequency returning incorrect double length
-- Added error handling for faulty static frequency estimations
-- Modified current frequency returning the static frequency on error to be disabled by default (can be reenabled using `-s`)
-- Marked static frequency options as experimental due to accuracy issues
-
-## [1.4.0] - Jan 11, 2022
-- Added option to print static frequency rather than the current frequency
-- Fixed current frequency returning `0` on errors by returning the static frequency on error (can be disabled using `-d`)
-
-## [1.3.0] - Jan 4, 2022
-- Removed rdtsc() in favor of inline asm to improve accuracy on x86
-
-## [1.2.1] - Dec 31, 2021
-- Improved readability regarding efficiency cores
-
-## [1.2.0] - Dec 30, 2021
-- Translated to Objective-C
-- Added frequency fetching for efficiency cores on arm64
-
-## [1.1.0] - Dec 26, 2021
-- Intel (x86) support
-- Rename to reflect universal support
-
-## [1.0.0] - Nov 21, 2021
-- Initial Release
-```
+``` -->
 <!-- 
 Removing credits from public readme due to no longer using the methods derived from the following:
 https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp
