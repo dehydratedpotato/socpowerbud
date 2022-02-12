@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F5FFABA277E62BE00F2F1F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FFAB9277E62BE00F2F1F9 /* main.m */; };
+		3FF7CA4E27A88A620027935A /* osx-cpufreq.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7CA4D27A88A620027935A /* osx-cpufreq.m */; };
+		3FFCCE6927B8023900B53228 /* arm64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFCCE6827B8023900B53228 /* arm64.m */; };
+		3FFCCE6D27B8037300B53228 /* x86_64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFCCE6C27B8037300B53228 /* x86_64.m */; };
+		3FFCCE7527B808F800B53228 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 3FFCCE7427B808F800B53228 /* Makefile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3F5FFAB4277E62BE00F2F1F9 /* CopyFiles */ = {
+		3FF7CA4827A88A620027935A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -23,12 +26,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3F5FFAB6277E62BE00F2F1F9 /* osx-cpufreq */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "osx-cpufreq"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F5FFAB9277E62BE00F2F1F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3FF7CA4A27A88A620027935A /* osx-cpufreq */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "osx-cpufreq"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FF7CA4D27A88A620027935A /* osx-cpufreq.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "osx-cpufreq.m"; sourceTree = "<group>"; };
+		3FFCCE6727B8022E00B53228 /* arm64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = arm64.h; sourceTree = "<group>"; };
+		3FFCCE6827B8023900B53228 /* arm64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = arm64.m; sourceTree = "<group>"; };
+		3FFCCE6A27B8028800B53228 /* x86_64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = x86_64.h; sourceTree = "<group>"; };
+		3FFCCE6B27B802E100B53228 /* universal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = universal.h; sourceTree = "<group>"; };
+		3FFCCE6C27B8037300B53228 /* x86_64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = x86_64.m; sourceTree = "<group>"; };
+		3FFCCE7427B808F800B53228 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3F5FFAB3277E62BE00F2F1F9 /* Frameworks */ = {
+		3FF7CA4727A88A620027935A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -38,40 +47,70 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3F5FFAAD277E62BE00F2F1F9 = {
+		3FF7CA4127A88A620027935A = {
 			isa = PBXGroup;
 			children = (
-				3F5FFAB8277E62BE00F2F1F9 /* osx-cpufreq */,
-				3F5FFAB7277E62BE00F2F1F9 /* Products */,
+				3FF7CA4C27A88A620027935A /* osx-cpufreq */,
+				3FF7CA4B27A88A620027935A /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		3F5FFAB7277E62BE00F2F1F9 /* Products */ = {
+		3FF7CA4B27A88A620027935A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3F5FFAB6277E62BE00F2F1F9 /* osx-cpufreq */,
+				3FF7CA4A27A88A620027935A /* osx-cpufreq */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3F5FFAB8277E62BE00F2F1F9 /* osx-cpufreq */ = {
+		3FF7CA4C27A88A620027935A /* osx-cpufreq */ = {
 			isa = PBXGroup;
 			children = (
-				3F5FFAB9277E62BE00F2F1F9 /* main.m */,
+				3FF7CA4D27A88A620027935A /* osx-cpufreq.m */,
+				3FFCCE7427B808F800B53228 /* Makefile */,
+				3FFCCE7227B806CE00B53228 /* universal */,
+				3FFCCE7127B806B000B53228 /* x86_64 */,
+				3FFCCE7027B8069500B53228 /* arm64 */,
 			);
 			path = "osx-cpufreq";
+			sourceTree = "<group>";
+		};
+		3FFCCE7027B8069500B53228 /* arm64 */ = {
+			isa = PBXGroup;
+			children = (
+				3FFCCE6727B8022E00B53228 /* arm64.h */,
+				3FFCCE6827B8023900B53228 /* arm64.m */,
+			);
+			path = arm64;
+			sourceTree = "<group>";
+		};
+		3FFCCE7127B806B000B53228 /* x86_64 */ = {
+			isa = PBXGroup;
+			children = (
+				3FFCCE6A27B8028800B53228 /* x86_64.h */,
+				3FFCCE6C27B8037300B53228 /* x86_64.m */,
+			);
+			path = x86_64;
+			sourceTree = "<group>";
+		};
+		3FFCCE7227B806CE00B53228 /* universal */ = {
+			isa = PBXGroup;
+			children = (
+				3FFCCE6B27B802E100B53228 /* universal.h */,
+			);
+			path = universal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3F5FFAB5277E62BE00F2F1F9 /* osx-cpufreq */ = {
+		3FF7CA4927A88A620027935A /* osx-cpufreq */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3F5FFABD277E62BE00F2F1F9 /* Build configuration list for PBXNativeTarget "osx-cpufreq" */;
+			buildConfigurationList = 3FF7CA5127A88A620027935A /* Build configuration list for PBXNativeTarget "osx-cpufreq" */;
 			buildPhases = (
-				3F5FFAB2277E62BE00F2F1F9 /* Sources */,
-				3F5FFAB3277E62BE00F2F1F9 /* Frameworks */,
-				3F5FFAB4277E62BE00F2F1F9 /* CopyFiles */,
+				3FF7CA4627A88A620027935A /* Sources */,
+				3FF7CA4727A88A620027935A /* Frameworks */,
+				3FF7CA4827A88A620027935A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -79,24 +118,24 @@
 			);
 			name = "osx-cpufreq";
 			productName = "osx-cpufreq";
-			productReference = 3F5FFAB6277E62BE00F2F1F9 /* osx-cpufreq */;
+			productReference = 3FF7CA4A27A88A620027935A /* osx-cpufreq */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		3F5FFAAE277E62BE00F2F1F9 /* Project object */ = {
+		3FF7CA4227A88A620027935A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
-					3F5FFAB5277E62BE00F2F1F9 = {
+					3FF7CA4927A88A620027935A = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
 			};
-			buildConfigurationList = 3F5FFAB1277E62BE00F2F1F9 /* Build configuration list for PBXProject "osx-cpufreq" */;
+			buildConfigurationList = 3FF7CA4527A88A620027935A /* Build configuration list for PBXProject "osx-cpufreq" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -104,29 +143,32 @@
 				en,
 				Base,
 			);
-			mainGroup = 3F5FFAAD277E62BE00F2F1F9;
-			productRefGroup = 3F5FFAB7277E62BE00F2F1F9 /* Products */;
+			mainGroup = 3FF7CA4127A88A620027935A;
+			productRefGroup = 3FF7CA4B27A88A620027935A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3F5FFAB5277E62BE00F2F1F9 /* osx-cpufreq */,
+				3FF7CA4927A88A620027935A /* osx-cpufreq */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3F5FFAB2277E62BE00F2F1F9 /* Sources */ = {
+		3FF7CA4627A88A620027935A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F5FFABA277E62BE00F2F1F9 /* main.m in Sources */,
+				3FFCCE6927B8023900B53228 /* arm64.m in Sources */,
+				3FF7CA4E27A88A620027935A /* osx-cpufreq.m in Sources */,
+				3FFCCE7527B808F800B53228 /* Makefile in Sources */,
+				3FFCCE6D27B8037300B53228 /* x86_64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		3F5FFABB277E62BE00F2F1F9 /* Debug */ = {
+		3FF7CA4F27A88A620027935A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -177,7 +219,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -185,7 +227,7 @@
 			};
 			name = Debug;
 		};
-		3F5FFABC277E62BE00F2F1F9 /* Release */ = {
+		3FF7CA5027A88A620027935A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -230,14 +272,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
-		3F5FFABE277E62BE00F2F1F9 /* Debug */ = {
+		3FF7CA5227A88A620027935A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -245,7 +287,7 @@
 			};
 			name = Debug;
 		};
-		3F5FFABF277E62BE00F2F1F9 /* Release */ = {
+		3FF7CA5327A88A620027935A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -256,25 +298,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3F5FFAB1277E62BE00F2F1F9 /* Build configuration list for PBXProject "osx-cpufreq" */ = {
+		3FF7CA4527A88A620027935A /* Build configuration list for PBXProject "osx-cpufreq" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3F5FFABB277E62BE00F2F1F9 /* Debug */,
-				3F5FFABC277E62BE00F2F1F9 /* Release */,
+				3FF7CA4F27A88A620027935A /* Debug */,
+				3FF7CA5027A88A620027935A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3F5FFABD277E62BE00F2F1F9 /* Build configuration list for PBXNativeTarget "osx-cpufreq" */ = {
+		3FF7CA5127A88A620027935A /* Build configuration list for PBXNativeTarget "osx-cpufreq" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3F5FFABE277E62BE00F2F1F9 /* Debug */,
-				3F5FFABF277E62BE00F2F1F9 /* Release */,
+				3FF7CA5227A88A620027935A /* Debug */,
+				3FF7CA5327A88A620027935A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 3F5FFAAE277E62BE00F2F1F9 /* Project object */;
+	rootObject = 3FF7CA4227A88A620027935A /* Project object */;
 }
