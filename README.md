@@ -1,7 +1,7 @@
 <h1 align="center" style="">osx-cpufreq</h1>
 
 <p align="center">
-    Get your CPUs current frequency, per core and per cluster
+    Get your CPUs current frequency, per core and per cluster.
 </p>
 <p align="center">
     <a href="">
@@ -27,10 +27,11 @@
 </p>
 
 ## What It Does and How It Works
+This project is designed to get the current CPU frequency of your system as accurately as possible, without requiring `sudo` or a kernel extension. Each architecture supported by this project offers different amounts of data and uses its own technique:
 ### On Apple Silicon
-For Apple SIlicon, this project is able to pull the current frequency of your CPU cores and clusters, without requiring `sudo` or a kernel extension. This near-impossible feat is achieved by accessing the CPU performance state values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 1 second). This method is not only extremely accurate, but it is also the same concept used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
+For Apple Silicon, this project is able to pull the current frequency of your CPU cores and clusters. This near-impossible feat is achieved by accessing the CPU performance state values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 1 second). This method is not only extremely accurate, but it is also the same concept used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
 ### On Intel
-For Intel, this project is currently limited to estimating the current average frequency of the entire CPU complex using inline assembley. I do hope to soon figure out a way to bring better x86 support.
+For Intel, this project is currently limited to estimating the current frequency of the entire CPU complex by using inline assembely. Further support will be implemented as soon as possible.
 ## Usage
 ### Preparation:
 Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions:
