@@ -27,9 +27,10 @@
 </p>
 
 ## What It Does and How It Works
-This project is designed to get the current frequency (or clock speed) of your CPU cores and clusters, without requiring `sudo` or a kernel extension. This near-impossible feat is achieved by accessing the CPU performance state values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 1 second). 
-
-This method is not only extremely accurate, but it is also the same concept used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
+### On Apple Silicon
+For Apple SIlicon, this project is able to pull the current frequency of your CPU cores and clusters, without requiring `sudo` or a kernel extension. This near-impossible feat is achieved by accessing the CPU performance state values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 1 second). This method is not only extremely accurate, but it is also the same concept used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
+### On Intel
+For Intel, this project is currently limited to estimating the current average frequency of the entire CPU complex using inline assembley. I do hope to soon figure out a way to bring better x86 support.
 ## Usage
 ### Preparation:
 Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions:
@@ -58,16 +59,26 @@ PCPU 2      Core   3204.00 MHz   3204.00 MHz   100.00%
 PCPU 3      Core   3204.00 MHz   3180.97 MHz    99.28%
 PCPU 4      Core   3204.00 MHz    116.81 MHz     3.65%
 ```
+Here is an example running `./osx-cpufreq -l4` on an 13" MacBook Pro:
+```
+Name     Type      Max Freq     Active Freq    Freq %
+
+CPU     Complex   3015.37 MHz   1460.41 MHz    48.43%
+CPU     Complex   3015.37 MHz   1121.71 MHz    37.20%
+CPU     Complex   3015.37 MHz    991.80 MHz    32.89%
+CPU     Complex   3015.37 MHz   1542.13 MHz    51.14%
+```
 ### Options
 Available command line options are:
 ```
+./osx-cpufreq [options]
     -l <value> : loop output (0 = infinite)
     -i <value> : set sampling interval (may effect accuracy)
-    -c         : print frequency information for all cores         (arm64)
-    -e         : print frequency information for efficiency cores  (arm64)
-    -p         : print frequency information for performance cores (arm64)
-    -q         : print frequency information for all clusters
-    -r         : remove average frequency estimation from output   (arm64)
+    -c         : print frequency information for CPU cores       (arm64)
+    -e         : print frequency information for ECPU types      (arm64)
+    -p         : print frequency information for PCPU types      (arm64)
+    -q         : print frequency information for CPU clusters
+    -r         : remove average frequency estimation from output (arm64)
     -a         : print average frequency estimation only
     -v         : print version number
     -h         : help
@@ -82,32 +93,3 @@ If any other bugs or issues are identified, please let me know!
 
 ## Support ❤️
 If you would like to support me, you can donate to my [Cash App](https://cash.app/$bitespotatobacks).
-
-<!-- ## Major Version Changelog
-
-```markdown
-## [2.1.0] - Feb 7, 2022:
-Code Cleanup:
-- Fixed a couple of DRY rule violations
-- Improved handling of command line options
-- Improved handling of maximum and nominal frequencies
-Features:
-- Added CPU type column to output
-- Added maximum frequency column to output
-- Added option to loop output an infinite or set amount of times (option `-l`)
-- (arm64) Added average CPU frequency information to output (can be removed with `-r`)
-- (x86) Added sampling interval support
-Bug Fixes:
-- Fixed possibility for CPU frequency percentage to print value over 100%
-- Fixed possibility for CPU frequency to print as NAN
-
-## [2.0.0] - Feb 1, 2022:
-- (arm64) Support to get current CPU frequency _per core_
-- (arm64) Support to get current CPU frequency _per cluster_
-- Previous version experimental features have been removed due to inaccuracies
-``` -->
-<!-- 
-Removing credits from public readme due to no longer using the methods derived from the following:
-https://github.com/lemire/iosbitmapdecoding/blob/master/bitmapdecoding/bitmapdecoding.cpp
-http://uob-hpc.github.io/2017/11/22/arm-clock-freq.html
--->
