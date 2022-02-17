@@ -1,3 +1,12 @@
+## v2.3.0 (Feb 17, 2022)
+Version 2.3.0 brings support for per core frequency outputs on all Mac notebooks and desktops that feature Ivy Bridge CPUs or newer.
+#### Features:
+- (x86) Per core frequency is now supported (as above mentioned)
+- (x86) Added the base frequency column
+- (x86) RDTSC removed in favor of turbo frequencies for further accuracy and output efficiency (~99% faster outputs than previous version).
+#### Notes:
+- Support for Xeon CPUs in Mac Pros and iMac Pros currently limited
+
 ## v2.2.0 (Feb 12, 2022)
 #### Code Cleanup:
 - Majorly Improved output speed (~80% faster outputs than previous version)
