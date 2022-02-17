@@ -5,10 +5,10 @@
 </p>
 <p align="center">
     <a href="">
-       <img alt="Apple Silicon" src="https://img.shields.io/badge/Apple_Silicon-M1_Support-red.svg"/>
+       <img alt="Apple Silicon" src="https://img.shields.io/badge/Apple_Silicon-M1_(M1_Pro/Max_Unofficial)-red.svg"/>
     </a>
     <a href="">
-       <img alt="Intel" src="https://img.shields.io/badge/Intel-Limited_Support-blue.svg"/>
+       <img alt="Intel" src="https://img.shields.io/badge/Intel-Ivy_Bridge_And_Newer-blue.svg"/>
     </a>
         <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
@@ -29,9 +29,9 @@
 ## What It Does and How It Works
 This project is designed to get the current CPU frequency of your system as accurately as possible, without requiring `sudo` or a kernel extension. Each architecture supported by this project offers different amounts of data and uses its own technique:
 ### On Apple Silicon
-For Apple Silicon, this project is able to pull the current frequency of your CPU cores and clusters. This near-impossible feat is achieved by accessing the CPU performance state values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 1 second). This method is not only extremely accurate, but it is also the same concept used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
+For Apple Silicon, this project is able to pull the current frequency of your CPU cores, clusters, and package. This feat is achieved by accessing the CPU performance state values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 1 second). This method is not only extremely accurate, but it is also the same concept used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
 ### On Intel
-For Intel, this project is currently limited to estimating the current frequency of the entire CPU complex by using inline assembely. Further support will be implemented as soon as possible.
+For Intel, this project is able to pull the current frequency of your CPU cores and package. This is achieved by measuring performance using some tricky assembely language magic, in a way so efficenct it can ouput data in as little as ~0.011 seconds. Supports all Mac notebooks and desktops that feature Ivy Bridge CPUs or newer.
 ## Usage
 ### Preparation:
 Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run these commands to fix the binary permissions:
@@ -46,7 +46,7 @@ Here is an example running `./osx-cpufreq` on an M1 Mac Mini during a Geekbench 
 ```
 Name      Type      Max Freq     Active Freq    Freq %
 
-CPU      Average   3204.00 MHz   1741.50 MHz    54.35%
+CPU      Package   3204.00 MHz   1741.50 MHz    54.35%
 ECPU     Cluster   2064.00 MHz   2061.42 MHz    99.88%
 PCPU     Cluster   3204.00 MHz   3204.00 MHz   100.00%
 
@@ -60,14 +60,13 @@ PCPU 2      Core   3204.00 MHz   3204.00 MHz   100.00%
 PCPU 3      Core   3204.00 MHz   3180.97 MHz    99.28%
 PCPU 4      Core   3204.00 MHz    116.81 MHz     3.65%
 ```
-Here is an example running `./osx-cpufreq -l4` on an 13" MacBook Pro:
+Here is an example running `./osx-cpufreq` on an 13" MacBook Pro with an dual-core i7-4578U:
 ```
-Name     Type      Max Freq     Active Freq    Freq %
+Name     Type      Max Freq      Base Freq    Active Freq    Freq %
 
-CPU     Complex   3015.37 MHz   1460.41 MHz    48.43%
-CPU     Complex   3015.37 MHz   1121.71 MHz    37.20%
-CPU     Complex   3015.37 MHz    991.80 MHz    32.89%
-CPU     Complex   3015.37 MHz   1542.13 MHz    51.14%
+CPU     Package   3500.00 MHz   3000.00 MHz   3091.17 MHz   103.04%
+CPU 0      Core   3500.00 MHz   3000.00 MHz   2344.13 MHz    78.14%
+CPU 1      Core   3500.00 MHz   3000.00 MHz   3286.00 MHz   109.53%
 ```
 ### Options
 Available command line options are:
@@ -75,20 +74,19 @@ Available command line options are:
 ./osx-cpufreq [options]
     -l <value> : loop output (0 = infinite)
     -i <value> : set sampling interval (may effect accuracy)
-    -c         : print frequency information for CPU cores       (arm64)
-    -e         : print frequency information for ECPU types      (arm64)
-    -p         : print frequency information for PCPU types      (arm64)
+    -c         : print frequency information for CPU cores
     -q         : print frequency information for CPU clusters
-    -r         : remove average frequency estimation from output (arm64)
-    -a         : print average frequency estimation only
+    -a         : print frequency information for CPU package
+    -e         : print frequency information for ECPU types    (arm64)
+    -p         : print frequency information for PCPU types    (arm64)
     -v         : print version number
     -h         : help
 ```
 
 ## Bugs and Issues
 ### Known Problems:
-- The latest version has very limited x86 support, but further support will be implemented as soon as possible
 - Support for M1 Pro/Max is unofficial
+- Support for Xeon CPUs in Mac Pros and iMac Pros currently limited
 
 If any other bugs or issues are identified, please let me know!
 
