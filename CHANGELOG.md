@@ -1,3 +1,12 @@
+## v2.3.1 (Feb 18, 2022)
+#### Code Cleanup:
+- (x86) Fixed a few spelling mistakes and removed some macros
+
+#### Bug Fixes:
+- (x86) Fixed possibility where base frequency may return incorrectly
+- (x86) Fixed issue where using an infinite loop with default sampling interval could overload command line with too much data
+- (x86) Error handling for base and turbo frequency fetching improved
+
 ## v2.3.0 (Feb 17, 2022)
 Version 2.3.0 brings support for per core frequency outputs on all Mac notebooks and desktops that feature Ivy Bridge CPUs or newer.
 #### Features:
