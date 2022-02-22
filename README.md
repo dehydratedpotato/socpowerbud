@@ -87,6 +87,7 @@ Available command line options are:
 ### Known Problems:
 - Support for M1 Pro/Max is unofficial
 - Support for Xeon CPUs in Mac Pros and iMac Pros currently limited
+- Looping the output using -l does not refresh per core frequencies on arm64
 
 If any other bugs or issues are identified, please let me know!
 
