@@ -44,29 +44,36 @@ Now you can simply run `./osx-cpufreq`.
 ### Example:
 Here is an example running `./osx-cpufreq` on an M1 Mac Mini during a Geekbench run:
 ```
-Name      Type      Max Freq     Active Freq    Freq %
+Package Frequencies
+------------------------
+CPU..........(Package) : 1416 MHz (3204 MHz: 44.20%)
+ECPU.........(Cluster) : 756 MHz (2064 MHz: 36.62%)
+PCPU.........(Cluster) : 2077 MHz (3204 MHz: 64.81%)
 
-CPU      Package   3204.00 MHz   1741.50 MHz    54.35%
-ECPU     Cluster   2064.00 MHz   2061.42 MHz    99.88%
-PCPU     Cluster   3204.00 MHz   3204.00 MHz   100.00%
+E-Core Frequencies
+------------------------
+ECORE0..........(Core) : 795 MHz (2064 MHz: 38.52%)
+ECORE1..........(Core) : 645 MHz (2064 MHz: 31.27%)
+ECORE2..........(Core) : 597 MHz (2064 MHz: 28.92%)
+ECORE3..........(Core) : 594 MHz (2064 MHz: 28.76%)
 
-ECPU 1      Core   2064.00 MHz   2038.20 MHz    98.75%
-ECPU 2      Core   2064.00 MHz    363.53 MHz    17.61%
-ECPU 3      Core   2064.00 MHz   1649.83 MHz    79.93%
-ECPU 4      Core   2064.00 MHz    952.71 MHz    46.16%
-
-PCPU 1      Core   3204.00 MHz   1714.70 MHz    53.52%
-PCPU 2      Core   3204.00 MHz   3204.00 MHz   100.00%
-PCPU 3      Core   3204.00 MHz   3180.97 MHz    99.28%
-PCPU 4      Core   3204.00 MHz    116.81 MHz     3.65%
+P-Core Frequencies
+------------------------
+PCORE0..........(Core) : 2078 MHz (3204 MHz: 64.86%)
+PCORE1..........(Core) : 988 MHz (3204 MHz: 30.83%)
+PCORE2..........(Core) : 1829 MHz (3204 MHz: 57.09%)
+PCORE3..........(Core) : 929 MHz (3204 MHz: 28.98%)
 ```
 Here is an example running `./osx-cpufreq` on an 13" MacBook Pro with an dual-core i7-4578U:
 ```
-Name     Type      Max Freq      Base Freq    Active Freq    Freq %
+Package Frequencies
+------------------------
+CPU..........(Package) : 2209 MHz (3000 MHz: 73.64%)
 
-CPU     Package   3500.00 MHz   3000.00 MHz   3091.17 MHz   103.04%
-CPU 0      Core   3500.00 MHz   3000.00 MHz   2344.13 MHz    78.14%
-CPU 1      Core   3500.00 MHz   3000.00 MHz   3286.00 MHz   109.53%
+Core Frequencies
+------------------------
+CORE0...........(Core) : 1782 MHz (3000 MHz: 59.39%)
+CORE1...........(Core) : 1576 MHz (3000 MHz: 52.54%)
 ```
 ### Options
 Available command line options are:
@@ -74,11 +81,12 @@ Available command line options are:
 ./osx-cpufreq [options]
     -l <value> : loop output (0 = infinite)
     -i <value> : set sampling interval (may effect accuracy)
+    -s <value> : print frequency information for selected CPU core
     -c         : print frequency information for CPU cores
     -q         : print frequency information for CPU clusters
     -a         : print frequency information for CPU package
-    -e         : print frequency information for ECPU types    (arm64)
-    -p         : print frequency information for PCPU types    (arm64)
+    -e         : print frequency information for ECPU types   (arm64)
+    -p         : print frequency information for PCPU types   (arm64)
     -v         : print version number
     -h         : help
 ```
@@ -87,7 +95,7 @@ Available command line options are:
 ### Known Problems:
 - Support for M1 Pro/Max is unofficial
 - Support for Xeon CPUs in Mac Pros and iMac Pros currently limited
-- Looping the output using -l does not refresh per core frequencies on arm64
+<!-- - Looping the output using -l does not refresh per core frequencies on arm64 --><!--Fixed with version 2.4.0--> 
 
 If any other bugs or issues are identified, please let me know!
 
