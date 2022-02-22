@@ -22,18 +22,6 @@
 //    SOFTWARE.
 //
 
-// CHANGELOG:
-// x86 Checking if system is on Ice Lake or not and generating warning if so
-// x86 Cleaned up a bit of code and changed some things around
-// x86 core number select and checking if negative or in range
-// arm64 core number select per cluster and checking if negative or in range
-// prevent loop count from being negative integer
-// Majorly Redesigned output, no more columns
-// arm64 fixed per core outputs not refreshing when using loops which was identified to be an issue since v2.1.0
-
-// NEEDS:
-// arm64 get nominal frqs for pstates in a non static way
-
 #include <Foundation/Foundation.h>
 #include "universal/universal.h"
 
