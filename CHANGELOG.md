@@ -1,3 +1,12 @@
+## v2.4.0 (Feb 22, 2022)
+Version 2.4.0 introduces a new output formatting and fixes major issues regarding the looping option (option `-l`).
+#### Features:
+- Redesigned output formatting to improve readability and to prevent inconsistent spacing
+- Added command line option to select specific CPU Core to print frequency data for (option `-s`)
+
+#### Bug Fixes:
+- Fixed possibility for script to ignore incorrect negative loop counts and output no data
+- (arm64) Fixed per core outputs not refreshing when using loop option (also fixes potential memory leak)
 ## v2.3.1 (Feb 18, 2022)
 #### Code Cleanup:
 - (x86) Fixed a few spelling mistakes and removed some macros
