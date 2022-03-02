@@ -62,6 +62,7 @@ struct options
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+int get_sysctl_int(char * entry);
 uint64_t get_sysctl_uint64(char * entry);
 char * get_sysctl_char(char * entry);
 
