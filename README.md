@@ -25,7 +25,7 @@
 ## What It Does and How It Works
 This project is designed to get the active frequency of your Macs CPU cores and package, as fast and accurate as possible, without requiring `sudo` or a kernel extension. Each architecture supported by this project uses its own special technique to fetch this data.
 ### On Apple Silicon
-CPU core and package frequencies are fetched by accessing the CPUs performance state counter values (which are hidden away in `IOReport`), and performing some calculations based on them during a specified time interval (default 0.8 seconds). This method is not only extremely accurate, but it is also the same trick used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
+CPU core and package frequencies are fetched by accessing the CPUs performance state counter values (which are hidden away in `IOReport`), accessing the voltage state frequencies (which are hidden away in the `IORegistry`), and performing some calculations based on both of them during a specified time interval (default 0.8 seconds). This method is not only extremely accurate, but it is also the same trick used by the closed source OS X command line utility [Powermetrics](https://www.unix.com/man-page/osx/1/powermetrics/).
 ### On Intel
 CPU core and package frequencies are calculated by measuring CPU performance using some tricky assembely language magic, in a way so efficenct that allows data to be outputted in as little as ~0.011 seconds. Supports all Mac notebooks and desktops that feature Ivy Bridge CPUs or newer.
 ## Usage
@@ -74,17 +74,20 @@ CORE1...........(Core) : 1576 MHz (3000 MHz: 52.54%)
 ### Options
 Available command line options are:
 ```
-./osx-cpufreq [options]
-    -l <value> : loop output (0 = infinite)
-    -i <value> : set sampling interval (may effect accuracy)
-    -s <value> : print frequency information for selected CPU core
-    -c         : print frequency information for CPU cores
-    -q         : print frequency information for CPU clusters
-    -a         : print frequency information for CPU package
-    -e         : print frequency information for ECPU types   (arm64)
-    -p         : print frequency information for PCPU types   (arm64)
-    -v         : print version number
-    -h         : help
+The following command-line options are supported:
+
+  -h | --help            show this message
+  -v | --version         print version number
+
+  -l | --loop-rate <N>   loop output (0=infinite) [default: disabled]
+  -i | --sample-rate <N> set sampling rate (may effect accuracy) [default: 0.8s]
+  -s | --select-core <N> selected specific CPU core [default: disabled]
+
+  -c | --cores           print frequency information for CPU cores
+  -C | --clusters        print frequency information for CPU clusters
+  -P | --package         print frequency information for CPU package
+  -e | --e-cluster       print frequency information for ECPU types (ARM64)
+  -p | --p-cluster       print frequency information for PCPU types (ARM64)
 ```
 
 ## Bugs and Issues
