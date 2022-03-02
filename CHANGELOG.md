@@ -1,3 +1,13 @@
+## v2.5.0 (Mar 2, 2022)
+#### Features:
+- New support for long (double dashed) command line options (for example, `--help` or `--version`)
+- (arm64) The script now retrieves performance state nominal frequencies from voltage state data in the IORegistry. This will increase compatibly and portability.
+
+#### Bug Fixes:
+- Fixed issue [#1](https://github.com/BitesPotatoBacks/osx-cpufreq/issues/1) and now pulling core counts for clusters from IORegistry.
+- Fixed extra whitespace in outputs when looping all data
+- Fixed issue where frequency could return `0 MHz` while the precent does not return `Idle`
+
 ## v2.4.0 (Feb 22, 2022)
 Version 2.4.0 introduces a new output formatting and fixes major issues regarding the looping option (option `-l`).
 #### Features:
