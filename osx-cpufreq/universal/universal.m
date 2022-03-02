@@ -27,6 +27,24 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+int get_sysctl_int(char * entry)
+{
+    int variable;
+    size_t len = 4;
+    
+    if (sysctlbyname(entry, NULL, &len, NULL, 0) == -1)
+    {
+        ERROR("invalid output from sysctl");
+    }
+    else
+    {
+        sysctlbyname(entry, &variable, &len, NULL, 0);
+        return variable;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 uint64_t get_sysctl_uint64(char * entry)
 {
     uint64_t variable;
