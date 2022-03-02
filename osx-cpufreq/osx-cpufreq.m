@@ -22,16 +22,6 @@
 //    SOFTWARE.
 //
 
-// Changelog:
-// universal; Designed better "usage" output and renamed "usage" to "print_help_info"
-// universal; Chnaged some command line options ('a'->'P', 'q'->'C')
-// universal; support for long command line options
-// universal; moved output printing to its own function to leave main() to check cmd opts
-// universal: fixed extra spacing between full oputs when looping
-// arm64: better managemnt for reporting percentage of freq as idle
-// arm64; moved printing to be conatined as a seperate function because of the sheer amount of data
-// arm64; accessing performance state nominal freqs from IORegistry, no longer static in code
-
 #include <Foundation/Foundation.h>
 #include "universal/universal.h"
 
