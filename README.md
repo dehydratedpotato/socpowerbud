@@ -1,4 +1,4 @@
-<h1 align="center" style="">osx-cpufreq</h1>
+<h1 align="center" style="">macos-cpufreq</h1>
 
 <p align="center">
    Get the active frequency of your CPU, per core and per cluster, without needing sudo.
@@ -10,11 +10,11 @@
     <a href="">
        <img alt="Intel" src="https://img.shields.io/badge/Intel-Ivy_Bridge_And_Newer-orange.svg"/>
     </a>
-    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/releases">
-        <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/osx-cpufreq.svg"/>
+    <a href="https://github.com/BitesPotatoBacks/macos-cpufreq/releases">
+        <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/macos-cpufreq.svg"/>
     </a>
-    <a href="https://github.com/BitesPotatoBacks/osx-cpufreq/blob/main/LICENSE">
-        <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/osx-cpufreq.svg"/>
+    <a href="https://github.com/BitesPotatoBacks/macos-cpufreq/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/macos-cpufreq.svg"/>
     </a>
     <a href="https://cash.app/$bitespotatobacks">
         <img alt="License" src="https://img.shields.io/badge/donate-Cash_App-default.svg"/>
@@ -30,15 +30,15 @@ CPU core and package frequencies are fetched by accessing the CPUs performance s
 CPU core and package frequencies are calculated by measuring CPU performance using some tricky assembely language magic, in a way so efficenct that allows data to be outputted in as little as ~0.011 seconds. Supports all Mac notebooks and desktops that feature Ivy Bridge CPUs or newer.
 ## Usage
 ### Preparation
-Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/osx-cpufreq/releases), `cd` into your Downloads folder, and run the following commands to fix the binary permissions:
+Download the precompiled binary from the [releases](https://github.com/BitesPotatoBacks/macos-cpufreq/releases), `cd` into your Downloads folder, and run the following commands to fix the binary permissions:
 ```
-chmod 755 ./osx-cpufreq
-xattr -cr ./osx-cpufreq
+chmod 755 ./macos-cpufreq
+xattr -cr ./macos-cpufreq
 ```
-Now you can simply run `./osx-cpufreq`.
+Now you can simply run `./macos-cpufreq`.
 
 ### Examples
-Here is an example running `./osx-cpufreq` on an M1 Mac Mini during a Geekbench run:
+Here is an example running `./macos-cpufreq` on an M1 Mac Mini during a Geekbench run:
 ```
 Package Frequencies
 ------------------------
@@ -94,7 +94,7 @@ The following command-line options are supported:
 - Support for Intel Xeon CPUs currently limited
 <!-- - Looping the output using -l does not refresh per core frequencies on arm64 --><!--Fixed with version 2.4.0--> 
 
-If any other bugs or issues are identified, please let me know in the [issues](https://github.com/BitesPotatoBacks/osx-cpufreq/issues) section.
+If any other bugs or issues are identified, please let me know in the [issues](https://github.com/BitesPotatoBacks/macos-cpufreq/issues) section.
 
 ## Support ❤️
 If you would like to support me, you can donate to my **[Cash App](https://cash.app/$bitespotatobacks).**
