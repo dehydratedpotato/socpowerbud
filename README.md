@@ -72,10 +72,8 @@ CORE0...........(Core) : 1782 MHz (3000 MHz: 59.39%)
 CORE1...........(Core) : 1576 MHz (3000 MHz: 52.54%)
 ```
 ### Options
-Available command line options are:
-```
 The following command-line options are supported:
-
+```
   -h | --help            show this message
   -v | --version         print version number
 
