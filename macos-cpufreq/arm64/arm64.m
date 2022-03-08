@@ -476,15 +476,15 @@ void print_freqs(char type, int core, float active_freq, float max_freq, char * 
 {
     if (type == 0)
     {
-        printf("CPU_PACKAGE............ : %.0f MHz (%.0f MHz: %s)\n", active_freq, max_freq, freq_percent);
+        printf("CPU_PACKAGE........... : %.0f MHz (%.0f MHz: %s)\n", active_freq, max_freq, freq_percent);
     }
     else if (core > -1)
     {
-        printf("%cCPU_CORE_%d............ : %.0f MHz (%.0f MHz: %s)\n", type, core, active_freq, max_freq, freq_percent);
+        printf("%cCPU_CORE_%d........... : %.0f MHz (%.0f MHz: %s)\n", type, core, active_freq, max_freq, freq_percent);
     }
     else
     {
-        printf("%cCPU_CLUSTER........... : %.0f MHz (%.0f MHz: %s)\n", type, active_freq, max_freq, freq_percent);
+        printf("%cCPU_CLUSTER.......... : %.0f MHz (%.0f MHz: %s)\n", type, active_freq, max_freq, freq_percent);
     }
 }
 
