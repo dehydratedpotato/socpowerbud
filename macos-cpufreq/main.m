@@ -164,14 +164,14 @@ void print_script_output(struct options options, int looper, int loop_key)
             if (options.selecting_core == true)
             {
                 cpu_active_freq = return_cpu_active_freq(cpu_turbo_freq);
-                printf("CPU_CORE%d............. : %.0f MHz (%.0f MHz: %.2f%%)\n", options.select_core, cpu_active_freq, cpu_base_freq, (cpu_active_freq / cpu_base_freq) * 100);
+                printf("CPU_CORE_%d............ : %.0f MHz (%.0f MHz: %.2f%%)\n", options.select_core, cpu_active_freq, cpu_base_freq, (cpu_active_freq / cpu_base_freq) * 100);
             }
             else
             {
                 for (int i = 0; i < physical_cpus; i++)
                 {
                     cpu_active_freq = return_cpu_active_freq(cpu_turbo_freq);
-                    printf("CPU_CORE%d............. : %.0f MHz (%.0f MHz: %.2f%%)\n", i, cpu_active_freq, cpu_base_freq, (cpu_active_freq / cpu_base_freq) * 100);
+                    printf("CPU_CORE_%d............ : %.0f MHz (%.0f MHz: %.2f%%)\n", i, cpu_active_freq, cpu_base_freq, (cpu_active_freq / cpu_base_freq) * 100);
                 }
             }
         }
