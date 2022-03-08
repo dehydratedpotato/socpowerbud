@@ -1,3 +1,19 @@
+## v2.6.0 (Mar, 7, 2022)
+Version 2.6.0 brings improvements to data processing and reliability when fetching certain data, as well support for more CPU types.
+#### Code Cleanup:
+- Fixed grammar mistakes
+- Removed `model_data.h` and `model_data.m` for turbo speeds in favor of accessing turbo speeds from the IORegistry
+
+#### Features:
+- Caching static data such as core counts, max frequencies, and voltage state frequencies into `NSUserDefaults` to decrease data processing needs when generating new outputs
+- Introduced more data gathering methods to increase reliability when fetching certain data
+- Better management for warning user of accuracy issues
+- Intel Xeon CPUs should now have full support
+- Added option to clear `NSUserDefaults` cache (`-r` or `--remove-cache`)
+
+#### Bug Fixes:
+- This version contains minor improvements of the fixes seen in v2.5.0
+
 ## v2.5.0 (Mar 2, 2022)
 #### Features:
 - New support for long (double dashed) command line options (for example, `--help` or `--version`)
