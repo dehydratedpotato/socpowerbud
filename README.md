@@ -60,7 +60,7 @@ PCPU_CORE_1........... : 988 MHz (3204 MHz: 30.83%)
 PCPU_CORE_3........... : 1829 MHz (3204 MHz: 57.09%)
 PCPU_CORE_4........... : 929 MHz (3204 MHz: 28.98%)
 ```
-Here is an example running `./osx-cpufreq` on an 13" MacBook Pro with an dual-core i7-4578U:
+Here is an example running `./macos-cpufreq` on an 13" MacBook Pro with an dual-core i7-4578U:
 ```
 Package Frequencies
 ------------------------
