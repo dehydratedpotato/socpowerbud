@@ -92,6 +92,7 @@ The following command-line options are supported:
 ## Bugs and Issues
 ### Known Problems
 - Support for M1 Pro/Max currently unofficial (if anyone has a machine with this silicon, let me know how it works for you)
+- There is an inaccuracy in the calculation (mainly for the ECPU) caused by a for loop issue (will be fixed in **v3.0.0**)
 <!-- - Looping the output using -l does not refresh per core frequencies on arm64 --><!--Fixed with version 2.4.0--> 
 
 If any other bugs or issues are identified, please let me know in the [issues](https://github.com/BitesPotatoBacks/macos-cpufreq/issues) section.
