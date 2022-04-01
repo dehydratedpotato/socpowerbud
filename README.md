@@ -22,6 +22,9 @@
     <br>
 </p>
 
+# ⚠️ Notice ⚠️
+This iteration of the project is now obsolete as of the current release. Please stay tuned for a huge transformative update coming very soon... Hopefully in the following week.
+
 ## What It Does and How It Works
 This project is designed to get the active frequency of your Macs CPU cores and package, as fast and accurate as possible, without requiring `sudo` or a kernel extension. Each architecture supported by this project uses its own special technique to fetch this data.
 ### On Apple Silicon
