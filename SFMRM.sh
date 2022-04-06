@@ -68,6 +68,7 @@ function _pullLatestVersionBinary()
     printf "\e[1mSFMRM service:\033[0;32m alert:\033[0m\e[0m downloading latest binary version from Github...\n"
         
     LATEST=`curl --silent "https://api.github.com/repos/BitesPotatoBacks/SFMRM/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`
+    LATESTCUT=`curl --silent "https://api.github.com/repos/BitesPotatoBacks/SFMRM/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | tr -d 'a-z'`
 
     curl -Ls "https://github.com/BitesPotatoBacks/SFMRM/releases/download/${LATEST}/sfmrm-v${LATESTCUT}-${FILE}.zip" -O
     
@@ -79,7 +80,7 @@ function _pullLatestVersionBinary()
     xattr -cr "./sfmrm-${FILE}"
     
     rm "sfmrm-v${LATESTCUT}-${FILE}.zip" &&
-    rm "binary"
+    rm -rf "binary"
 }
 
 
