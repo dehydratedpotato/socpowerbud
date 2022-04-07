@@ -34,10 +34,9 @@ If you would like to support my efforts towards this project, consider donating 
 Download the file named `SFMRM.sh` from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases) (or [click here](https://github.com/BitesPotatoBacks/SFMRM/releases/download/v0.1.0/SFMRM.sh) for a direct download). This is the script that manages the versions for your systems architecture specific binaries (which are the files that actually retrieve your metrics). You may download the `.zip` files for these binaries if you wish, but I recommend using `SFMRM.sh` if you want the latest features and bug fixes without having to lift a finger.
    
 ### 2. Preparation
-`cd` into your Downloads folder via the Terminal, and fix the file permissions of your binary using these terminal commands:
+`cd` into your Downloads folder via the Terminal, and fix the file permissions of your binary using this terminal command:
 ```
-chmod 755 ./SFMRM
-xattr -cr ./SFMRM
+chmod 755 ./SFMRM.sh
 ```
 ### 3. Running
 To view your systems metrics, you now may run `./SFMRM.sh` alongside any command line option available to your architecture (documented in next section).
