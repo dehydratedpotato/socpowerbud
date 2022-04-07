@@ -23,7 +23,7 @@ This project is designed to retrieve active frequency and residency metrics from
 
 
 
-If you would like to support my efforts and this project, you can donate to my **[Cash App](https://cash.app/$bitespotatobacks).**
+If you would like to support my efforts towards this project, consider donating to my **[Cash App](https://cash.app/$bitespotatobacks).**
 
 ## Project Details
 
