@@ -31,7 +31,7 @@ If you would like to support my efforts and this project, you can donate to my *
 <summary><strong>Installation</strong></summary>
    
 ### 1. Download
-Download the binary named `SFMRM` from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases) (or [click here](https://github.com/BitesPotatoBacks/SFMRM/releases/download/v0.1.0/SFMRM) for a direct download). This is the parent binary that manages the versions for your systems architecture specific binaries (which are the scripts that actually retrieve your metrics). You may download the `.zip` files for these binaries if you wish, but I recommend using the `SFMRM` parent binary if you want the latest features and bug fixes without having to lift a finger.
+Download the file named `SFMRM.sh` from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases) (or [click here](https://github.com/BitesPotatoBacks/SFMRM/releases/download/v0.1.0/SFMRM.sh) for a direct download). This is the script that manages the versions for your systems architecture specific binaries (which are the files that actually retrieve your metrics). You may download the `.zip` files for these binaries if you wish, but I recommend using `SFMRM.sh` if you want the latest features and bug fixes without having to lift a finger.
    
 ### 2. Preparation
 `cd` into your Downloads folder via the Terminal, and fix the file permissions of your binary using these terminal commands:
@@ -40,7 +40,7 @@ chmod 755 ./SFMRM
 xattr -cr ./SFMRM
 ```
 ### 3. Running
-To view your systems metrics, you now may run `./SFMRM` alongside any command line option available to your architecture (documented in next section).
+To view your systems metrics, you now may run `./SFMRM.sh` alongside any command line option available to your architecture (documented in next section).
 </details>
   
 <details>
@@ -75,7 +75,7 @@ To view your systems metrics, you now may run `./SFMRM` alongside any command li
   <details>
 <summary><strong>Apple Silicon (Apple M1) </strong></summary>
      
-Here is an example of `SFMRM`'s output (using binary `sfmrm-arm64-client`) on an M1 Mac Mini:
+Here is an example of `SFMRM.sh`'s output (using binary `sfmrm-arm64-client`) on an M1 Mac Mini:
      
 ```
 *** Sampling: Apple M1 [T8103] (4P+4E+8GPU) ***
@@ -137,7 +137,7 @@ GPU  Idle Frequency:   99.780%
   <details>
 <summary><strong>Intel (Intel® Core™ i7-4578U)</strong></summary>
      
-Here is an example of `SFMRM`'s output (using binary `sfmrm-x86_64-client`) on an 13" MacBook Pro with an Intel® Core™ i7-4578U:
+Here is an example of `SFMRM.sh`'s output (using binary `sfmrm-x86_64-client`) on an 13" MacBook Pro with an Intel® Core™ i7-4578U:
      
 ```
 *** Sampling: Intel(R) Core(TM) i7-4578U CPU @ 3.00GHz ***
