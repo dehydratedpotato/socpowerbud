@@ -182,7 +182,7 @@ iGPU  Idle Frequency:   98.00%
 ## Reading
    
 <details>
-<summary><strong>Why SFMRM is Better for Frequency Metric Retrieval than Powermetrics </strong></summary>
+<summary><strong>Benefits of SFMRM over Powermetrics for Frequency Metric Retrieval</strong></summary>
    
 ### On Apple Silicon
 SFMRM can access the same frequency and residency metrics as Powermetrics does, without needing `sudo` or a kernel extension. SFMRM also offers performance cluster, efficency cluster, and GPU compelx core counts, as well as CPU codenames. No need for `sudo` or a kernel extension.
