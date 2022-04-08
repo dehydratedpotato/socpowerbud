@@ -177,7 +177,7 @@ iGPU  Idle Frequency:   98.00%
      
   </details>
    
-   
+   <!--
 ## Reading
    
 <details>
@@ -192,12 +192,12 @@ SFMRM does not access the same information for frequency metrics as does Powerme
       
       
    </details>
-
+-->
 ## Bugs and Issues
 <details>
 <summary><strong>Identified</strong></summary>
    
-- Support for M1 Pro/Max/Ultra currently unofficial
+- Outputs on M1 Pro/Max/Ultra may not work as expected (IOReport entries unknown)
    
    </details>
    
