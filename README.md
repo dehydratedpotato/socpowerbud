@@ -19,33 +19,73 @@
     <br>
 </p>
 
-This project is designed to retrieve active frequency and residency metrics from your Macs CPU (per-core, per-cluster) and GPU (complex) as accurately as possible, without requiring sudo or a kernel extension.
+This project is designed to retrieve active frequency and residency metrics from your Macs CPU (per-core, per-cluster) and GPU (complex) as accurately and efficiently as possible, without requiring sudo or a kernel extension.
 
 
 
-If you would like to support my efforts towards this project, consider donating to my **[Cash App](https://cash.app/$bitespotatobacks).**
+If you would like to support my efforts towards this project, please consider donating to my **[Cash App](https://cash.app/$bitespotatobacks).**
 
-## Project Details
+## Installation
+
+The following is a guide to installation and usage.
 
 <details>
-<summary><strong>Installation</strong></summary>
+<summary><strong>1. Download</strong></summary>
    
-### 1. Download
-Download `SFMRM.sh` from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases). This script manages auto updating for the architecture specific binaries (which are the files that actually do the work to retrieve your metrics). You may download the `.zip` files for these binaries if you wish, but use `SFMRM.sh` if you want the latest features and bug fixes without having to lift a finger.
+Download `SFMRM.sh` from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases). This script manages auto updating for the architecture specific binaries (which are the files that actually do the work to retrieve your metrics).
    
-### 2. Preparation
-`cd` into your Downloads folder via the Terminal, and fix the permissions of `SFMRM.sh` using this terminal command:
+   You may download the `.zip` files for these binaries if you wish, but use `SFMRM.sh` if you want the latest features and bug fixes without having to lift a finger. Though, please be aware you will need to manually download new versions for `SFMRM.sh` the rare times they drop.
+   
+</details>
+   
+<details>
+<summary><strong>2. Preparation </strong></summary>
+   
+Now that you've downloaded `SFMRM.sh`, `cd` into your Downloads folder via the Terminal, and fix the script's permissions using the following terminal command:
 ```
 chmod 755 ./SFMRM.sh
 ```
-### 3. Running
-To view your systems metrics, you now may run `./SFMRM.sh` alongside any command line option available to your architecture (documented in next section).
-</details>
-  
-<details>
-<summary><strong>Command Line Options</strong></summary>
    
-   Here are the available command line options. Architecture specific options are labled.
+   </details>
+   
+   
+<details>
+<summary><strong>3. Running </strong></summary>
+   
+   
+To view your systems metrics, you now may run `./SFMRM.sh` alongside any command line option available to your architecture (documented in **Command Line Options**).
+   
+   The first time `./SFMRM.sh` runs, it will need to fetch the latest binary version, so expect it's first run to be slower than the next.
+   
+</details>
+
+## Command Line Options
+   
+   The following documents command line options for each architecture specific binary.
+   
+<details>
+<summary><strong>On Apple Silicon</strong></summary>
+
+```
+  -h | --help             show this message
+  -v | --version          print version number
+
+  -l | --loop-rate <N>    set output loop rate (0=infinite) [default: disabled]
+  -i | --sample-rate <N>  set data sampling interval [default: 1000ms]
+
+  -e | --ecpu-only        only show E-Cluster frequency and residency metrics
+  -p | --pcpu-only        only show P-Cluster frequency and residency metrics
+  -g | --gpu-only         only show GPU complex frequency and residency metrics
+
+  -c | --hide-cores       hide per-core frequency and residency metrics
+  -s | --state-freqs      show state frequency distributions for all groups
+```
+   
+</details>
+   
+
+<details>
+<summary><strong>On Intel</strong></summary>
    
 ```
   -h | --help             show this message
@@ -53,21 +93,18 @@ To view your systems metrics, you now may run `./SFMRM.sh` alongside any command
 
   -l | --loop-rate <N>    set output loop rate (0=infinite) [default: disabled]
   -i | --sample-rate <N>  set data sampling interval [default: 1000ms]
-   
-  -c | --hide-cores       hide per-core frequency and residency metrics
-  -g | --gpu-only         only show GPU complex frequency and residency metrics
-   
-  -p | --pkg-only         only show CPU Package frequency and residency metrics (x86_64)
 
-  -e | --ecpu-only        only show E-Cluster frequency and residency metrics   (arm64)
-  -p | --pcpu-only        only show P-Cluster frequency and residency metrics   (arm64)
-  -s | --state-freqs      show state frequency distributions for all groups     (arm64)
+  -p | --pkg-only         only show CPU Package frequency and residency metrics
+  -g | --gpu-only         only show GPU complex residency metrics
+
+  -c | --hide-cores       hide per-core frequency and residency metrics
 ```
-   
+
 </details>
-   
 
   ## Example Outputs
+   
+   The following shows examples on what outputs to expect on specific architectures. 
   
   <details>
 <summary><strong>On Apple Silicon</strong></summary>
