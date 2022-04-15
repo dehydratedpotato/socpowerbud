@@ -44,6 +44,7 @@ mkdir -p -- ".sfmrm-data" && cd -P -- ".sfmrm-data"
 test -f "arch" || uname -m > "arch"
 test -f "did_download" || echo "false" > "did_download"
 
+
 ARCH=`cat arch`
 FILE="${ARCH}-client"
 DIDWNLD=`cat did_download`
@@ -103,19 +104,22 @@ fi
 if [[ ! -f "./sfmrm-${FILE}" ]]
 then
     _pullLatestVersionBinary
-    
-    echo "true" > "did_download"
 fi
 
 
-if [[ $DATE == "Friday" ]] && [[ $DIDWNLD == "false" ]]
+if [[ $DATE == "Friday" ]]
 then
-    _pullLatestVersionBinary
-    
-    echo "true" > "did_download"
+    if [[ $DIDWNLD == "false" ]]
+    then
+        _pullLatestVersionBinary
+        
+        echo "true" > "did_download"
+    fi
+
 else
     echo "false" > "did_download"
 fi
+
 
 
 "./sfmrm-${FILE}" $@
