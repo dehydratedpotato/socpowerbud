@@ -22,6 +22,12 @@
  * SOFTWARE.
  */
 
+
+// CHANGELOG:
+// Implemented GPU plimited max dynamic freq metric
+// Implemented CPU clock mutlipleier metric
+
+
 #include <Foundation/Foundation.h>
 #include <mach/processor_info.h>
 #include <mach/mach_time.h>
@@ -33,24 +39,20 @@
 
 #define name        "SFMRM"
 #define type        "x86_64-client"
-#define version     "0.1.0"
+#define version     "0.2.0"
 
 typedef struct {
-    bool    islooping;
-    
-    int     looprate;
     int     samplerate;
-    
     int     looper;
     int     looperKey;
-    
+    int     looprate;
+    bool    islooping;
     bool    all;
-    
     bool    pkg;
     bool    gpu;
-    
     bool    hidecores;
 } cmdOptions;
+
 
 /* special functions for clang style error and warning reporting */
  
@@ -202,7 +204,7 @@ float cpuGenerateFrequencyMetrics( int sampleType, float curState, float maximum
 
 NSMutableArray * cpuGenerateResidencyMetrics( int interval, natural_t coreCount )
 {
-    NSMutableArray *        uses            = [NSMutableArray array];
+    NSMutableArray *        uses = [NSMutableArray array];
     
     processor_info_array_t  firstSample,
                             lastSample;
@@ -296,6 +298,56 @@ err:
 }
 
 
+/* access CPU or GPU performance limiters from the IOReport */
+
+NSMutableDictionary * IOReportGetPerformanceLimiters( int group )
+{
+    CFDictionaryRef         statsSamples         = NULL;
+    CFMutableDictionaryRef  statsChannels        = NULL,
+                            statsSubbedChannels  = NULL;
+    
+    IOReportSubscriptionRef statsSubscription    = NULL;
+    
+    NSMutableDictionary *   performanceLimiters  = [NSMutableDictionary dictionary];
+    
+    /* accessing performance limiters for the CPU and GPU from the pmtelemetry_cpu group in the registry */
+    
+    if (!(statsChannels = IOReportCopyChannelsInGroup(@"pmtelemetry_cpu", 0, 0, 0, 0)))
+        goto err;
+    
+    if (!(statsSubscription = IOReportCreateSubscription(NULL, statsChannels, &statsSubbedChannels, 0, 0)))
+        goto err;
+    
+    if ((statsSamples = IOReportCreateSamples(statsSubscription, statsSubbedChannels, NULL))) {
+        IOReportIterate(statsSamples, ^(IOReportSampleRef ch) {
+                
+                if ([IOReportChannelGetSubGroup(ch) isEqual: @"msr limits"]) {
+                    
+                    if (IOReportSimpleGetIntegerValue(ch, 0) > 0) {
+                        switch(group) {
+                            default:
+                            case 0: if ([IOReportChannelGetChannelName(ch) rangeOfString:@"CPU"].location != NSNotFound)
+                                        [performanceLimiters setValue:[NSNumber numberWithLong:IOReportSimpleGetIntegerValue(ch, 0)] forKey:[IOReportChannelGetChannelName(ch) stringByReplacingOccurrencesOfString:@"CPU LIMIT " withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [IOReportChannelGetChannelName(ch) length])]]; break;
+                                
+                            case 1: if ([IOReportChannelGetChannelName(ch) rangeOfString:@"GPU"].location != NSNotFound)
+                                        [performanceLimiters setValue:[NSNumber numberWithLong:IOReportSimpleGetIntegerValue(ch, 0)] forKey:[IOReportChannelGetChannelName(ch) stringByReplacingOccurrencesOfString:@"GPU LIMIT " withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [IOReportChannelGetChannelName(ch) length])]]; break;
+                        }
+                    }
+                }
+
+            return kIOReportIterOk;
+        });
+    } else
+        goto err;
+    
+    return performanceLimiters;
+    
+err:
+    errf("failed to access performance limiters from the registry");
+    return NULL;
+}
+
+
 /* get the maximum turbo boost speed of the CPU */
 
 float cpuGenerateMaximumTurboBoost( void )
@@ -349,80 +401,217 @@ pstate_err:
 }
 
 
-/* access CPU or GPU performance limiters from the IOReport */
+/* generate the limited maximum dynamic frequency for the GPU */
 
-NSMutableDictionary * IOReportGetPerformanceLimiters( int group )
+float gpuGenerateMaximumDynamicFrequency( void )
 {
-    CFDictionaryRef         statsSamples         = NULL;
-    CFMutableDictionaryRef  statsChannels        = NULL,
-                            statsSubbedChannels  = NULL;
-    
-    IOReportSubscriptionRef statsSubscription    = NULL;
-    
-    NSMutableDictionary *   performanceLimiters  = [NSMutableDictionary dictionary];
-    
-    /* accessing performance limiters for the CPU and GPU from the pmtelemetry_cpu group in the registry */
-    
-    if (!(statsChannels = IOReportCopyChannelsInGroup(@"pmtelemetry_cpu", 0, 0, 0, 0)))
-        goto err;
-    
-    if (!(statsSubscription = IOReportCreateSubscription(NULL, statsChannels, &statsSubbedChannels, 0, 0)))
-        goto err;
-    
-    if ((statsSamples = IOReportCreateSamples(statsSubscription, statsSubbedChannels, NULL))) {
-        IOReportIterate(statsSamples, ^(IOReportSampleRef ch) {
-                
-                if ([IOReportChannelGetSubGroup(ch) isEqual: @"msr limits"]) {
-                    
-                    if (IOReportSimpleGetIntegerValue(ch, 0) > 0) {
-                        switch(group) {
-                            default:
-                            case 0: if ([IOReportChannelGetChannelName(ch) rangeOfString:@"CPU"].location != NSNotFound)
-                                        [performanceLimiters setValue:[NSNumber numberWithLong:IOReportSimpleGetIntegerValue(ch, 0)] forKey:[IOReportChannelGetChannelName(ch) stringByReplacingOccurrencesOfString:@"CPU LIMIT " withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [IOReportChannelGetChannelName(ch) length])]]; break;
-                                
-                            case 1: if ([IOReportChannelGetChannelName(ch) rangeOfString:@"GPU"].location != NSNotFound)
-                                        [performanceLimiters setValue:[NSNumber numberWithLong:IOReportSimpleGetIntegerValue(ch, 0)] forKey:[IOReportChannelGetChannelName(ch) stringByReplacingOccurrencesOfString:@"GPU LIMIT " withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [IOReportChannelGetChannelName(ch) length])]]; break;
-                        }
-                    }
-                }
+    mach_port_t         port = kIOMasterPortDefault;
+    io_registry_entry_t entry;
 
-            return kIOReportIterOk;
-        });
+    NSMutableArray *    plimitArray = [NSMutableArray array];
+    
+    int                 limitedBoost = 0;
+    
+    
+    NSString *          cpuModel;
+    NSArray *           cpuModelArray = [NSArray array];
+    
+    /*
+     * this is an array of >100 Intel Core CPUs (appearing in every Mac since 3rd Gen) and their asscoiated max dynamic iGPU frequencies
+     * there is no P-State data for the iGPU that I'm aware of in the registry which is why we have to store everything here.
+     * hopefully I'm not missing anything (no Xeons becuase they lack iGPUs)
+     */
+    
+    NSDictionary * gpuDynamicFreqs = @{
+        @"i3-3225" : @1050,
+        @"i5-3330S" : @1050,
+        @"i5-3470S" : @1100,
+        @"i7-3770S" : @1050,
+        @"i5-3317U" : @1050,
+        @"i5-3427U" : @1150,
+        @"i7-3667U" : @1150,
+        @"i5-3210M" : @1100,
+        @"i5-3230M" : @1100,
+        @"i7-3520M" : @1250,
+        @"i7-3540M" : @1300,
+        @"i7-3615QM" : @1200,
+        @"i7-3720QM" : @1250,
+        @"i7-3820QM" : @1250,
+        @"i7-3635QM" : @1200,
+        @"i7-3840QM" : @1300,
+        @"i5-4570" : @1150,
+        @"i5-4670" : @1200,
+        @"i5-4690" : @1200,
+        @"i5-4590" : @1150,
+        @"i5-4570R" : @1150,
+        @"i5-4570S" : @1150,
+        @"i7-4770S" : @1200,
+        @"i7-4790K" : @1250,
+        @"i7-4771" : @1200,
+        @"i5-4250U" : @1000,
+        @"i5-4260U" : @1000,
+        @"i7-4650U" : @1100,
+        @"i5-4258U" : @1100,
+        @"i5-4288U" : @1200,
+        @"i5-4278U" : @1100,
+        @"i5-4308U" : @1200,
+        @"i7-4558U" : @1200,
+        @"i7-4578U" : @1200,
+        @"i7-4750HQ" : @1200,
+        @"i7-4850HQ" : @1200,
+        @"i7-4960HQ" : @1200,
+        @"i7-4770HQ" : @1200,
+        @"i7-4870HQ" : @1200,
+        @"i7-4980HQ" : @1200,
+        @"M-5Y31" : @850,
+        @"M-5Y51" : @850,
+        @"M-5Y71" : @850,
+        @"i5-5250U" : @950,
+        @"i5-5350U" : @1000,
+        @"i7-5650U" : @1000,
+        @"i5-5257U" : @1050,
+        @"i5-5287U" : @1100,
+        @"i7-5557U" : @1100,
+        @"M3-6Y30" : @850,
+        @"M5-6Y54" : @850,
+        @"M7-6Y75" : @850,
+        @"i5-6360U" : @1000,
+        @"i5-6267U" : @1050,
+        @"i5-6287U" : @1100,
+        @"i7-6660U" : @1050,
+        @"i7-6567U" : @1100,
+        @"i7-6700HQ" : @1050,
+        @"i7-6820HQ" : @1050,
+        @"i7-6920HQ" : @1050,
+        @"i5-6500" : @1050,
+        @"i5-6600" : @1150,
+        @"i7-6700K" : @1150,
+        @"M3-7Y32" : @850,
+        @"i5-7Y54" : @950,
+        @"i7-7Y75" : @1050,
+        @"i5-7360U" : @1000,
+        @"i5-7267U" : @1050,
+        @"i5-7287U" : @1100,
+        @"i7-7660U" : @1100,
+        @"i7-7567U" : @1150,
+        @"i7-7700HQ" : @1100,
+        @"i7-7820HQ" : @1100,
+        @"i7-7920HQ" : @1100,
+        @"i5-7400" : @1000,
+        @"i5-7500" : @1100,
+        @"i5-7600" : @1150,
+        @"i5-7600K" : @1150,
+        @"i7-7700" : @1150,
+        @"i7-7700K" : @1150,
+        @"i5-8210Y" : @1050,
+        @"i5-8257U" : @1050,
+        @"i5-8279U" : @1150,
+        @"i5-8259U" : @1050,
+        @"i7-8569U" : @1200,
+        @"i7-8557U" : @1150,
+        @"i7-8559U" : @1200,
+        @"i7-8750H" : @1100,
+        @"i7-8850H" : @1150,
+        @"i3-8100" : @1100,
+        @"i5-8500" : @1100,
+        @"i5-8600" : @1150,
+        @"i7-8700" : @1200,
+        @"i3-8100B" : @1050,
+        @"i5-8500B" : @1100,
+        @"i7-8700B" : @1200,
+        @"i9-8950HK" : @1200,
+        @"i7-9750H" : @1150,
+        @"i9-9880H" : @1200,
+        @"i9-9980HK" : @1250,
+        @"i5-9600K" : @1150,
+        @"i9-9900K" : @1200,
+        @"i3-1000NG4" : @900,
+        @"i5-1030NG7" : @1050,
+        @"i7-1060NG7" : @1100,
+        @"i5-1038NG7" : @1050,
+        @"i7-1068NG7" : @1100,
+        @"i5-10500" : @1150,
+        @"i5-10600" : @1200,
+        @"i7-10700K" : @1200,
+        @"i9-10910" : @1200
+    };
+    
+    
+    /* filtering CPU brandstring  */
+    
+    cpuModel = [NSString stringWithFormat:@"%s", sysctlbynameChar("machdep.cpu.brand_string")];
+    cpuModel = [cpuModel stringByReplacingOccurrencesOfString:@"[@]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [cpuModel length])];
+    
+    cpuModelArray = [[cpuModel componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+
+    float maximumDynamicFrequency = 0;
+    
+    /* finding GPU max dynamic freq from model data based on CPU */
+    
+    for (int i = 0; i < [gpuDynamicFreqs count]; i++) {
+        for (int ii = 0; ii < [cpuModelArray count]; ii++) {
+            if (!([gpuDynamicFreqs valueForKey:cpuModelArray[i]] <= 0)) {
+                maximumDynamicFrequency = [[gpuDynamicFreqs valueForKey:cpuModelArray[i]] floatValue];
+                goto format;
+            }
+        }
+    }
+    
+    goto err;
+    
+format:
+
+    /* using kIOMainPortDefault if on MacOS Monterey or newer */
+
+    if (@available(macOS 12, *)) port = kIOMainPortDefault;
+    
+    /* accessing the x86 platform plugin entry in the registry so we can pull P-State information */
+    
+    if ((entry = IORegistryEntryFromPath(port, "IOService:/AppleACPIPlatformExpert/CPU0/AppleACPICPU/X86PlatformPlugin"))) {
+        
+        /* looking for what P-State the GPU is limited to turbo to */
+        
+        if ((plimitArray = (__bridge NSMutableArray *) IORegistryEntryCreateCFProperty(entry, CFSTR("IOPPFDiagDict"), kCFAllocatorDefault, 0)))
+            limitedBoost = [[[plimitArray valueForKey:@"IGPUPLimitDict"] valueForKey:@"currentLimit"] intValue];
+        else
+            goto err;
+    
     } else
         goto err;
     
-    return performanceLimiters;
+    
+    return maximumDynamicFrequency - (limitedBoost * 50);
     
 err:
-    errf("failed to access performance limiters from the registry");
-    return NULL;
+    return -1;
 }
 
 void generateOutput( cmdOptions * cmdOptions )
 {
-    NSMutableDictionary * cpuPLimiters              = [NSMutableDictionary dictionary],
-                        * gpuPLimiters              = [NSMutableDictionary dictionary];
+    NSMutableDictionary * cpuPLimiters              = [NSMutableDictionary dictionary];
+    NSMutableDictionary * gpuPLimiters              = [NSMutableDictionary dictionary];
     
-    NSMutableArray *    cpuActiveResidencies        = [NSMutableArray array],
-                   *    cpuPLimtersSortedKeys       = [NSMutableArray array],
-                   *    gpuPLimtersSortedKeys       = [NSMutableArray array];
+    NSMutableArray *    cpuActiveResidencies        = [NSMutableArray array];
+    NSMutableArray *    cpuPLimtersSortedKeys       = [NSMutableArray array];
+    NSMutableArray *    gpuPLimtersSortedKeys       = [NSMutableArray array];
     
-    NSArray *           cpuPLimitersSortedValues    = [NSArray array],
-            *           gpuPLimitersSortedValues    = [NSArray array];
+    NSArray *           cpuPLimitersSortedValues    = [NSArray array];
+    NSArray *           gpuPLimitersSortedValues    = [NSArray array];
     
-    NSOrderedSet *      cpuPLimitersUniqueValues,
-                 *      gpuPLimitersUniqueValues;
+    NSOrderedSet *      cpuPLimitersUniqueValues;
+    NSOrderedSet *      gpuPLimitersUniqueValues;
     
     int                 cpuCoreCount        = sysctlbynameInt("hw.logicalcpu");
+    float               cpuBusSpeed         = (float) (sysctlbynameInt("hw.busfrequency") * 1e-6);
     
+    float               packageSpeed;
     float               turboBoostSpeed;
+    float               maxDynamicFreq;
     float               gpuActiveResidency  = 0;
     
     char * stylize      = "\e[0;35m";
     char * destylize    = "\e[0m";
     
-    
-    /* print our sampling header */
     
     printf("\n\e[1m*** Sampling: %s ***\n\e[0m", sysctlbynameChar("machdep.cpu.brand_string"));
     
@@ -461,6 +650,7 @@ void generateOutput( cmdOptions * cmdOptions )
         gpuActiveResidency    = gpuGenerateResidencyMetrics();
         cpuActiveResidencies  = cpuGenerateResidencyMetrics(cmdOptions->samplerate, (natural_t) cpuCoreCount);
         turboBoostSpeed       = cpuGenerateMaximumTurboBoost();
+        maxDynamicFreq        = gpuGenerateMaximumDynamicFrequency();
 
         /* Package */
         
@@ -476,10 +666,14 @@ void generateOutput( cmdOptions * cmdOptions )
             }
 
             printf("%s\n", destylize);
+            
+            
+            packageSpeed = cpuGenerateFrequencyMetrics(0, 0, turboBoostSpeed);
 
             printf("Package  Maximum Turbo Boost:%s  %.f MHz%s\n\n", stylize, turboBoostSpeed, destylize);
             
-            printf("Package  Active Frequency:%s %.f MHz%s\n", stylize, cpuGenerateFrequencyMetrics(0, 0, turboBoostSpeed), destylize);
+            printf("Package  Clock Multiplier:%s x%.1f%s\n", stylize, packageSpeed / cpuBusSpeed, destylize);
+            printf("Package  Active Frequency:%s %.f MHz%s\n", stylize, packageSpeed, destylize);
             printf("Package  Active Residency:%s %.2f%% %s\n", stylize, [cpuActiveResidencies[[cpuActiveResidencies count] - 1] floatValue], destylize);
             printf("Package  Idle Residency:%s   %.2f%% %s\n", stylize, 100 - [cpuActiveResidencies[[cpuActiveResidencies count] - 1] floatValue], destylize);
             
@@ -505,16 +699,17 @@ void generateOutput( cmdOptions * cmdOptions )
         
             printf("\e[1m\n**** Integrated Graphics Metrics ****\n\n\e[0m");
             
-            printf("iGPU  Performance Limiters:%s %s", stylize, [[NSString stringWithFormat:@"%@", [gpuPLimtersSortedKeys lastObject]] UTF8String]);  // breaks without NSString
+            printf("iGPU  Performance Limiters:%s      %s", stylize, [[NSString stringWithFormat:@"%@", [gpuPLimtersSortedKeys lastObject]] UTF8String]);  // breaks without NSString
 
             for (int i = 0; i < [gpuPLimtersSortedKeys count] - 1; i++) {
                 if ([gpuPLimitersSortedValues[i] intValue] == [[gpuPLimitersSortedValues lastObject] intValue])
                     printf(", %s", [[NSString stringWithFormat:@"%@", gpuPLimtersSortedKeys[i]] UTF8String]);
             }
 
-            printf("%s\n\n", destylize);
+            printf("%s\n", destylize);
             
-            //printf("iGPU  Max Dynamic Frequency:%s %s\n\n%s", stylize, "2", destylize);
+            if (maxDynamicFreq > -1)
+                printf("iGPU  Limited Dynamic Frequency:%s %.f MHz\n\n%s", stylize, gpuGenerateMaximumDynamicFrequency(), destylize);
             
             printf("iGPU  Active Residency:%s %.2f%%%s\n", stylize, gpuActiveResidency, destylize);
             printf("iGPU  Idle Frequency:%s   %.2f%%%s\n", stylize, 100 - gpuActiveResidency, destylize);
