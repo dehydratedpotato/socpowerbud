@@ -101,6 +101,34 @@ To view your systems metrics, you now may run `./SFMRM.sh` alongside any command
 ```
 
 </details>
+   
+## Capabilities
+   
+   The following metrics are available on specific architectures.
+   
+<details>
+<summary><strong>On Apple Silicon</strong></summary>
+      
+
+      
+- CPU Name, Code Name, and Core Counts
+- CPU Cluster Microarchitecture Names
+- CPU Per-core and Per-cluster Active Frequencies and Active/Idle Residencies
+- GPU Complex Active Frequencies and Active/Idle Residencies
+      
+</details>
+   
+<details>
+<summary><strong>On Intel</strong></summary>
+   
+
+      
+- CPU Brand Name and Base Frequeccy
+- CPU Performance Limits, Maximum (P-Limited) Turbo Boost, and Package Clock Multiplier
+- CPU Per-core and Package Active Frequencies and Active/Idle Residencies
+- GPU Performance Limits, Maximum (P-Limited) Dynamic Frequnecy, and Residencies
+      
+</details>
 
   ## Example Outputs
    
@@ -181,6 +209,7 @@ Here is an example of `SFMRM.sh`'s output (using binary `sfmrm-x86_64-client`) o
 Package  Performance Limiters: MAX_TURBO_LIMIT
 Package  Maximum Turbo Boost:  3500 MHz
 
+Package  Clock Multiplier: x21.8
 Package  Active Frequency: 2184 MHz
 Package  Active Residency: 55.83% 
 Package  Idle Residency:   44.17% 
@@ -204,7 +233,8 @@ Package  Idle Residency:   44.17%
 
 **** Integrated Graphics Metrics ****
 
-iGPU  Performance Limiters: VR_ICCMAX
+iGPU  Performance Limiters:      VR_ICCMAX
+iGPU  Limited Dynamic Frequency: 1200 MHz
 
 iGPU  Active Residency: 4.00%
 iGPU  Idle Frequency:   96.00%
