@@ -27,37 +27,14 @@ If you would like to support my efforts towards this project, please consider do
 
 ## Installation
 
-The following is a guide to installation and usage.
+Installation and usage is simple:
 
-<details>
-<summary><strong>1. Download</strong></summary>
+
+1. Download your architecture specific binary .zip from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases).
+2. Unzip the downloaded file (from Finder or Terminal)
+3. Move the binary to your desired location and execute via the Terminal using `sfmrm-${ARCH}-client`
    
-Download `SFMRM.sh` from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases). This script manages auto updating for the architecture specific binaries (which are the files that actually do the work to retrieve your metrics).
-   
-   You may download the `.zip` files for these binaries if you wish, but use `SFMRM.sh` if you want the latest features and bug fixes without having to lift a finger. Though, please be aware you will need to manually download new versions for `SFMRM.sh` the rare times they drop.
-   
-</details>
-   
-<details>
-<summary><strong>2. Preparation </strong></summary>
-   
-Now that you've downloaded `SFMRM.sh`, `cd` into your Downloads folder via the Terminal, and fix the script's permissions using the following terminal command:
-```
-chmod 755 ./SFMRM.sh
-```
-   
-   </details>
-   
-   
-<details>
-<summary><strong>3. Running </strong></summary>
-   
-   
-To view your systems metrics, you now may run `./SFMRM.sh` alongside any command line option available to your architecture (documented in **Command Line Options**).
-   
-   The first time `./SFMRM.sh` runs, it will need to fetch the latest binary version, so expect it's first run to be slower than the next.
-   
-</details>
+
 
 ## Command Line Options
    
