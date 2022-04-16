@@ -114,7 +114,7 @@ Installation and usage is simple:
   <details>
 <summary><strong>On Apple Silicon</strong></summary>
      
-Here is an example of `SFMRM.sh`'s output (using binary `sfmrm-arm64-client`) on an M1 Mac Mini:
+Here is an example using binary `sfmrm-arm64-client` on an M1 Mac Mini:
      
 ```
 *** Sampling: Apple M1 [T8103] (4P+4E+8GPU) ***
@@ -176,7 +176,7 @@ GPU  Idle Frequency:   98.419%
   <details>
 <summary><strong>On Intel</strong></summary>
      
-Here is an example of `SFMRM.sh`'s output (using binary `sfmrm-x86_64-client`) on an Intel® Core™ i7-4578U 13" MacBook Pro:
+Here is an example using binary `sfmrm-x86_64-client` on an Intel® Core™ i7-4578U 13" MacBook Pro:
      
 ```
 *** Sampling: Intel(R) Core(TM) i7-4578U CPU @ 3.00GHz ***
