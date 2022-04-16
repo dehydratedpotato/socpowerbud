@@ -69,18 +69,17 @@ function _pullLatestVersionBinary()
     printf "\e[1mSFMRM service:\033[0;32m alert:\033[0m\e[0m downloading latest binary version from Github...\n"
         
     LATEST=`curl --silent "https://api.github.com/repos/BitesPotatoBacks/SFMRM/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`
-        LATESTCUT=`curl --silent "https://api.github.com/repos/BitesPotatoBacks/SFMRM/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | tr -d 'a-z' | tr -d '-' | tr -d '_'`
 
-    curl -Ls "https://github.com/BitesPotatoBacks/SFMRM/releases/download/${LATEST}/sfmrm-v${LATESTCUT}-${FILE}.zip" -O
+    curl -Ls "https://github.com/BitesPotatoBacks/SFMRM/releases/download/${LATEST}/sfmrm-${LATEST}-client.zip" -O
     
     
-    unzip -qq "sfmrm-v${LATESTCUT}-${FILE}.zip" -d "binary" &&
+    unzip -qq "sfmrm-${LATEST}-client.zip" -d "binary" &&
     mv "binary/sfmrm-${FILE}" "sfmrm-${FILE}"
     
     chmod 755 "./sfmrm-${FILE}" &&
     xattr -cr "./sfmrm-${FILE}"
     
-    rm "sfmrm-v${LATESTCUT}-${FILE}.zip" &&
+    rm "sfmrm-${LATEST}-client.zip" &&
     rm -rf "binary"
 }
 
