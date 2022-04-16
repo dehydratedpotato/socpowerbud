@@ -34,7 +34,7 @@
 
 #define name        "SFMRM"
 #define type        "ARM64-client"
-#define version     "0.1.0"
+#define version     "0.1.1"
 
 typedef struct {
     NSMutableArray *    gpuComplexFirstSample;
@@ -1077,7 +1077,7 @@ int main(int argc, char * argv[])
         { "gpu-only",       no_argument,       0, 'g' },
         
         { "hide-cores",     no_argument,       0, 'c' },
-        { "state-distribs", no_argument,       0, 's' },
+        { "state-freqs",    no_argument,       0, 's' },
         { NULL,             0,                 0,  0  }
     };
     
