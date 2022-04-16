@@ -262,7 +262,6 @@ SFMRM does not access the same information for frequency metrics as does Powerme
 <details>
 <summary><strong>Identified</strong></summary>
    
-- Discovered long command line option `--state-freqs` does not work (short option `-s` is fine), fix underway
 - Outputs on M1 Pro/Max/Ultra may not work as expected (IOReport entries are unknown so support is unofficial)
    
    </details>
