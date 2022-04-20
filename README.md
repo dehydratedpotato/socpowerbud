@@ -19,65 +19,20 @@
     <br>
 </p>
 
-This project is designed to retrieve active frequency and residency metrics from your Macs CPU (per-core, per-cluster) and GPU (complex) as accurately and efficiently as possible, without requiring sudo or a kernel extension.
-
-
+This project is designed to retrieve active frequency and residency metrics from your Macs CPU (per-core, per-cluster) and GPU (complex) as accurately and efficiently as possible; accessing the same data as the Powermetrics command line tool, but without requiring `sudo` or a kernel extension. This is the product of months of reverse engineering, deep analysis, and rigorous testing.
 
 If you would like to support my efforts towards this project, please consider donating to my **[Cash App](https://cash.app/$bitespotatobacks).**
 
-## Installation
+## Installation and Usage
 
 Installation and usage is simple:
 
 
 1. Download your architecture specific binary .zip from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases).
 2. Unzip the downloaded file (from Finder or Terminal)
-3. Move the binary to your desired location and execute via the Terminal using `sfmrm-${ARCH}-client`
-   
+3. Move the binary to your desired location and execute via the Terminal using `sfmrm-${ARCH}-client`.
 
-
-## Command Line Options
-   
-   The following documents command line options for each architecture specific binary.
-   
-<details>
-<summary><strong>On Apple Silicon</strong></summary>
-
-```
-  -h | --help             show this message
-  -v | --version          print version number
-
-  -l | --loop-rate <N>    set output loop rate (0=infinite) [default: disabled]
-  -i | --sample-rate <N>  set data sampling interval [default: 1000ms]
-
-  -e | --ecpu-only        only show E-Cluster frequency and residency metrics
-  -p | --pcpu-only        only show P-Cluster frequency and residency metrics
-  -g | --gpu-only         only show GPU complex frequency and residency metrics
-
-  -c | --hide-cores       hide per-core frequency and residency metrics
-  -s | --state-freqs      show state frequency distributions for all groups
-```
-   
-</details>
-   
-
-<details>
-<summary><strong>On Intel</strong></summary>
-   
-```
-  -h | --help             show this message
-  -v | --version          print version number
-
-  -l | --loop-rate <N>    set output loop rate (0=infinite) [default: disabled]
-  -i | --sample-rate <N>  set data sampling interval [default: 1000ms]
-
-  -p | --pkg-only         only show CPU Package frequency and residency metrics
-  -g | --gpu-only         only show GPU complex residency metrics
-
-  -c | --hide-cores       hide per-core frequency and residency metrics
-```
-
-</details>
+To see all available cmd options for your binary, use `sfmrm-${ARCH}-client --help`.
    
 ## Capabilities
    
@@ -91,6 +46,7 @@ Installation and usage is simple:
 - CPU Name, Code Name, and Core Counts
 - CPU Cluster Microarchitecture Names
 - CPU Per-core and Per-cluster Active Frequencies and Active/Idle Residencies
+- CPU (Clusters) and GPU P-State frequency distribution
 - GPU Complex Active Frequencies and Active/Idle Residencies
       
 </details>
@@ -100,7 +56,7 @@ Installation and usage is simple:
    
 
       
-- CPU Brand Name and Base Frequeccy
+- CPU Brand Name and Base Frequency
 - CPU Performance Limits, Maximum (P-Limited) Turbo Boost, and Package Clock Multiplier
 - CPU Per-core and Package Active Frequencies and Active/Idle Residencies
 - GPU Performance Limits, Maximum (P-Limited) Dynamic Frequnecy, and Residencies
