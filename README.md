@@ -1,203 +1,113 @@
-<h1 align="center" style="">SFMRM  ('sifˌmərˌim)</h1>
-
+<h1 align="center" style="">M<i>x</i>SocPowerBuddy</h1>
 <p align="center">
-   <b>S</b>udoless <b>F</b>requency <b>M</b>etric <b>R</b>etrieval for <b>M</b>acOS
+
 </p>
 <p align="center">
-    <a href="">
-       <img alt="Apple Silicon" src="https://img.shields.io/badge/Apple_Silicon-M1_Support-red.svg"/>
+    <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/releases">
+        <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
     </a>
-    <a href="">
-       <img alt="Intel" src="https://img.shields.io/badge/Intel-Full_Support-orange.svg"/>
+    <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
     </a>
-    <a href="https://github.com/BitesPotatoBacks/SFMRM/releases">
-        <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/SFMRM.svg"/>
-    </a>
-    <a href="https://cash.app/$bitespotatobacks">
-        <img alt="License" src="https://img.shields.io/badge/donate-Cash_App-default.svg"/>
+   <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/stargazers">
+        <img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
     </a>
     <br>
 </p>
 
-This project is designed to retrieve active frequency and residency metrics from your Macs CPU (per-core, per-cluster) and GPU (complex) as accurately and efficiently as possible; accessing the same data as the Powermetrics command line tool, but without requiring `sudo` or a kernel extension. This is the product of months of reverse engineering, deep analysis, and rigorous testing.
+A sudoless implementation to profile your Apple M-Series CPU+GPU active core and cluster frequencies, residencies, power consumption, and other metricss.
 
-If you would like to support my efforts towards this project, please consider donating to my **[Cash App](https://cash.app/$bitespotatobacks).**
+The tool is up to 35% faster than `powermetrics -s cpu_power,gpu_power` when using the same sampling interval, but with higher efficiency and the same level of accuracy. It currently lacks Instrcutions retired/per-clock metrics, but otherwise offers everything `powermetrics -s cpu_power,gpu_power` does, plus extra statistics (and even more to come).
 
 ## Installation and Usage
 
-Installation and usage is simple:
+1. Download .zip file from [latest release](https://github.com/BitesPotatoBacks/MxSocPowerBuddy/releases).
+2. Unzip the downloaded .zip file (via Finder or Terminal)
+3. Move the binary to your desired location 
+4. You may now run the tool using `mxsocpwrbud`
 
-
-1. Download your architecture specific binary .zip from the [latest release](https://github.com/BitesPotatoBacks/SFMRM/releases).
-2. Unzip the downloaded file (from Finder or Terminal)
-3. Move the binary to your desired location and execute via the Terminal using `sfmrm-${ARCH}-client`.
-
-To see all available cmd options for your binary, use `sfmrm-${ARCH}-client --help`.
-   
-## Capabilities
-   
-   The following metrics are available on specific architectures.
-   
 <details>
-<summary><strong>On Apple Silicon</strong></summary>
-      
 
-      
-- CPU Name, Code Name, and Core Counts
-- CPU Cluster Microarchitecture Names
-- CPU Per-core and Per-cluster Active Frequencies and Active/Idle Residencies
-- CPU (Clusters) and GPU P-State frequency distribution
-- GPU Complex Active Frequencies and Active/Idle Residencies
-      
+<summary>Example Output</summary>
+
+The following is a single metric sample taken by executing `mxsocpwrbud -i1000 -m%res,freq,power,cores,pstates` on an Macmini9,1 while running an GeekBench Benchmark:
+
+```
+Apple M1 T8103 (Sample 1):
+
+	4-Core Icestorm E-Cluster:
+
+		Power Consumption: 51.00 mW
+		Active Frequency:  1092.65 MHz
+		Active Residency:  48.676%
+		P-State Distribution: 972 [P1]: 72.52% 1332 [P2]: 22.99% 1704 [P3]: 3.10% 2064 [P4]: 1.39% 
+
+		Core 0:
+			Power Consumption: 10.00 mW
+			Active Frequency:  1091.69 MHz
+			Active Residency:  18.501%
+		Core 1:
+			Power Consumption: 9.00 mW
+			Active Frequency:  1132.19 MHz
+			Active Residency:  14.999%
+		Core 2:
+			Power Consumption: 14.00 mW
+			Active Frequency:  1115.10 MHz
+			Active Residency:  21.232%
+		Core 3:
+			Power Consumption: 6.00 mW
+			Active Frequency:  1048.75 MHz
+			Active Residency:  13.521%
+
+	4-Core Firestorm P-Cluster:
+
+		Power Consumption: 786.00 mW
+		Active Frequency:  2652.62 MHz
+		Active Residency:  17.157%
+		P-State Distribution: 600 [P0]: 0.03% 1056 [P2]: 7.16% 1284 [P3]: 4.87% 1500 [P4]: 4.89% 1728 [P5]: 4.90% 1956 [P6]: 2.43% 2184 [P7]: 4.90% 2388 [P8]: 2.43% 2592 [P9]: 4.90% 2772 [P10]: 2.44% 2988 [P11]: 2.44% 3144 [P13]: 2.81% 3204 [P14]: 55.80% 
+
+		Core 4:
+			Power Consumption: 593.00 mW
+			Active Frequency:  2652.86 MHz
+			Active Residency:  17.163%
+		Core 5:
+			Power Consumption: 1.00 mW
+			Active Frequency:  3204.00 MHz
+			Active Residency:  0.042%
+		Core 6:
+			Power Consumption: 0.00 mW
+			Active Frequency:  3170.85 MHz
+			Active Residency:  0.007%
+		Core 7:
+			Power Consumption: 0.00 mW
+			Active Frequency:  0.00 MHz
+			Active Residency:  0.000%
+
+	8-Core  Integrated Graphics:
+
+		Power Consumption: 4728.00 mW
+		SRAM Power Draw:   0.00 mW
+		Active Frequency:  1272.99 MHz
+		Active Residency:  70.175%
+		P-State Distribution: 396 [P0]: 0.38% 720 [P2]: 0.30% 1278 [P5]: 99.32% 
+
+```
+
 </details>
-   
-<details>
-<summary><strong>On Intel</strong></summary>
-   
 
-      
-- CPU Brand Name and Base Frequency
-- CPU Performance Limits, Maximum (P-Limited) Turbo Boost, and Package Clock Multiplier
-- CPU Per-core and Package Active Frequencies and Active/Idle Residencies
-- GPU Performance Limits, Maximum (P-Limited) Dynamic Frequnecy, and Residencies
-      
-</details>
+Tool usage is listed by `mxsocpwrbud --help`.
 
-  ## Example Outputs
-   
-   The following shows examples on what outputs to expect on specific architectures. 
-  
-  <details>
-<summary><strong>On Apple Silicon</strong></summary>
-     
-Here is an example using binary `sfmrm-arm64-client` on an M1 Mac Mini:
-     
-```
-*** Sampling: Apple M1 [T8103] (4P+4E+8GPU) ***
+## Planned Features
+The following features shall be implemented in upcoming minor updates:
+- ANE metrics (frequencies, residencies, power)
+- CPU Interrupts retired/per-clock
+- GPU requested frequencies
+- CPU per-cluster and GPU throttling statistics
 
-**** "Icestorm" Efficiency Cluster Metrics ****
+## Potenial Issues
+MxSocPowerBuddy has been written for portability, but has only been tested on Apple M1. Compatibillity issues (if any) will be fixed as soon as possible when identifed.
 
-E-Cluster [0]  HW Active Frequency: 1071 MHz
-E-Cluster [0]  HW Active Residency: 11.994%
-E-Cluster [0]  Idle Frequency:      88.006%
+If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/MxSocPowerBuddy/issues) section.
 
-  Core 0:
-          Active Frequency: 1129 MHz
-          Active Residency: 6.799%
-          Idle Residency:   93.201%
-  Core 1:
-          Active Frequency: 1004 MHz
-          Active Residency: 4.364%
-          Idle Residency:   95.636%
-  Core 2:
-          Active Frequency: 990 MHz
-          Active Residency: 3.951%
-          Idle Residency:   96.049%
-  Core 3:
-          Active Frequency: 1032 MHz
-          Active Residency: 2.023%
-          Idle Residency:   97.977%
-
-**** "Firestorm" Performance Cluster Metrics ****
-
-P-Cluster [0]  HW Active Frequency: 1473 MHz
-P-Cluster [0]  HW Active Residency: 4.383%
-P-Cluster [0]  Idle Frequency:      95.617%
-
-  Core 4:
-          Active Frequency: 1487 MHz
-          Active Residency: 3.730%
-          Idle Residency:   96.270%
-  Core 5:
-          Active Frequency: 1396 MHz
-          Active Residency: 0.739%
-          Idle Residency:   99.261%
-  Core 6:
-          Active Frequency: 600 MHz
-          Active Residency: 0.005%
-          Idle Residency:   99.995%
-  Core 7:
-          Active Frequency: 600 MHz
-          Active Residency: 0.005%
-          Idle Residency:   99.995%
-
-**** Integrated Graphics Metrics ****
-
-GPU  Active Frequency: 712 MHz
-GPU  Active Residency: 1.581%
-GPU  Idle Frequency:   98.419%
-```
-  </details>
-  
-  <details>
-<summary><strong>On Intel</strong></summary>
-     
-Here is an example using binary `sfmrm-x86_64-client` on an Intel® Core™ i7-4578U 13" MacBook Pro:
-     
-```
-*** Sampling: Intel(R) Core(TM) i7-4578U CPU @ 3.00GHz ***
-
-**** Package Metrics ****
-
-Package  Performance Limiters: MAX_TURBO_LIMIT
-Package  Maximum Turbo Boost:  3500 MHz
-
-Package  Clock Multiplier: x21.8
-Package  Active Frequency: 2184 MHz
-Package  Active Residency: 55.83% 
-Package  Idle Residency:   44.17% 
-
-  Core 0:
-          Active Frequency: 2207 MHz
-          Active Residency: 66.34% 
-          Idle Residency:   33.66% 
-  Core 1:
-          Active Frequency: 2132 MHz
-          Active Residency: 47.00% 
-          Idle Residency:   53.00% 
-  Core 2:
-          Active Frequency: 2992 MHz
-          Active Residency: 65.00% 
-          Idle Residency:   35.00% 
-  Core 3:
-          Active Frequency: 2412 MHz
-          Active Residency: 45.00% 
-          Idle Residency:   55.00% 
-
-**** Integrated Graphics Metrics ****
-
-iGPU  Performance Limiters:      VR_ICCMAX
-iGPU  Limited Dynamic Frequency: 1200 MHz
-
-iGPU  Active Residency: 4.00%
-iGPU  Idle Frequency:   96.00%
-```
-     
-  </details>
-   
-   <!--
-## Reading
-   
-<details>
-<summary><strong>Benefits of SFMRM over Powermetrics for Frequency Metric Retrieval</strong></summary>
-   
-### On Apple Silicon
-SFMRM can access the same frequency and residency metrics as Powermetrics does, without needing `sudo` or a kernel extension. SFMRM also offers performance cluster, efficency cluster, and GPU compelx core counts, as well as CPU codenames. No need for `sudo` or a kernel extension.
-      
-### On Intel
-SFMRM does not access the same information for frequency metrics as does Powermetrcis, but it uses highly accurate assembely to retrieve the same data. SFMRM does access the same information that Powermetrics uses for reporting CPU performance limiters, though. SFMRM also offers some metrics that Powermetrics doesn't; such as iGPU performance limiters, CPU maximum Turbo Boost speed, and active residencies. No need for `sudo` or a kernel extension.
-
-      
-      
-   </details>
--->
-## Bugs and Issues
-<details>
-<summary><strong>Identified</strong></summary>
-   
-- Outputs on M1 Pro/Max/Ultra may not work as expected (IOReport entries are unknown so support is unofficial)
-   
-   </details>
-   
-If any other bugs or issues are identified or you want your system supported, please let me know in the [issues](https://github.com/BitesPotatoBacks/SFMRM/issues) section.
-
+## Support
+If you would like to support this project, a small donation to my [Cash App](https://cash.app/$bitespotatobacks) would be much appreciated!
