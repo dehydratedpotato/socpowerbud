@@ -23,6 +23,7 @@ The tool is up to 35% faster than `powermetrics -s cpu_power,gpu_power` when usi
 
 1. Download .zip file from [latest release](https://github.com/BitesPotatoBacks/MxSocPowerBuddy/releases).
 2. Unzip the downloaded .zip file (via Finder or Terminal)
+3. `cd` into the dir containing the unzipped binary and perform a `xattr cr ./mxsocpwrbud`, as the binary is not codesigned (future releases will be)
 3. Move the binary to your desired location 
 4. You may now run the tool using `mxsocpwrbud`
 
