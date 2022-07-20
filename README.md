@@ -1,8 +1,11 @@
 <h1 align="center" style="">M<i>x</i>SocPowerBuddy</h1>
 <p align="center">
-
+A sudoless implementation to profile your Apple M-Series CPU+GPU active core and cluster frequencies, residencies, power consumption, and other metrics.
 </p>
 <p align="center">
+<a href="">
+       <img alt="Silicon Support" src="https://img.shields.io/badge/SoC_Support-All_M1_Series_Offical-orange.svg"/>
+    </a>
     <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
     </a>
@@ -15,9 +18,9 @@
     <br>
 </p>
 
-A sudoless implementation to profile your Apple M-Series CPU+GPU active core and cluster frequencies, residencies, power consumption, and other metricss.
+## Project Notes
+The tool currently lacks Instrcutions retired/per-clock statistics, but otherwise offers everything `powermetrics -s cpu_power,gpu_power` does, plus extra data (for example, per-core power draw, microarch names, and unit measurement choices). There are more features to come over time, so stay tuned.
 
-The tool is up to 35% faster than `powermetrics -s cpu_power,gpu_power` when using the same sampling interval, but with higher efficiency and the same level of accuracy. It currently lacks Instrcutions retired/per-clock metrics, but otherwise offers everything `powermetrics -s cpu_power,gpu_power` does, plus extra statistics (and even more to come).
 
 ## Installation and Usage
 
@@ -25,7 +28,7 @@ The tool is up to 35% faster than `powermetrics -s cpu_power,gpu_power` when usi
 2. Unzip the downloaded .zip file (via Finder or Terminal)
 3. `cd` into the dir containing the unzipped binary and perform a `xattr cr ./mxsocpwrbud`, as the binary is not codesigned (future releases will be)
 3. Move the binary to your desired location 
-4. You may now run the tool using `mxsocpwrbud`
+4. You may now run the tool using `./mxsocpwrbud`
 
 <details>
 
@@ -100,13 +103,14 @@ Tool usage is listed by `mxsocpwrbud --help`.
 
 ## Planned Features
 The following features shall be implemented in upcoming minor updates:
+- Throttling and thermal info
 - ANE metrics (frequencies, residencies, power)
 - CPU Interrupts retired/per-clock
 - GPU requested frequencies
 - CPU per-cluster and GPU throttling statistics
 
 ## Potenial Issues
-MxSocPowerBuddy has been written for portability, but has only been tested on Apple M1. Compatibillity issues (if any) will be fixed as soon as possible when identifed.
+#### No issues identified as of patch v0.1.1
 
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/MxSocPowerBuddy/issues) section.
 
