@@ -108,7 +108,7 @@ The following features shall be implemented in upcoming minor updates:
 - GPU requested frequencies
 - CPU per-cluster and GPU throttling statistics
 
-## Potenial Issues
+## Issues
 #### No issues identified as of patch v0.1.1
 
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/MxSocPowerBuddy/issues) section.
