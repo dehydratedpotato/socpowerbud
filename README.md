@@ -26,8 +26,7 @@ The tool currently lacks Instrcutions retired/per-clock statistics, but otherwis
 
 1. Download .zip file from [latest release](https://github.com/BitesPotatoBacks/MxSocPowerBuddy/releases).
 2. Unzip the downloaded .zip file (via Finder or Terminal)
-3. `cd` into the dir containing the unzipped binary and perform a `xattr cr ./mxsocpwrbud`, as the binary is not codesigned (future releases will be)
-3. Move the binary to your desired location 
+3. Move the binary from the unzipped folder into your desired location 
 4. You may now run the tool using `./mxsocpwrbud`
 
 <details>
