@@ -1,3 +1,18 @@
+## v0.1.2 (July 29, 2022)
+### Release Notes
+This patch contains improvements to portability, metrics management, and includes a fix for a juicy memory leak issue.
+
+### Changelog
+**Fixes**
+- Fixed a memory leak that resulted in the tool consuming ~1.5 MB of memory every sample
+
+**Improvements**
+- Now pulling Silicon IDs/Code names from the IORegistry
+- Now pulling CPU micro architectures from the IORegistry
+- Improved managing metrics for visible units by adding command line arg `-a`
+
+___
+
 ## v0.1.1 (July 20, 2022)
 ### Release Notes
 This patch brings support for Apple M1 Pro/Max/Ultra Silicon with increased portability and chance of supporting new silicon as well.
