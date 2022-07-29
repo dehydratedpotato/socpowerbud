@@ -9,17 +9,18 @@ A sudoless implementation to profile your Apple M-Series CPU+GPU active core and
     <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
     </a>
+    <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/stargazers">
+        <img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
+    </a>
     <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
     </a>
-   <a href="https://github.com/BitesPotatoBacks/MxSocPowerBuddy/stargazers">
-        <img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/MxSocPowerBuddy.svg"/>
-    </a>
-    <br>
 </p>
 
-## Project Notes
-The tool currently lacks Instrcutions retired/per-clock statistics, but otherwise offers everything `powermetrics -s cpu_power,gpu_power` does, plus extra data (for example, per-core power draw, microarch names, and unit measurement choices). There are more features to come over time, so stay tuned.
+## Project Deets
+Unlike `powermetrics`, this tool currently lacks Instructions retired/per-clock statistics (for now), but otherwise offers everything `powermetrics -s cpu_power,gpu_power` does (yet without needing `sudo`).
+
+There are some metrics exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`. This tool also has a higher potential for efficency, and is also open source! Yay!
 
 
 ## Installation and Usage
@@ -33,66 +34,65 @@ The tool currently lacks Instrcutions retired/per-clock statistics, but otherwis
 
 <summary>Example Output</summary>
 
-The following is a single metric sample taken by executing `mxsocpwrbud -i1000 -m%res,freq,power,cores,pstates` on an Macmini9,1 while running an GeekBench Benchmark:
+The following is a single metric sample taken by executing `mxsocpwrbud -a` on an Macmini9,1 while running an GeekBench Benchmark:
 
 ```
 Apple M1 T8103 (Sample 1):
 
-	4-Core Icestorm E-Cluster:
+	4-Core Icestorm ECPU:
 
-		Power Consumption: 51.00 mW
-		Active Frequency:  1092.65 MHz
-		Active Residency:  48.676%
-		P-State Distribution: 972 [P1]: 72.52% 1332 [P2]: 22.99% 1704 [P3]: 3.10% 2064 [P4]: 1.39% 
+		Power Consumption: 63.16 mW
+		Active Frequency:  1237.05 MHz
+		Active Residency:  39.85%
+		P-State Distribution: (972 MHz: 64.18%  1332 MHz: 12.07%  1704 MHz: 10.50%  2064 MHz: 13.26%) 
 
 		Core 0:
-			Power Consumption: 10.00 mW
-			Active Frequency:  1091.69 MHz
-			Active Residency:  18.501%
+			Power Consumption: 8.42 mW
+			Active Frequency:  1134.73 MHz
+			Active Residency:  12.04%
 		Core 1:
-			Power Consumption: 9.00 mW
-			Active Frequency:  1132.19 MHz
-			Active Residency:  14.999%
+			Power Consumption: 8.42 mW
+			Active Frequency:  1109.80 MHz
+			Active Residency:  14.61%
 		Core 2:
-			Power Consumption: 14.00 mW
-			Active Frequency:  1115.10 MHz
-			Active Residency:  21.232%
+			Power Consumption: 14.74 mW
+			Active Frequency:  1192.51 MHz
+			Active Residency:  16.16%
 		Core 3:
-			Power Consumption: 6.00 mW
-			Active Frequency:  1048.75 MHz
-			Active Residency:  13.521%
+			Power Consumption: 16.84 mW
+			Active Frequency:  1467.09 MHz
+			Active Residency:  10.30%
 
-	4-Core Firestorm P-Cluster:
+	4-Core Firestorm PCPU:
 
-		Power Consumption: 786.00 mW
-		Active Frequency:  2652.62 MHz
-		Active Residency:  17.157%
-		P-State Distribution: 600 [P0]: 0.03% 1056 [P2]: 7.16% 1284 [P3]: 4.87% 1500 [P4]: 4.89% 1728 [P5]: 4.90% 1956 [P6]: 2.43% 2184 [P7]: 4.90% 2388 [P8]: 2.43% 2592 [P9]: 4.90% 2772 [P10]: 2.44% 2988 [P11]: 2.44% 3144 [P13]: 2.81% 3204 [P14]: 55.80% 
+		Power Consumption: 1164.21 mW
+		Active Frequency:  2698.44 MHz
+		Active Residency:  39.47%
+		P-State Distribution: (600 MHz: 0.06%  828 MHz: 2.05%  1056 MHz: 4.15%  1284 MHz: 4.26%  1500 MHz: 4.14%  1728 MHz: 4.16%  1956 MHz: 4.17%  2184 MHz: 4.13%  2388 MHz: 3.62%  2592 MHz: 2.07%  2772 MHz: 2.09%  2988 MHz: 2.06%  3096 MHz: 2.07%  3204 MHz: 60.95%) 
 
 		Core 4:
-			Power Consumption: 593.00 mW
-			Active Frequency:  2652.86 MHz
-			Active Residency:  17.163%
+			Power Consumption: 1096.84 mW
+			Active Frequency:  2699.33 MHz
+			Active Residency:  39.46%
 		Core 5:
-			Power Consumption: 1.00 mW
-			Active Frequency:  3204.00 MHz
-			Active Residency:  0.042%
+			Power Consumption: 2.11 mW
+			Active Frequency:  3065.56 MHz
+			Active Residency:  0.09%
 		Core 6:
 			Power Consumption: 0.00 mW
-			Active Frequency:  3170.85 MHz
-			Active Residency:  0.007%
+			Active Frequency:  3204.00 MHz
+			Active Residency:  0.00%
 		Core 7:
 			Power Consumption: 0.00 mW
-			Active Frequency:  0.00 MHz
-			Active Residency:  0.000%
+			Active Frequency:  600.00 MHz
+			Active Residency:  0.01%
 
-	8-Core  Integrated Graphics:
+	8-Core Integrated Graphics:
 
-		Power Consumption: 4728.00 mW
-		SRAM Power Draw:   0.00 mW
-		Active Frequency:  1272.99 MHz
-		Active Residency:  70.175%
-		P-State Distribution: 396 [P0]: 0.38% 720 [P2]: 0.30% 1278 [P5]: 99.32% 
+		Power Consumption: 2.11 mW
+		Active Frequency:  708.43 MHz
+		Active Residency:  1.81%
+		P-State Distribution: (396 MHz: 3.57%  720 MHz: 96.43%) 
 
 ```
 
@@ -100,16 +100,8 @@ Apple M1 T8103 (Sample 1):
 
 Tool usage is listed by `mxsocpwrbud --help`.
 
-## Planned Features
-The following features shall be implemented in upcoming minor updates:
-- Throttling and thermal info
-- ANE metrics (frequencies, residencies, power)
-- CPU Interrupts retired/per-clock
-- GPU requested frequencies
-- CPU per-cluster and GPU throttling statistics
-
 ## Issues
-#### No issues identified as of patch v0.1.1
+#### No issues identified as of patch v0.1.2
 
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/MxSocPowerBuddy/issues) section.
 
