@@ -20,7 +20,7 @@ A sudoless implementation to profile your Apple M-Series CPU+GPU active core and
 ## Project Deets
 Unlike `powermetrics`, this tool currently lacks Instructions retired/per-clock statistics (for now), but otherwise offers everything `powermetrics -s cpu_power,gpu_power` does (yet without needing `sudo`).
 
-There are some metrics exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`. This tool also has a higher potential for efficency, and is also open source! Yay!
+There are some metrics exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`. This tool also has a higher potential for efficency -- and is actually open source! Yay!
 
 
 ## Installation and Usage
