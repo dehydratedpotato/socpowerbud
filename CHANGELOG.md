@@ -1,3 +1,24 @@
+## v0.2 (August 7, 2022)
+### Release Notes
+This minor contains decent improves, bug fixes, and a lot of new features!
+
+### Changelog
+**Features**
+- Added arg `-p` to allow outputting metrics formatted as plist
+- Added arg `-o` to allow setting a file for stdout
+- Added metric for time (in milliseconds) spent in each unit's Dvfm state
+- Added per-core Dvfm state statistics for distribution and time
+-  Added Instructions retired and per-clock metrics for CPU clusters
+
+**Fixes**
+- Fixed frequencies and residencies returning as negative when unit in a inactive state
+
+**Improvements**
+- Renamed `pstates` metrics to `dvfm` to follow more of an architecture appropriate style of terminology
+- Improved output formatting by removing decimal places on values that have no remainders
+
+___
+
 ## v0.1.2 (July 29, 2022)
 ### Release Notes
 This patch contains improvements to portability, metrics management, and includes a fix for a juicy memory leak issue.
