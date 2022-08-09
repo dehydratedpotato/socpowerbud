@@ -1,6 +1,6 @@
 <h1 align="center" style="">SocPowerBuddy</h1>
 <p align="center">
-A sudoless implementation to profile your Apple M-Series CPU+GPU active core and cluster frequencies, residencies, power consumption, and other metrics.
+A sudoless alternative to Powermetrics; able to profile your Apple M-Series CPU+GPU active core and cluster frequencies, residencies, power consumption, and other metrics.
 </p>
 <p align="center">
 <a href="">
@@ -15,19 +15,22 @@ A sudoless implementation to profile your Apple M-Series CPU+GPU active core and
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/SocPowerBuddy.svg"/>
     </a>
+    <a href="https://cash.app/$bitespotatobacks">
+        <img alt="License" src="https://img.shields.io/badge/donate-Cash_App-default.svg"/>
+    </a>
 </p>
 
-## Project Deets and News
+## Project Deets
 SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`.
 
 There are some metrics exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`. This tool also has a higher potential for efficency -- and is actually open source! Yay!
 
 ## Installation and Usage
 
-1. Download .zip file from [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases).
-2. Unzip the downloaded .zip file (via Finder or Terminal)
-3. Move the binary from the unzipped folder into your desired location 
-4. You may now run the tool using `./socpwrbud`
+1. Download the .zip file from [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases).
+2. Unzip the downloaded file (via Finder or Terminal)
+3. Move the binary from the unzipped folder into your desired location (such as `/usr/bin`) 
+4. You may now run the tool using the `socpwrbud` binary
 
 <details>
 
