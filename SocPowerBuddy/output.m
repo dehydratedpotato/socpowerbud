@@ -72,7 +72,7 @@ void textOutput(iorep_data*     iorep,
                             fprintf(cmd->file_out, "   ");
                         }
                     }
-                    printf("\b\b\b)\n");
+                    fprintf(cmd->file_out, "\b\b\b)\n");
                 }
             }
             fprintf(cmd->file_out, "\n");
@@ -97,7 +97,7 @@ void textOutput(iorep_data*     iorep,
                                     fprintf(cmd->file_out, "   ");
                                 }
                             }
-                            printf("\b\b\b)\n");
+                            fprintf(cmd->file_out, "\b\b\b)\n");
                         } else {
                             fprintf(cmd->file_out, "\t\t\tDvfm Distribution: None\n");
                         }
@@ -173,10 +173,10 @@ void plistOutput(iorep_data*     iorep,
                     fprintf(cmd->file_out, "\t\t<key>%ld</key>\n\t\t<dict>\n", [sd->dvfm_states[i][iii] longValue]);
                     fprintf(cmd->file_out, "\t\t\t<key>residency</key><real>%.2f</real>\n", [vd->cluster_residencies[i][iii] floatValue]*100);
                     if (bd->dvfm_ms) fprintf(cmd->file_out, "\t\t\t<key>time_ms</key><real>%.f</real>\n", [vd->cluster_residencies[i][iii] floatValue] * cmd->interval);
-                    printf("\t\t</dict>\n");
+                    fprintf(cmd->file_out, "\t\t</dict>\n");
                 }
 
-                printf("\t</dict>\n");
+                fprintf(cmd->file_out, "\t</dict>\n");
             }
             
             if (i <= ([sd->cluster_core_counts count]-1)) {
@@ -194,20 +194,20 @@ void plistOutput(iorep_data*     iorep,
                             fprintf(cmd->file_out, "\t\t\t<key>%ld</key>\n\t\t\t<dict>\n", [sd->dvfm_states[i][iii] longValue]);
                             fprintf(cmd->file_out, "\t\t\t\t<key>residency</key><real>%.2f</real>\n", [vd->core_residencies[i][ii][iii] floatValue]*100);
                             if (bd->dvfm_ms) fprintf(cmd->file_out, "\t\t\t\t<key>time_ms</key><real>%.f</real>\n", [vd->core_residencies[i][ii][iii] floatValue] * cmd->interval);
-                            printf("\t\t\t</dict>\n");
+                            fprintf(cmd->file_out, "\t\t\t</dict>\n");
                         }
 
-                        printf("\t</dict>\n");
+                        fprintf(cmd->file_out, "\t</dict>\n");
                     }
                     
-                    printf("\t</dict>\n");
+                    fprintf(cmd->file_out, "\t</dict>\n");
                     
                     current_core++;
                 }
             }
         }
         
-        printf("</dict>\n");
+        fprintf(cmd->file_out, "</dict>\n");
     }
 }
 
