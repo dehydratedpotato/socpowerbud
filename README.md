@@ -116,9 +116,10 @@ Apple M1 T8103 (Sample 1):
 Tool usage is listed by `socpwrbud --help`.
 
 ## Issues
-#### No issues identified as of latest release
+#### The following issues have been identified and will be fixed in an upcoming release
+- Not all stdout is redirected to the specifed file when using `-o` (see issue [#3](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/3)) 
 
-If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
+If any other bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
 
 ## Support
 If you would like to support this project, a small donation to my [Cash App](https://cash.app/$bitespotatobacks) would be much appreciated!
