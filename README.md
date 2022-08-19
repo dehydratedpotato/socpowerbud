@@ -22,6 +22,19 @@ A sudoless alternative to Powermetrics; able to profile your Apple M-Series CPU+
 
 ## Project Deets
 SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`.
+<details>
+
+<summary>List of available metrics</summary>
+
+- Per-Core Metrics for Clusters
+- Active and Idle Residencies
+- Active Frequencies
+- DVFM (Similar to P-State) Distribution and Time Spent
+- Power Consumption
+- Instructions Retired and Per-Clock
+- Supposed CPU Cycles Spent (during sample)
+
+</details>
 
 There are some metrics exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`. This tool also has a higher potential for efficency -- and is actually open source! Yay!
 
@@ -36,79 +49,95 @@ There are some metrics exclusive to this project (such as per-core power draw, s
 
 <summary>Example Output</summary>
 
-The following is a single metric sample taken by executing `socpwrbud -a -i 275` on an Macmini9,1 while running an GeekBench Benchmark:
+The following is a single metric sample taken by executing `socpwrbud -a -i 275` on an Macmini9,1:
 
 ```
 Apple M1 T8103 (Sample 1):
 
 	4-Core Icestorm ECPU:
 
-		Instructions Retired:   1.14869e+08
-		Instructions Per-Clock: 1.35419
+		Supposed Cycles Spent:  59481201
+		Instructions Retired:   5.64512e+07
+		Instructions Per-Clock: 0.94906
 
-		Power Consumption: 21.82 mW
-		Active Frequency:  1032.62 MHz
-		Active Residency:  20.49%
-		Dvfm Distribution: (972 MHz: 85.39% [235ms]   1332 MHz: 13.52% [37ms]   2064 MHz: 1.09% [3ms])  
+		Power Consumption: 14.55 mW
+		Active Frequency:  983.11 MHz
+
+		Active Residency:  14.00%
+		Idle Residency:    86.00%
+		Dvfm Distribution: (972 MHz: 98.98% [272ms]   2064 MHz: 1.02% [3ms])  
 
 		Core 0:
 			Power Consumption: 3.64 mW
-			Active Frequency:  1040.09 MHz
-			Active Residency:  10.42%
-			Dvfm Distribution: (972 MHz: 84.94% [234ms]   1332 MHz: 13.17% [36ms]   2064 MHz: 1.89% [5ms])  
+			Active Frequency:  981.60 MHz
+			Active Residency:  10.10%
+			Idle Residency:    89.90%
+			Dvfm Distribution: (972 MHz: 99.12% [273ms]   2064 MHz: 0.88% [2ms])  
 		Core 1:
 			Power Consumption: 3.64 mW
-			Active Frequency:  1042.85 MHz
-			Active Residency:  8.92%
-			Dvfm Distribution: (972 MHz: 82.78% [228ms]   1332 MHz: 16.01% [44ms]   2064 MHz: 1.21% [3ms])  
+			Active Frequency:  986.19 MHz
+			Active Residency:  4.49%
+			Idle Residency:    95.51%
+			Dvfm Distribution: (972 MHz: 98.70% [271ms]   2064 MHz: 1.30% [4ms])  
 		Core 2:
-			Power Consumption: 3.64 mW
-			Active Frequency:  1035.74 MHz
-			Active Residency:  5.54%
-			Dvfm Distribution: (972 MHz: 83.02% [228ms]   1332 MHz: 16.62% [46ms]   2064 MHz: 0.36% [1ms])  
-		Core 3:
 			Power Consumption: 0 mW
-			Active Frequency:  1144.24 MHz
-			Active Residency:  2.10%
-			Dvfm Distribution: (972 MHz: 56.57% [156ms]   1332 MHz: 41.25% [113ms]   2064 MHz: 2.17% [6ms])  
+			Active Frequency:  983.45 MHz
+			Active Residency:  2.13%
+			Idle Residency:    97.87%
+			Dvfm Distribution: (972 MHz: 98.95% [272ms]   2064 MHz: 1.05% [3ms])  
+		Core 3:
+			Power Consumption: 3.64 mW
+			Active Frequency:  978.33 MHz
+			Active Residency:  2.70%
+			Idle Residency:    97.30%
+			Dvfm Distribution: (972 MHz: 99.42% [273ms]   2064 MHz: 0.58% [2ms])  
 
 	4-Core Firestorm PCPU:
 
-		Instructions Retired:   4.08990e+09
-		Instructions Per-Clock: 4.67874
+		Supposed Cycles Spent:  313447262
+		Instructions Retired:   8.14210e+08
+		Instructions Per-Clock: 2.59760
 
-		Power Consumption: 4254.55 mW
-		Active Frequency:  3126.83 MHz
-		Active Residency:  96.16%
-		Dvfm Distribution: (600 MHz: 0.02% [0ms]   1956 MHz: 1.39% [4ms]   2184 MHz: 1.45% [4ms]   2388 MHz: 2.90% [8ms]   2592 MHz: 1.45% [4ms]   2772 MHz: 1.86% [5ms]   2988 MHz: 1.42% [4ms]   3144 MHz: 1.46% [4ms]   3204 MHz: 88.05% [242ms])  
+		Power Consumption: 723.64 mW
+		Active Frequency:  3191.44 MHz
+
+		Active Residency:  29.01%
+		Idle Residency:    70.99%
+		Dvfm Distribution: (600 MHz: 0.36% [1ms]   1500 MHz: 0.03% [0ms]   1956 MHz: 0.21% [1ms]   3204 MHz: 99.40% [273ms])  
 
 		Core 4:
-			Power Consumption: 247.27 mW
-			Active Frequency:  3166.74 MHz
-			Active Residency:  7.32%
-			Dvfm Distribution: (600 MHz: 0.24% [1ms]   2772 MHz: 3.02% [8ms]   2988 MHz: 8.34% [23ms]   3204 MHz: 88.41% [243ms])  
+			Power Consumption: 530.91 mW
+			Active Frequency:  3194.33 MHz
+			Active Residency:  28.95%
+			Idle Residency:    71.05%
+			Dvfm Distribution: (600 MHz: 0.28% [1ms]   1500 MHz: 0.03% [0ms]   1956 MHz: 0.16% [0ms]   3204 MHz: 99.54% [274ms])  
 		Core 5:
-			Power Consumption: 3650.91 mW
-			Active Frequency:  3123.67 MHz
-			Active Residency:  90.59%
-			Dvfm Distribution: (1956 MHz: 1.48% [4ms]   2184 MHz: 1.54% [4ms]   2388 MHz: 3.08% [8ms]   2592 MHz: 1.54% [4ms]   2772 MHz: 1.73% [5ms]   2988 MHz: 1.50% [4ms]   3144 MHz: 1.55% [4ms]   3204 MHz: 87.59% [241ms])  
+			Power Consumption: 14.55 mW
+			Active Frequency:  3103.99 MHz
+			Active Residency:  0.90%
+			Idle Residency:    99.10%
+			Dvfm Distribution: (600 MHz: 2.78% [8ms]   1956 MHz: 2.22% [6ms]   3204 MHz: 95.00% [261ms])  
 		Core 6:
 			Power Consumption: 0 mW
-			Active Frequency:  3173.20 MHz
-			Active Residency:  0.01%
-			Dvfm Distribution: (2772 MHz: 7.13% [20ms]   3204 MHz: 92.87% [255ms])  
+			Active Frequency:  0 MHz
+			Active Residency:  0%
+			Idle Residency:    100%
+			Dvfm Distribution: None
 		Core 7:
 			Power Consumption: 0 mW
-			Active Frequency:  3204 MHz
-			Active Residency:  0.00%
-			Dvfm Distribution: (3204 MHz: 100% [275ms])  
+			Active Frequency:  0 MHz
+			Active Residency:  0%
+			Idle Residency:    100%
+			Dvfm Distribution: None
 
 	8-Core Integrated Graphics:
 
-		Power Consumption: 3.64 mW
-		Active Frequency:  705.09 MHz
-		Active Residency:  1.10%
-		Dvfm Distribution: (396 MHz: 4.60% [13ms]   720 MHz: 95.40% [262ms])  
+		Power Consumption: 0 mW
+		Active Frequency:  705.69 MHz
+
+		Active Residency:  1.56%
+		Idle Residency:    98.44%
+		Dvfm Distribution: (396 MHz: 4.42% [12ms]   720 MHz: 95.58% [263ms])  
 ```
 
 </details>
@@ -116,10 +145,9 @@ Apple M1 T8103 (Sample 1):
 Tool usage is listed by `socpwrbud --help`.
 
 ## Issues
-#### The following issues have been identified and will be fixed in an upcoming release
-- Not all stdout is redirected to the specifed file when using `-o` (see issue [#3](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/3)) 
+#### No issues identified as of latest release!
 
-If any other bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
+If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
 
 ## Support
 If you would like to support this project, a small donation to my [Cash App](https://cash.app/$bitespotatobacks) would be much appreciated!
