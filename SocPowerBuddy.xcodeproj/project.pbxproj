@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F362F5228AFDE4F008862A0 /* iorepdump.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F362F5128AFDE4F008862A0 /* iorepdump.m */; };
+		3F362F5428AFE10A008862A0 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 3F362F5328AFE10A008862A0 /* Makefile */; };
 		3FB6FC32289DB7D000DC05DE /* output.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FB6FC31289DB7D000DC05DE /* output.m */; };
 		3FDCAB91288769AB00A5A0AF /* socpwrbud.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDCAB90288769AB00A5A0AF /* socpwrbud.m */; };
 		3FDCAB99288769CE00A5A0AF /* static.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDCAB98288769CE00A5A0AF /* static.m */; };
@@ -28,6 +30,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3F362F5128AFDE4F008862A0 /* iorepdump.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iorepdump.m; path = IOReportDump/iorepdump.m; sourceTree = "<group>"; };
+		3F362F5328AFE10A008862A0 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; name = Makefile; path = IOReportDump/Makefile; sourceTree = "<group>"; };
+		3F6C621028ABE7B700836DDF /* Changelog.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Changelog.md; sourceTree = SOURCE_ROOT; };
 		3FB6FC31289DB7D000DC05DE /* output.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = output.m; sourceTree = "<group>"; };
 		3FDCAB8D288769AB00A5A0AF /* SocPowerBuddy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SocPowerBuddy; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FDCAB90288769AB00A5A0AF /* socpwrbud.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = socpwrbud.m; sourceTree = "<group>"; };
@@ -50,9 +55,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F362F5028AFDDED008862A0 /* IOReportDump */ = {
+			isa = PBXGroup;
+			children = (
+				3F362F5328AFE10A008862A0 /* Makefile */,
+				3F362F5128AFDE4F008862A0 /* iorepdump.m */,
+			);
+			name = IOReportDump;
+			sourceTree = "<group>";
+		};
 		3FDCAB84288769AB00A5A0AF = {
 			isa = PBXGroup;
 			children = (
+				3F362F5028AFDDED008862A0 /* IOReportDump */,
 				3FDCAB8F288769AB00A5A0AF /* SocPowerBuddy */,
 				3FDCAB8E288769AB00A5A0AF /* Products */,
 				3FDCAB9E28876D1200A5A0AF /* Frameworks */,
@@ -70,6 +85,7 @@
 		3FDCAB8F288769AB00A5A0AF /* SocPowerBuddy */ = {
 			isa = PBXGroup;
 			children = (
+				3F6C621028ABE7B700836DDF /* Changelog.md */,
 				3FDCAB9C288769EB00A5A0AF /* Makefile */,
 				3FDCAB97288769BF00A5A0AF /* socpwrbud.h */,
 				3FDCAB90288769AB00A5A0AF /* socpwrbud.m */,
@@ -148,7 +164,9 @@
 				3FB6FC32289DB7D000DC05DE /* output.m in Sources */,
 				3FDCAB9D288769EB00A5A0AF /* Makefile in Sources */,
 				3FDCAB99288769CE00A5A0AF /* static.m in Sources */,
+				3F362F5228AFDE4F008862A0 /* iorepdump.m in Sources */,
 				3FDCAB9B288769D900A5A0AF /* sampler.m in Sources */,
+				3F362F5428AFE10A008862A0 /* Makefile in Sources */,
 				3FDCAB91288769AB00A5A0AF /* socpwrbud.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
