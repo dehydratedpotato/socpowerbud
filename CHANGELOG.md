@@ -1,3 +1,20 @@
+## v0.3 (August 19, 2022)
+### Release Notes
+This minor is a bit light on updates, but contains a decent bug fix plus some new metrics; as well as source code for the diagnostic tool.
+
+### Changelog
+#### Features
+- Added metric for supposed CPU cycles spent during sample
+- Added metric for Idle residencies (just for niceness)
+
+#### Fixes
+- Fixed issue [#3](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/3) (not all stdout redirected when using opt `-o`)
+
+#### Misc
+- Added source and binary for diagnostic tool
+
+___
+
 ## v0.2 (August 7, 2022)
 ### Release Notes
 This minor contains decent improves, bug fixes, and a lot of new features!
