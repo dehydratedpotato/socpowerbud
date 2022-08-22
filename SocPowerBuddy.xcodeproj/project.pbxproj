@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F362F5228AFDE4F008862A0 /* iorepdump.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F362F5128AFDE4F008862A0 /* iorepdump.m */; };
 		3F362F5428AFE10A008862A0 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 3F362F5328AFE10A008862A0 /* Makefile */; };
 		3FB6FC32289DB7D000DC05DE /* output.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FB6FC31289DB7D000DC05DE /* output.m */; };
 		3FDCAB91288769AB00A5A0AF /* socpwrbud.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDCAB90288769AB00A5A0AF /* socpwrbud.m */; };
@@ -164,7 +163,6 @@
 				3FB6FC32289DB7D000DC05DE /* output.m in Sources */,
 				3FDCAB9D288769EB00A5A0AF /* Makefile in Sources */,
 				3FDCAB99288769CE00A5A0AF /* static.m in Sources */,
-				3F362F5228AFDE4F008862A0 /* iorepdump.m in Sources */,
 				3FDCAB9B288769D900A5A0AF /* sampler.m in Sources */,
 				3F362F5428AFE10A008862A0 /* Makefile in Sources */,
 				3FDCAB91288769AB00A5A0AF /* socpwrbud.m in Sources */,
