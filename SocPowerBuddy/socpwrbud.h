@@ -16,7 +16,9 @@
  * Extern declarations
  */
 enum {
-    kIOReportIterOk
+    kIOReportIterOk,
+    kIOReportIterFailed,
+    kIOReportIterSkipped
 };
 
 typedef struct IOReportSubscriptionRef* IOReportSubscriptionRef;
@@ -99,6 +101,9 @@ typedef struct {
     /* data for instructions and cycles  */
     NSMutableArray* cluster_instrcts_ret;
     NSMutableArray* cluster_instrcts_clk;
+//
+//    unsigned long package_instrcts_ret;
+//    unsigned long package_instrcts_clk;
 } variating_data;
 
 /* for cmd opts */
