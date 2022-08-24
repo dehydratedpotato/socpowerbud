@@ -118,7 +118,7 @@ void sample(iorep_data* iorep,  // holds our channel subs from the iorep
     IOReportIterate(clpc_delta, ^(IOReportSampleRef sample) {
         NSString* chann_name  = IOReportChannelGetChannelName(sample);
         
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < [sd->cluster_core_counts count]; i++) {
             long value = IOReportArrayGetValueAtIndex(sample, i);
             
             if ([chann_name isEqual:@"CPU cycles, by cluster"])
@@ -126,6 +126,9 @@ void sample(iorep_data* iorep,  // holds our channel subs from the iorep
             if ([chann_name isEqual:@"CPU instructions, by cluster"])
                 [vd->cluster_instrcts_ret addObject:[NSNumber numberWithLong:value]];
         }
+        
+        if ([vd->cluster_instrcts_ret count] == [sd->cluster_core_counts count])
+            return kIOReportIterFailed; // probably not correct, but allows stopping the loop once the data is here
         
         return kIOReportIterOk;
     });
@@ -169,8 +172,8 @@ void format(static_data* sd, variating_data* vd)
             }
         }
         
-        /* formatting active residency */
-        vd->cluster_use[i] = [NSNumber numberWithFloat:(100-([vd->cluster_use[i] floatValue]/([vd->cluster_sums[i] floatValue]+[vd->cluster_use[i] floatValue]))*100)];
+        /* formatting idle residency */
+        vd->cluster_use[i] = [NSNumber numberWithFloat:(([vd->cluster_use[i] floatValue]/([vd->cluster_sums[i] floatValue]+[vd->cluster_use[i] floatValue]))*100)];
         
         if (i <= ([sd->cluster_core_counts count]-1)) {
             for (int iii = 0; iii < [sd->cluster_core_counts[i] intValue]; iii++)
