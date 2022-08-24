@@ -18,10 +18,32 @@ enum {
     kIOReportFormatSimpleArray = 4
 };
 
+NSString* getcpu(void)
+{
+    size_t len = 32;
+    char*  cpubrand = malloc(len);
+    sysctlbyname("machdep.cpu.brand_string", cpubrand, &len, NULL, 0);
+
+    NSString* ret = [NSString stringWithFormat:@"%s", cpubrand, nil];
+    
+    free(cpubrand);
+    
+    return ret;
+}
+
 int main(int argc, char* argv[])
 {
     @autoreleasepool
     {
+        NSString* cpu = getcpu();
+        int clusters = 2;
+        
+        if (([cpu rangeOfString:@"Pro"].location != NSNotFound) ||
+            ([cpu rangeOfString:@"Max"].location != NSNotFound))
+            clusters = 3;
+        else if ([cpu rangeOfString:@"Ultra"].location != NSNotFound)
+            clusters = 6;
+        
         CFMutableDictionaryRef  subchn = NULL;
         CFMutableDictionaryRef  chn    = IOReportCopyAllChannels(0, 0);
         IOReportSubscriptionRef sub    = IOReportCreateSubscription(NULL, chn, &subchn, 0, 0);
@@ -47,8 +69,8 @@ int main(int argc, char* argv[])
                             printf("Grp: %s   Subgrp: %s   Chn: %s   State: %s   Res: %lld\n", [group UTF8String] , [subgroup UTF8String], [chann_name UTF8String], [IOReportStateGetNameForIndex(sample, i) UTF8String], IOReportStateGetResidency(sample, i));
                         break;
                     case kIOReportFormatSimpleArray:
-                        for (int i = 2; i--;)
-                            printf("Grp: %s   Subgrp: %s   Chn: %s   Arr: %lld\n", [group UTF8String] , [subgroup UTF8String], [chann_name UTF8String], IOReportArrayGetValueAtIndex(sample, 2-i));
+                        for (int i = 0; i < clusters; i++)
+                            printf("Grp: %s   Subgrp: %s   Chn: %s   Arr: %lld\n", [group UTF8String] , [subgroup UTF8String], [chann_name UTF8String], IOReportArrayGetValueAtIndex(sample, i));
                         break;
                 }
                 
