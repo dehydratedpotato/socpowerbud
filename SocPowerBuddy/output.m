@@ -60,8 +60,8 @@ void textOutput(iorep_data*     iorep,
             if (bd->power) fprintf(cmd->file_out, "\t\tPower Consumption: %s %s\n", [decfrmt((float)([vd->cluster_pwrs[i] floatValue] * cmd->power_measure)) UTF8String], cmd->power_measure_un);
             if (bd->freq)  fprintf(cmd->file_out, "\t\tActive Frequency:  %s %s\n", [decfrmt((float)(fabs([vd->cluster_freqs[i] floatValue] * cmd->freq_measure))) UTF8String], cmd->freq_measure_un);
             if (bd->idle)  fprintf(cmd->file_out, "\n");
-            if (bd->res)   fprintf(cmd->file_out, "\t\tActive Residency:  %s%%\n",  [decfrmt(fabs([vd->cluster_use[i] floatValue])) UTF8String]);
-            if (bd->idle)  fprintf(cmd->file_out, "\t\tIdle Residency:    %s%%\n",  [decfrmt(fabs(100-[vd->cluster_use[i] floatValue])) UTF8String]);
+            if (bd->res)   fprintf(cmd->file_out, "\t\tActive Residency:  %s%%\n",  [decfrmt(fabs(100-[vd->cluster_use[i] floatValue])) UTF8String]);
+            if (bd->idle)  fprintf(cmd->file_out, "\t\tIdle Residency:    %s%%\n",  [decfrmt(fabs([vd->cluster_use[i] floatValue])) UTF8String]);
             
             if (bd->dvfm) {
                 if ([vd->cluster_freqs[i] floatValue] > 0) {
@@ -87,7 +87,7 @@ void textOutput(iorep_data*     iorep,
                     if (bd->power) fprintf(cmd->file_out, "\t\t\tPower Consumption: %s %s\n",  [decfrmt((float)([vd->core_pwrs[i][ii] floatValue] * cmd->power_measure)) UTF8String], cmd->power_measure_un);
                     if (bd->freq)  fprintf(cmd->file_out, "\t\t\tActive Frequency:  %s %s\n",  [decfrmt((float)(fabs([vd->core_freqs[i][ii] floatValue] * cmd->freq_measure))) UTF8String], cmd->freq_measure_un);
                     if (bd->res)   fprintf(cmd->file_out, "\t\t\tActive Residency:  %s%%\n",  [decfrmt((float)(fabs([vd->core_use[i][ii] floatValue]))) UTF8String]);
-                    if (bd->idle)  fprintf(cmd->file_out, "\t\t\tIdle Residency:    %s%%\n",  [decfrmt(fabs(100-(float)(fabs([vd->core_use[i][ii] floatValue])))) UTF8String]);
+                    if (bd->idle)  fprintf(cmd->file_out, "\t\t\tIdle Residency:    %s%%\n",  [decfrmt((float)(fabs(100-[vd->core_use[i][ii] floatValue]))) UTF8String]);
                     
                     if (bd->dvfm) {
                         if ([vd->core_freqs[i][ii] floatValue] > 0) {
@@ -171,8 +171,8 @@ void plistOutput(iorep_data*     iorep,
              */
             if (bd->power) fprintf(cmd->file_out, "\t<key>power</key><real>%.2f</real>\n", [vd->cluster_pwrs[i] floatValue]);
             if (bd->freq)  fprintf(cmd->file_out, "\t<key>freq</key><real>%.2f</real>\n", fabs([vd->cluster_freqs[i] floatValue]));
-            if (bd->res)   fprintf(cmd->file_out, "\t<key>active_res</key><real>%.2f</real>\n", fabs([vd->cluster_use[i] floatValue]));
-            if (bd->idle)  fprintf(cmd->file_out, "\t<key>idle_res</key><real>%.2f</real>\n", (float)(100-(float)(fabs([vd->cluster_use[i] floatValue]))));
+            if (bd->res)   fprintf(cmd->file_out, "\t<key>active_res</key><real>%.2f</real>\n", fabs(100-[vd->cluster_use[i] floatValue]));
+            if (bd->idle)  fprintf(cmd->file_out, "\t<key>idle_res</key><real>%.2f</real>\n", fabs([vd->cluster_use[i] floatValue]));
             
             if (bd->dvfm) {
                 fprintf(cmd->file_out, "\t<key>dvfm_distrib</key>\n\t<dict>\n");
@@ -194,7 +194,7 @@ void plistOutput(iorep_data*     iorep,
                     if (bd->power) fprintf(cmd->file_out, "\t\t<key>power</key><real>%.2f</real>\n", [vd->core_pwrs[i][ii] floatValue]);
                     if (bd->freq)  fprintf(cmd->file_out, "\t\t<key>freq</key><real>%.2f</real>\n", fabs([vd->core_freqs[i][ii] floatValue]));
                     if (bd->res)   fprintf(cmd->file_out, "\t\t<key>active_res</key><real>%.2f</real>\n", fabs([vd->core_use[i][ii] floatValue]));
-                    if (bd->idle)   fprintf(cmd->file_out, "\t\t<key>idle_res</key><real>%.2f</real>\n", (float)(100-(float)(fabs([vd->core_use[i][ii] floatValue]))));
+                    if (bd->idle)   fprintf(cmd->file_out, "\t\t<key>idle_res</key><real>%.2f</real>\n", fabs(100-[vd->core_use[i][ii] floatValue]));
                     
                     if (bd->dvfm) {
                         fprintf(cmd->file_out, "\t\t<key>dvfm_distrib</key>\n\t\t<dict>\n");
