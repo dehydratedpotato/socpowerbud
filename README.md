@@ -4,7 +4,7 @@ A sudoless alternative to Powermetrics; able to profile your Apple M-Series CPU+
 </p>
 <p align="center">
 <a href="">
-       <img alt="Silicon Support" src="https://img.shields.io/badge/SoC_Support-All_M1_Series_Offical-orange.svg"/>
+       <img alt="Silicon Support" src="https://img.shields.io/badge/SoC_Support-M1_Series_(Tested)-orange.svg"/>
     </a>
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/SocPowerBuddy.svg"/>
@@ -15,9 +15,7 @@ A sudoless alternative to Powermetrics; able to profile your Apple M-Series CPU+
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/SocPowerBuddy.svg"/>
     </a>
-    <a href="https://cash.app/$bitespotatobacks">
-        <img alt="License" src="https://img.shields.io/badge/donate-Cash_App-default.svg"/>
-    </a>
+
 </p>
 
 ## Project Deets
@@ -145,9 +143,12 @@ Apple M1 T8103 (Sample 1):
 Tool usage is listed by `socpwrbud --help`.
 
 ## Issues
-#### No issues identified as of latest release!
+- There may be some memory fragmentation that results in slow-rising memory consumption (~1mb every 60 samples) during long sampling periods (see [#6](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/6))
+- M1 Ultra support is still iffy (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5)) but should be fixed with release [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)
+- M2 support is unknown but should work
 
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
+
 
 ## Support
 If you would like to support this project, a small donation to my [Cash App](https://cash.app/$bitespotatobacks) would be much appreciated!
