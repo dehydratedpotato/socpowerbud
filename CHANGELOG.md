@@ -1,3 +1,14 @@
+## v0.3.1 (October 21, 2022)
+### Release Notes
+This minor should (hopefully) fix M1 Ultra compatibility problems identified in issue [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5).
+
+### Changelog
+#### Fixes
+- Updated IOReport entries
+- Hopefully fixed broken core counts only returning counts for one die
+
+___
+
 ## v0.3 (August 19, 2022)
 ### Release Notes
 This minor is a bit light on updates, but contains a decent bug fix plus some new metrics; as well as source code for the diagnostic tool.
