@@ -20,6 +20,11 @@ A sudoless alternative to Powermetrics; able to profile your Apple M-Series CPU+
 
 ## Project Deets
 SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`.
+
+There are some metrics and features exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`.
+
+
+
 <details>
 
 <summary>List of available metrics</summary>
@@ -31,10 +36,10 @@ SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,
 - Power Consumption
 - Instructions Retired and Per-Clock
 - Supposed CPU Cycles Spent (during sample)
+- Silicon IDs
+- Cluster micro architecture names
 
 </details>
-
-There are some metrics exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`. This tool also has a higher potential for efficency -- and is actually open source! Yay!
 
 ## Installation and Usage
 
