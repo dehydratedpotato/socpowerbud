@@ -41,11 +41,10 @@ There are some metrics and features exclusive to this project (such as per-core 
 - Micro architecture names
 - Instructions Retired, Per-Clock and Supposed CPU Cycles Spent
 
-
-## Influence
-This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Go check it out :heart:
-
 </details>
+
+## Outside Influence!
+This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Yay! Go check it out :heart:
 
 # Installation and Usage
 
