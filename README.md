@@ -18,41 +18,49 @@ A sudoless alternative to Powermetrics; able to profile your Apple M-Series CPU+
 
 </p>
 
-## Project Deets
-SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`.
+# Project Deets
+## Wat it do?
+SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`. It is created based on reverse engineering `powermetrics`.
 
 There are some metrics and features exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`.
-
 
 
 <details>
 
 <summary>List of available metrics</summary>
 
-- Per-Core Metrics for Clusters
+### The following is available for all sampled units, including GPU, per-cluster:
 - Active and Idle Residencies
 - Active Frequencies
 - DVFM (Similar to P-State) Distribution and Time Spent
 - Power Consumption
-- Instructions Retired and Per-Clock
-- Supposed CPU Cycles Spent (during sample)
 - Silicon IDs
-- Cluster micro architecture names
+
+### The following is available for CPU, per-cluster:
+- Per-Core metrics
+- Micro architecture names
+- Instructions Retired, Per-Clock and Supposed CPU Cycles Spent
+
+
+## Influence
+This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Go check it out :heart:
 
 </details>
 
-## Installation and Usage
+# Installation and Usage
 
 1. Download the .zip file from [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases).
 2. Unzip the downloaded file (via Finder or Terminal)
 3. Move the binary from the unzipped folder into your desired location (such as `/usr/bin`) 
 4. You may now run the tool using the `socpwrbud` binary
 
+### Officially Tested on M1, M1 Pro, Max, Ultra.
+
 <details>
 
-<summary>Example Output</summary>
+<summary>Example Output on Macmini9,1</summary>
 
-The following is a single metric sample taken by executing `socpwrbud -a -i 275` on an Macmini9,1:
+### The following is a single metric sample taken by executing `socpwrbud -a -i 275`.
 
 ```
 Apple M1 T8103 (Sample 1):
@@ -147,7 +155,7 @@ Apple M1 T8103 (Sample 1):
 
 Tool usage is listed by `socpwrbud --help`.
 
-## Issues
+# Issues
 - There may be some memory fragmentation that results in slow-rising memory consumption (~1mb every 60 samples) during long sampling periods (see [#6](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/6))
 - M1 Ultra support is still iffy (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5)) but should be fixed with release [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)
 - M2 support is unknown but should work
@@ -155,5 +163,4 @@ Tool usage is listed by `socpwrbud --help`.
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
 
 
-## Support
-If you would like to support this project, a small donation to my [Cash App](https://cash.app/$bitespotatobacks) would be much appreciated!
+
