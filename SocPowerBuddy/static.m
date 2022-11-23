@@ -14,7 +14,7 @@
 void generateDvfmTable(static_data* sd)
 {
     NSData* frmt_data;
-    NSString* datastrng = @"";
+    NSString* datastrng = [[NSString alloc] init];
     
     const unsigned char* databytes;
     
@@ -61,12 +61,15 @@ void generateDvfmTable(static_data* sd)
                     if (freq != 0) // this will just skip the dvfm freqs of 0 mhz
                         [sd->dvfm_states_holder[2-i] addObject:[NSNumber numberWithFloat:atof([datastrng UTF8String]) * 1e-6]];
                 }
+                
                 break;
             }
         }
         
         IOObjectRelease(entry);
         IOObjectRelease(iter);
+        CFRelease(service);
+        CFRelease(servicedict);
     }
 }
 
@@ -75,7 +78,7 @@ void generateDvfmTable(static_data* sd)
  */
 void generateCoreCounts(static_data* sd)
 {
-    NSString*            datastrng = @"";
+    NSString*           datastrng = [[NSString alloc] init];
     
     io_registry_entry_t entry;
     io_iterator_t       iter;
@@ -133,6 +136,7 @@ void generateCoreCounts(static_data* sd)
     
     IOObjectRelease(entry);
     IOObjectRelease(iter);
+    CFRelease(servicedict);
 }
 
 /*
@@ -168,6 +172,7 @@ void generateSiliconsIds(static_data * sd)
     
     IOObjectRelease(entry);
     IOObjectRelease(iter);
+    CFRelease(service);
     
     return;
     
