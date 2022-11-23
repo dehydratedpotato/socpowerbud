@@ -1,50 +1,48 @@
-<h1 align="center" style="">SocPowerBuddy</h1>
+<h1 align="center">SoC Power Buddy</h1>
 <p align="center">
-A sudoless alternative to Powermetrics; able to profile your Apple M-Series CPU+GPU active core and cluster frequencies, residencies, power consumption, and other metrics.
+A sudoless CLI tool for profiling Apple M-Series (CPU and GPU) active core and cluster frequencies, residencies, power consumption, and other metrics.
 </p>
 <p align="center">
-<a href="">
-       <img alt="Silicon Support" src="https://img.shields.io/badge/SoC_Support-M1_Series_(Tested)-orange.svg"/>
+    <a href="">
+       <img alt="Silicon Support" src="https://img.shields.io/badge/support-M1_Series_(Tested)-orange.svg"/>
     </a>
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/SocPowerBuddy.svg"/>
     </a>
-    <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/stargazers">
-        <img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/SocPowerBuddy.svg"/>
-    </a>
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/SocPowerBuddy.svg"/>
     </a>
-
+    <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/stargazers">
+        <img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/SocPowerBuddy.svg"/>
+    </a>
 </p>
 
 # Project Deets
 ## Wat it do?
-SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`. It is created based on reverse engineering `powermetrics`.
+SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`. It is created based on reverse engineering `powermetrics`. There are some metrics and features exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`.
 
-There are some metrics and features exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`.
+## Why it do?
+Because needing to be the system admin to get frequency info on Apple Silicon is dumb. So here you go! No administrative privileges needed! 
 
+## Available Metrics!
 
-<details>
-
-<summary>List of available metrics</summary>
-
-### The following is available for all sampled units, including GPU, per-cluster:
+The following is available for all sampled units, including GPU, and is sampled per-cluster
 - Active and Idle Residencies
 - Active Frequencies
 - DVFM (Similar to P-State) Distribution and Time Spent
 - Power Consumption
 - Silicon IDs
 
-### The following is available for CPU, per-cluster:
+The following is available for CPU, and is sampled per-cluster
+- Instructions Retired and Per-cylce
+- Supposed CPU Cycles Spent
 - Per-Core metrics
 - Micro architecture names
-- Instructions Retired, Per-Clock and Supposed CPU Cycles Spent
-
-</details>
 
 ## Outside Influence!
 This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Yay! Go check it out :heart:
+
+___
 
 # Installation and Usage
 
@@ -154,12 +152,15 @@ Apple M1 T8103 (Sample 1):
 
 Tool usage is listed by `socpwrbud --help`.
 
+___
+
 # Issues
-- There may be some memory fragmentation that results in slow-rising memory consumption (~1mb every 60 samples) during long sampling periods (see [#6](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/6))
 - M1 Ultra support is still iffy (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5)) but should be fixed with release [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)
 - M2 support is unknown but should work
 
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
+
+
 
 
 
