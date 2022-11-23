@@ -156,8 +156,11 @@ void format(static_data* sd, variating_data* vd)
             res = [vd->cluster_residencies[i][ii] unsignedLongLongValue];
             if (res != 0) {
                 float perc = (res / [vd->cluster_sums[i] floatValue]);
-                vd->cluster_freqs[i] = [NSNumber numberWithFloat:([vd->cluster_freqs[i] floatValue] + ([sd->dvfm_states[i][ii] floatValue]*perc))];
-                [vd->cluster_residencies[i] replaceObjectAtIndex:ii withObject:[NSNumber numberWithFloat:perc]];
+                NSNumber* res = [[NSNumber alloc] initWithFloat: perc];
+                NSNumber* freq = [[NSNumber alloc] initWithFloat: ([vd->cluster_freqs[i] floatValue] + ([sd->dvfm_states[i][ii] floatValue]*perc))];
+                
+                vd->cluster_freqs[i] = freq;
+                [vd->cluster_residencies[i] replaceObjectAtIndex:ii withObject:res];
             }
 
             if (i <= ([sd->cluster_core_counts count]-1)) {
@@ -165,8 +168,11 @@ void format(static_data* sd, variating_data* vd)
                     core_res = [vd->core_residencies[i][iii][ii] unsignedLongLongValue];
                     if (core_res != 0) {
                         float core_perc = (core_res / [vd->core_sums[i][iii] floatValue]);
-                        vd->core_freqs[i][iii] = [NSNumber numberWithFloat:([vd->core_freqs[i][iii] floatValue] + ([sd->dvfm_states[i][ii] floatValue]*core_perc))];
-                        [vd->core_residencies[i][iii] replaceObjectAtIndex:ii withObject:[NSNumber numberWithFloat:core_perc]];
+                        NSNumber* res  = [[NSNumber alloc] initWithFloat:core_perc];
+                        NSNumber* freq = [[NSNumber alloc] initWithFloat:([vd->core_freqs[i][iii] floatValue] + ([sd->dvfm_states[i][ii] floatValue]*core_perc))];
+                        
+                        vd->core_freqs[i][iii] = freq;
+                        [vd->core_residencies[i][iii] replaceObjectAtIndex:ii withObject:res];
                     }
                 }
             }
@@ -176,8 +182,12 @@ void format(static_data* sd, variating_data* vd)
         vd->cluster_use[i] = [NSNumber numberWithFloat:(([vd->cluster_use[i] floatValue]/([vd->cluster_sums[i] floatValue]+[vd->cluster_use[i] floatValue]))*100)];
         
         if (i <= ([sd->cluster_core_counts count]-1)) {
-            for (int iii = 0; iii < [sd->cluster_core_counts[i] intValue]; iii++)
-                vd->core_use[i][iii] = [NSNumber numberWithFloat:(100-([vd->core_use[i][iii] floatValue]/([vd->core_sums[i][iii] floatValue]+[vd->core_use[i][iii] floatValue]))*100)];
+            for (int iii = 0; iii < [sd->cluster_core_counts[i] intValue]; iii++) {
+                NSNumber* numb = [[NSNumber alloc] initWithFloat:(100 - ([vd->core_use[i][iii] floatValue] /
+                                                                   ([vd->core_sums[i][iii] floatValue] +
+                                                                    [vd->core_use[i][iii] floatValue])) * 100)];
+                vd->core_use[i][iii] = numb;
+            }
         }
     }
 }
