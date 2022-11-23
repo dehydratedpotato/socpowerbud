@@ -8,8 +8,6 @@
 
 #include "socpwrbud.h"
 
-static NSString* decfrmt(float);
-
 /*
  * Output for plain text
  */
@@ -57,11 +55,11 @@ void textOutput(iorep_data*     iorep,
             /*
              * printing outputs based on tuned cmd args
              */
-            if (bd->power) fprintf(cmd->file_out, "\t\tPower Consumption: %s %s\n", [decfrmt((float)([vd->cluster_pwrs[i] floatValue] * cmd->power_measure)) UTF8String], cmd->power_measure_un);
-            if (bd->freq)  fprintf(cmd->file_out, "\t\tActive Frequency:  %s %s\n", [decfrmt((float)(fabs([vd->cluster_freqs[i] floatValue] * cmd->freq_measure))) UTF8String], cmd->freq_measure_un);
+            if (bd->power) fprintf(cmd->file_out, "\t\tPower Consumption: %.2f %s\n", (float)([vd->cluster_pwrs[i] floatValue] * cmd->power_measure), cmd->power_measure_un);
+            if (bd->freq)  fprintf(cmd->file_out, "\t\tActive Frequency:  %g %s\n", (float)(fabs([vd->cluster_freqs[i] floatValue] * cmd->freq_measure)), cmd->freq_measure_un);
             if (bd->idle)  fprintf(cmd->file_out, "\n");
-            if (bd->res)   fprintf(cmd->file_out, "\t\tActive Residency:  %s%%\n",  [decfrmt(fabs(100-[vd->cluster_use[i] floatValue])) UTF8String]);
-            if (bd->idle)  fprintf(cmd->file_out, "\t\tIdle Residency:    %s%%\n",  [decfrmt(fabs([vd->cluster_use[i] floatValue])) UTF8String]);
+            if (bd->res)   fprintf(cmd->file_out, "\t\tActive Residency:  %.1f%%\n",  fabs(100-[vd->cluster_use[i] floatValue]));
+            if (bd->idle)  fprintf(cmd->file_out, "\t\tIdle Residency:    %.1f%%\n",  fabs([vd->cluster_use[i] floatValue]));
             
             if (bd->dvfm) {
                 if ([vd->cluster_freqs[i] floatValue] > 0) {
@@ -71,7 +69,7 @@ void textOutput(iorep_data*     iorep,
                         float res = [vd->cluster_residencies[i][iii] floatValue];
                         
                         if (res > 0) {
-                            fprintf(cmd->file_out, "%.f MHz: %s%%",[sd->dvfm_states[i][iii] floatValue], [decfrmt(res*100) UTF8String]);
+                            fprintf(cmd->file_out, "%.f MHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
                             if (bd->dvfm_ms) fprintf(cmd->file_out, " [%.fms]", res * cmd->interval);
                             fprintf(cmd->file_out, "   ");
                         }
@@ -84,10 +82,10 @@ void textOutput(iorep_data*     iorep,
             if (i <= ([sd->cluster_core_counts count]-1)) {
                 for (int ii = 0; ii < [sd->cluster_core_counts[i] intValue]; ii++) {
                     fprintf(cmd->file_out, "\t\tCore %d:\n", current_core);
-                    if (bd->power) fprintf(cmd->file_out, "\t\t\tPower Consumption: %s %s\n",  [decfrmt((float)([vd->core_pwrs[i][ii] floatValue] * cmd->power_measure)) UTF8String], cmd->power_measure_un);
-                    if (bd->freq)  fprintf(cmd->file_out, "\t\t\tActive Frequency:  %s %s\n",  [decfrmt((float)(fabs([vd->core_freqs[i][ii] floatValue] * cmd->freq_measure))) UTF8String], cmd->freq_measure_un);
-                    if (bd->res)   fprintf(cmd->file_out, "\t\t\tActive Residency:  %s%%\n",  [decfrmt((float)(fabs([vd->core_use[i][ii] floatValue]))) UTF8String]);
-                    if (bd->idle)  fprintf(cmd->file_out, "\t\t\tIdle Residency:    %s%%\n",  [decfrmt((float)(fabs(100-[vd->core_use[i][ii] floatValue]))) UTF8String]);
+                    if (bd->power) fprintf(cmd->file_out, "\t\t\tPower Consumption: %.2f %s\n",  (float)([vd->core_pwrs[i][ii] floatValue] * cmd->power_measure), cmd->power_measure_un);
+                    if (bd->freq)  fprintf(cmd->file_out, "\t\t\tActive Frequency:  %g %s\n",  (float)(fabs([vd->core_freqs[i][ii] floatValue] * cmd->freq_measure)), cmd->freq_measure_un);
+                    if (bd->res)   fprintf(cmd->file_out, "\t\t\tActive Residency:  %.1f%%\n",  (float)(fabs([vd->core_use[i][ii] floatValue])));
+                    if (bd->idle)  fprintf(cmd->file_out, "\t\t\tIdle Residency:    %.1f%%\n",  (float)(fabs(100-[vd->core_use[i][ii] floatValue])));
                     
                     if (bd->dvfm) {
                         if ([vd->core_freqs[i][ii] floatValue] > 0) {
@@ -97,7 +95,7 @@ void textOutput(iorep_data*     iorep,
                                 float res = [vd->core_residencies[i][ii][iii] floatValue];
                                 
                                 if (res > 0) {
-                                    fprintf(cmd->file_out, "%.f MHz: %s%%",[sd->dvfm_states[i][iii] floatValue], [decfrmt(res*100)UTF8String]);
+                                    fprintf(cmd->file_out, "%.f MHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
                                     if (bd->dvfm_ms) fprintf(cmd->file_out, " [%.fms]", res * cmd->interval);
                                     fprintf(cmd->file_out, "   ");
                                 }
@@ -218,19 +216,4 @@ void plistOutput(iorep_data*     iorep,
         
         fprintf(cmd->file_out, "</dict>\n");
     }
-}
-
-
-/*
- * using this to format decimals on plain text output
- */
-static NSString* decfrmt(float arg) {
-    NSString* string = @"";
-    
-    if (fmod(arg, 1.f) != 0)
-        string = [NSString stringWithFormat:@"%.2f", arg, nil];
-    else
-        string = [NSString stringWithFormat:@"%.f", arg, nil];
-
-    return string;
 }
