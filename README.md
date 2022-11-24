@@ -19,7 +19,9 @@ A sudoless CLI tool for profiling Apple M-Series (CPU and GPU) active core and c
 
 # Project Deets
 ### Wat it do?
-SocPowerBuddy samples countrer values from the IOReport (across a sampling interval) and returns accurate averages of the related metric. It is based on reverese engineering `powermetrics`, and reports every statistic offered by `powermetrics -s cpu_power,gpu_power` (see [full metric list plus example](#available-metrics-plus-example-output)), yet without needing `sudo`. Note that some metrics and features are exclusive to this project, those of which you will not find in `powermetrics`.
+SocPowerBuddy samples counter values from the IOReport (across a sampling interval) and returns accurate averages of the related metric.
+
+It is based on reverse engineering `powermetrics`, and reports every statistic offered by `powermetrics -s cpu_power,gpu_power` (see [full metric list plus example](#available-metrics-plus-example-output)), yet without needing `sudo`. Note that some metrics and features are exclusive to this project, those of which you will not find in `powermetrics`.
 
 Officially tested on M1, as well as M1 Pro, Max, and Ultra (see [compatibility notes](#compatibility-notes))
 
