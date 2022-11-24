@@ -10,6 +10,9 @@ assignees: BitesPotatoBacks
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Project Version (please complete the following information):**
+ - Version [e.g. v0.3.2)
+
 **Operating System (please complete the following information):**
  - Name: [e.g. Big Sur]
  - Version [e.g. 11.4]
@@ -19,4 +22,4 @@ A clear and concise description of what the bug is.
  - CPU: [e.g. Apple M1]
 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here, such as screenshots or error logs.
