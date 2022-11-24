@@ -4,7 +4,7 @@ A sudoless CLI tool for profiling Apple M-Series (CPU and GPU) active core and c
 </p>
 <p align="center">
     <a href="">
-       <img alt="Silicon Support" src="https://img.shields.io/badge/support-M1_Series_(Tested)-orange.svg"/>
+       <img alt="Silicon Support" src="https://img.shields.io/badge/support-M1_Series-orange.svg"/>
     </a>
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/SocPowerBuddy.svg"/>
@@ -18,46 +18,21 @@ A sudoless CLI tool for profiling Apple M-Series (CPU and GPU) active core and c
 </p>
 
 # Project Deets
-## Wat it do?
-SocPowerBuddy now reports every statistic offered by `powermetrics -s cpu_power,gpu_power`, yet without needing `sudo`. It is created based on reverse engineering `powermetrics`. There are some metrics and features exclusive to this project (such as per-core power draw, silicon IDs, microarch names, and unit measurement choices), which you will not find in `powermetrics`.
+### Wat it do?
+SocPowerBuddy samples countrer values from the IOReport (across a sampling interval) and returns accurate averages of the related metric. It is based on reverese engineering `powermetrics`, and reports every statistic offered by `powermetrics -s cpu_power,gpu_power` (see [full metric list plus example](#available-metrics-plus-example-output)), yet without needing `sudo`. Note that some metrics and features are exclusive to this project, those of which you will not find in `powermetrics`.
 
-## Why it do?
-Because needing to be the system admin to get frequency info on Apple Silicon is dumb. So here you go! No administrative privileges needed! 
+Officially tested on M1, as well as M1 Pro, Max, and Ultra (see [compatibility notes](#compatibility-notes))
 
-## Available Metrics!
+### Why it do?
+Because needing to be system admin in order to monitor Apple Silicon frequencies is dumb (yeah, I'm looking at you, `powermetrics`). So here you go! No administrative privileges needed! 
 
-The following is available for all sampled units, including GPU, and is sampled per-cluster
-- Active and Idle Residencies
-- Active Frequencies
-- DVFM (Similar to P-State) Distribution and Time Spent
-- Power Consumption
-- Silicon IDs
-
-The following is available for CPU, and is sampled per-cluster
-- Instructions Retired and Per-cylce
-- Supposed CPU Cycles Spent
-- Per-Core metrics
-- Micro architecture names
-
-## Outside Influence!
-This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Yay! Go check it out :heart:
-
-___
-
-# Installation and Usage
-
-1. Download the .zip file from [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases).
-2. Unzip the downloaded file (via Finder or Terminal)
-3. Move the binary from the unzipped folder into your desired location (such as `/usr/bin`) 
-4. You may now run the tool using the `socpwrbud` binary
-
-### Officially Tested on M1, M1 Pro, Max, Ultra.
+### Available Metrics plus Example Output!
 
 <details>
 
 <summary>Example Output on Macmini9,1</summary>
 
-### The following is a single metric sample taken by executing `socpwrbud -a -i 275`.
+**Note**: The following is a single run using `socpwrbud -ai 275`.
 
 ```
 Apple M1 T8103 (Sample 1):
@@ -150,15 +125,48 @@ Apple M1 T8103 (Sample 1):
 
 </details>
 
-Tool usage is listed by `socpwrbud --help`.
+
+The following is sampled per-cluster and is available for all sampled compute units!
+- Active and Idle Residencies
+- Active Frequencies
+- DVFM (Similar to P-State) Distribution and Time Spent
+- Power Consumption
+- (Static) Silicon IDs
+
+The following is sampled per-cluster but exclusive to the CPU!
+- Instructions Retired and Per-cylce
+- Supposed CPU Cycles Spent
+- (Static) Per-Core metrics
+- (Static) Micro architecture names
+
+### Outside Influence!
+This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Yay! Go check it out :heart:
+
+### Compatibility Notes!
+- M1 Ultra support is kind of iffy (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5)) but should have been fixed with release [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)
+- M2 support is not official but should work
 
 ___
 
-# Issues
-- M1 Ultra support is still iffy (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5)) but should be fixed with release [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)
-- M2 support is unknown but should work
+# Installation, Usage, and Making
 
-If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section.
+1. Download the .zip file from [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases).
+2. Unzip the downloaded file (via Finder or Terminal)
+3. Move the binary from the unzipped folder into your desired location (such as `/usr/bin`) 
+4. You may now run the tool using the `socpwrbud` binary
+
+Tool usage is listed by `socpwrbud --help`.
+
+### Wana make it yourself?
+The source is bundled in a Xcode project and contains a make file. Simply run `make` or build via Xcode! The choice is yours.
+
+### Wait! What's this `iorepdump` tool in the latest release?
+That is for diagnostic purposes! It dumps all IOReport groups matching those used by SocPowerBuddy. It's helpful for discovering surenew entries on new silicon. 
+
+___
+
+# Contribution
+If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section. If the problem is related to missing IOReport entries, please share your `iorepdump` output.
 
 
 
