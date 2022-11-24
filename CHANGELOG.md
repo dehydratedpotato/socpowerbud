@@ -1,3 +1,9 @@
+## v0.3.1 (November 23, 2022)
+### Release Notes
+This minor should reduce memory fragmentation discovered at issue #6. Not a complete fix, more an improvement.
+
+___
+
 ## v0.3.1 (October 21, 2022)
 ### Release Notes
 This minor should (hopefully) fix M1 Ultra compatibility problems identified in issue [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5).
