@@ -159,11 +159,11 @@ ___
 
 Tool usage is listed by `socpwrbud --help`.
 
-### Wana make it yourself?
+### Wanna make it yourself?
 The source is bundled in a Xcode project and contains a make file. Simply run `make` or build via Xcode! The choice is yours.
 
 ### Wait! What's this `iorepdump` tool in the latest release?
-That is for diagnostic purposes! It dumps all IOReport groups matching those used by SocPowerBuddy. It's helpful for discovering surenew entries on new silicon. 
+That is for diagnostic purposes! It dumps all IOReport groups matching those used by SocPowerBuddy. It's helpful for discovering entries on new silicon. 
 
 ___
 
