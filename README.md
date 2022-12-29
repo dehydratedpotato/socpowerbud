@@ -1,6 +1,6 @@
 <h1 align="center">SoC Power Buddy</h1>
 <p align="center">
-A sudoless CLI tool for profiling Apple M-Series (CPU and GPU) active core and cluster frequencies, residencies, power consumption, and other metrics.
+A Sudoless Mac command to profile Apple Silicon (CPU and GPU) per-core active frequencies, dvfm, residency, power, and more!
 </p>
 <p align="center">
     <a href="">
@@ -144,11 +144,15 @@ The following is sampled per-cluster but exclusive to the CPU!
 ### Outside Influence!
 This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Yay! Go check it out :heart:
 
-### Compatibility Notes!
-- M1 Ultra support is kind of iffy (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5)) but should have been fixed with release [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)
-- M2 support is not official but should work
-
-___
+# Compatibility Notes
+Here's a sick table.
+| Silicon | Codename | Support Status |
+|----|---|---|
+| M1 | t8103 | Fully Working |
+| M1 Pro | t6000 | Fully Working |
+| M1 Max | t6001 | Fully Working |
+| M1 Ultra | t6002 | Should work (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5) and patch [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)) |
+| M2 | t8112 | Untested, should work |
 
 # Installation, Usage, and Making
 
@@ -162,8 +166,8 @@ Tool usage is listed by `socpwrbud --help`.
 ### Wanna make it yourself?
 The source is bundled in a Xcode project and contains a make file. Simply run `make` or build via Xcode! The choice is yours.
 
-### Wait! What's this `iorepdump` tool in the latest release?
-That is for diagnostic purposes! It dumps all IOReport groups matching those used by SocPowerBuddy. It's helpful for discovering entries on new silicon. 
+### Diagnosing missing entries for your system
+A diagnostic dumping tool is included within each release: `iorepdump`. It dumps all IOReport groups matching those used by SocPowerBuddy. It's helpful for discovering entries on new silicon. 
 
 ___
 
