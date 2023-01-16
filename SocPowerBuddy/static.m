@@ -14,7 +14,6 @@
 void generateDvfmTable(static_data* sd)
 {
     NSData* frmt_data;
-    NSString* datastrng = [[NSString alloc] init];
     
     const unsigned char* databytes;
     
@@ -22,56 +21,55 @@ void generateDvfmTable(static_data* sd)
     io_iterator_t       iter;
     mach_port_t         port = kIOMasterPortDefault;
     
-    CFMutableDictionaryRef servicedict;
     CFMutableDictionaryRef service;
     
     if (@available(macOS 12, *)) port = kIOMainPortDefault;
     
     /* accessing pmgr for dvfm freqs, using a service matching method to increase portability */
-    for (int i = 3; i--;) {
-        if (!(service = IOServiceMatching("AppleARMIODevice")))
-            error(1, "Failed to find AppleARMIODevice service in IORegistry");
-        if (!(IOServiceGetMatchingServices(port, service, &iter) == kIOReturnSuccess))
-            error(1, "Failed to access AppleARMIODevice service in IORegistry");
-    
-        while ((entry = IOIteratorNext(iter)) != IO_OBJECT_NULL) {
-            if (IORegistryEntryCreateCFProperties(entry, &servicedict, kCFAllocatorDefault, 0) != kIOReturnSuccess)
-                error(1, "Failed to create CFProperties for AppleARMIODevice service in IORegistry");
+    if (!(service = IOServiceMatching("AppleARMIODevice")))
+        error(1, "Failed to find AppleARMIODevice service in IORegistry");
+    if (!(IOServiceGetMatchingServices(port, service, &iter) == kIOReturnSuccess))
+        error(1, "Failed to access AppleARMIODevice service in IORegistry");
 
-            const void* data = nil;
-            
-            /* maybe i'll add voltage-states-13-sram in the future for higher end silicon, but it's not all that necessary anyway... */
-            switch(i) {
-                case 2: data = CFDictionaryGetValue(servicedict, @"voltage-states1-sram"); break;
-                case 1: data = CFDictionaryGetValue(servicedict, @"voltage-states5-sram"); break;
-                case 0: data = CFDictionaryGetValue(servicedict, @"voltage-states9"); break;
-            }
+    while ((entry = IOIteratorNext(iter)) != IO_OBJECT_NULL) {
+        if (IORegistryEntryCreateCFProperty(entry, CFSTR("voltage-states1-sram"), kCFAllocatorDefault, 0) != nil) {
 
-            if (data != nil) {
-                [sd->dvfm_states_holder addObject:[NSMutableArray array]];
+            for (int i = 3; i--;) {
+                const void* data = nil;
                 
-                frmt_data = (NSData*)CFBridgingRelease(data);
-                databytes = [frmt_data bytes];
-
-                /* data is formatted as 32-bit litte-endian hexadecimal, converting to an array of human readable integers */
-                for (int ii = 4; ii < ([frmt_data length] + 4); ii += 8) {
-                    datastrng = [NSString stringWithFormat:@"0x%02x%02x%02x%02x", databytes[ii-1], databytes[ii-2], databytes[ii-3], databytes[ii-4]];
-                    float freq = atof([datastrng UTF8String]) * 1e-6;
-                    
-                    if (freq != 0) // this will just skip the dvfm freqs of 0 mhz
-                        [sd->dvfm_states_holder[2-i] addObject:[NSNumber numberWithFloat:atof([datastrng UTF8String]) * 1e-6]];
+                /* maybe i'll add voltage-states-13-sram in the future for higher end silicon, but it's not all that necessary anyway... */
+                switch(i) {
+                    case 2: data = IORegistryEntryCreateCFProperty(entry, CFSTR("voltage-states1-sram"), kCFAllocatorDefault, 0); break;
+                    case 1: data = IORegistryEntryCreateCFProperty(entry, CFSTR("voltage-states5-sram"), kCFAllocatorDefault, 0); break;
+                    case 0: data = IORegistryEntryCreateCFProperty(entry, CFSTR("voltage-states9"), kCFAllocatorDefault, 0); break;
                 }
                 
-                break;
+                if (data != nil) {
+                    [sd->dvfm_states_holder addObject:[NSMutableArray array]];
+                    
+                    frmt_data = (NSData*)CFBridgingRelease(data);
+                    databytes = [frmt_data bytes];
+
+                    /* data is formatted as 32-bit litte-endian hexadecimal, converting to an array of human readable integers */
+                    for (int ii = 4; ii < ([frmt_data length] + 4); ii += 8) {
+                        NSString* datastrng = [[NSString alloc] initWithFormat:@"0x%02x%02x%02x%02x", databytes[ii-1], databytes[ii-2], databytes[ii-3], databytes[ii-4]];
+                        
+                        float freq = atof([datastrng UTF8String]) * 1e-6;
+                        
+                        if (freq != 0) // this will just skip the dvfm freqs of 0 mhz
+                            [sd->dvfm_states_holder[2-i] addObject:[NSNumber numberWithFloat:atof([datastrng UTF8String]) * 1e-6]];
+                        
+                        datastrng = nil;
+                    }
+                }
             }
+            
+            break;
         }
-        
-        IOObjectRelease(entry);
-        IOObjectRelease(iter);
-//        IOServiceClose(service);
-//        CFRelease(service);
-//        CFRelease(servicedict);
     }
+    
+    IOObjectRelease(entry);
+    IOObjectRelease(iter);
 }
 
 /*
@@ -79,15 +77,11 @@ void generateDvfmTable(static_data* sd)
  */
 void generateCoreCounts(static_data* sd)
 {
-    NSString*           datastrng = [[NSString alloc] init];
-    
     io_registry_entry_t entry;
     io_iterator_t       iter;
     mach_port_t         port = kIOMasterPortDefault;
     
-    CFMutableDictionaryRef servicedict;
     CFMutableDictionaryRef service;
-    CFTypeRef gpucorecnt;
     
     if (@available(macOS 12, *)) port = kIOMainPortDefault;
 
@@ -96,12 +90,9 @@ void generateCoreCounts(static_data* sd)
         error(1, "Failed to find AppleARMIODevice service in IORegistry");
     if (!(IOServiceGetMatchingServices(port, service, &iter) == kIOReturnSuccess))
         error(1, "Failed to access AppleARMIODevice service in IORegistry");
-
+    
     while ((entry = IOIteratorNext(iter)) != IO_OBJECT_NULL) {
-        if (IORegistryEntryCreateCFProperties(entry, &servicedict, kCFAllocatorDefault, 0) != kIOReturnSuccess)
-            error(1, "Failed to create CFProperties for AppleARMIODevice service in IORegistry");
-
-        const void* data = CFDictionaryGetValue(servicedict, @"clusters");;
+        const void* data = IORegistryEntryCreateCFProperty(entry, CFSTR("clusters"), kCFAllocatorDefault, 0);
 
         if (data != nil) {
             NSData* frmt_data = (NSData*)CFBridgingRelease(data);
@@ -109,7 +100,7 @@ void generateCoreCounts(static_data* sd)
             
             /* every 4th index after the first is our byte data for the cluster core count */
             for (int ii = 0; ii < [frmt_data length]; ii += 4) {
-                datastrng = [NSString stringWithFormat:@"%02x", databytes[ii]];
+                NSString* datastrng = [[NSString alloc] initWithFormat:@"%02x", databytes[ii]];
                 
                 /* Ultra support */
                 if ([sd->extra[0] rangeOfString:@"Ultra"].location != NSNotFound) {
@@ -117,10 +108,14 @@ void generateCoreCounts(static_data* sd)
                         [sd->cluster_core_counts addObject:[NSNumber numberWithInt: (int) atof([datastrng UTF8String])]];
                 } else
                     [sd->cluster_core_counts addObject:[NSNumber numberWithInt: (int) atof([datastrng UTF8String])]];
+                
+                datastrng = nil;
             }
+            
+            break;
         }
     }
-
+    
     /* pull gpu core counts from a different spot */
     if (!(service = IOServiceMatching("AGXAccelerator")))
         error(1, "Failed to find AGXAccelerator service in IORegistry");
@@ -128,16 +123,16 @@ void generateCoreCounts(static_data* sd)
         error(1, "Failed to access AGXAccelerator service in IORegistry");
     
     while ((entry = IOIteratorNext(iter)) != IO_OBJECT_NULL) {
-        if (!(gpucorecnt = IORegistryEntrySearchCFProperty(entry, kIOServicePlane, CFSTR("gpu-core-count"), kCFAllocatorDefault, kIORegistryIterateRecursively | kIORegistryIterateParents)))
-            error(1, "Failed to read \"gpu-core-count\" from AGXAccelerator service in IORegistry");
+
+        CFTypeRef a = IORegistryEntryCreateCFProperty(entry, CFSTR("gpu-core-count"), kCFAllocatorDefault, 0);
+        if (a != nil)
+            sd->gpu_core_count = [(__bridge NSNumber *)a intValue];
         
-        /* the data here is just a straight int so we don't need to use a loop */
-        sd->gpu_core_count = [(__bridge NSNumber *)gpucorecnt intValue];
+        break;
     }
     
     IOObjectRelease(entry);
     IOObjectRelease(iter);
-    CFRelease(servicedict);
 }
 
 /*
@@ -165,8 +160,12 @@ void generateSiliconsIds(static_data * sd)
         
         if (data != nil) {
             NSData* frmt_data = (NSData*)CFBridgingRelease(data);
+            
             const unsigned char* databytes = [frmt_data bytes];
+            
             [sd->extra addObject:[[NSString stringWithFormat:@"%s", databytes] capitalizedString]];
+            
+            frmt_data = nil;
         } else
             goto error;
     }

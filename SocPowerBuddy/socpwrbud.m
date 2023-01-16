@@ -14,7 +14,7 @@
  * Main Macros
  */
 #define __DEBUG__
-#define __RELEASE__       "v0.3.2"
+#define __RELEASE__       "v0.3.3"
 
 #define METRIC_ACTIVE     "%active"
 #define METRIC_IDLE       "%idle"
@@ -143,7 +143,7 @@ int main(int argc, char * argv[])
         cmd.samples    = 1;
         cmd.hide_units = [NSArray array];
         cmd.metrics    = [NSArray arrayWithObjects:[NSString stringWithUTF8String: METRIC_ACTIVE],
-                          [NSString stringWithUTF8String: METRIC_POWER],
+                                                   [NSString stringWithUTF8String: METRIC_POWER],
                                                    [NSString stringWithUTF8String: METRIC_FREQ],
                                                    [NSString stringWithUTF8String: METRIC_DVFM],
                                                    [NSString stringWithUTF8String: METRIC_INSTRCTS],
@@ -228,31 +228,30 @@ int main(int argc, char * argv[])
         }
         
         if (cmd.interval < 1) cmd.interval = 1;
-//        if (cmd.interval < 3 && (bd.intstrcts == true || bd.cycles == true)) cmd.interval = 3;
         
         /*
          * init our data
          */
         sd.gpu_core_count       = 0;
-        sd.dvfm_states_holder   = [NSMutableArray array];
-        sd.cluster_core_counts  = [NSMutableArray array];
-        sd.extra                = [NSMutableArray array];
+        sd.dvfm_states_holder   = [[NSMutableArray alloc] init];
+        sd.cluster_core_counts  = [[NSMutableArray alloc] init];
+        sd.extra                = [[NSMutableArray alloc] init];
         
-        vd.cluster_sums         = [NSMutableArray array];
-        vd.cluster_residencies  = [NSMutableArray array];
-        vd.cluster_freqs        = [NSMutableArray array];
-        vd.cluster_use          = [NSMutableArray array];
+        vd.cluster_sums         = [[NSMutableArray alloc] init];
+        vd.cluster_residencies  = [[NSMutableArray alloc] init];
+        vd.cluster_freqs        = [[NSMutableArray alloc] init];
+        vd.cluster_use          = [[NSMutableArray alloc] init];
         
-        vd.core_sums            = [NSMutableArray array];
-        vd.core_residencies     = [NSMutableArray array];
-        vd.core_freqs           = [NSMutableArray array];
-        vd.core_use             = [NSMutableArray array];
+        vd.core_sums            = [[NSMutableArray alloc] init];
+        vd.core_residencies     = [[NSMutableArray alloc] init];
+        vd.core_freqs           = [[NSMutableArray alloc] init];
+        vd.core_use             = [[NSMutableArray alloc] init];
         
-        vd.cluster_pwrs         = [NSMutableArray array];
-        vd.core_pwrs            = [NSMutableArray array];
+        vd.cluster_pwrs         = [[NSMutableArray alloc] init];
+        vd.core_pwrs            = [[NSMutableArray alloc] init];
         
-        vd.cluster_instrcts_ret = [NSMutableArray array];
-        vd.cluster_instrcts_clk = [NSMutableArray array];
+        vd.cluster_instrcts_ret = [[NSMutableArray alloc] init];
+        vd.cluster_instrcts_clk = [[NSMutableArray alloc] init];
         
         generateProcessorName(&sd);
         
@@ -264,8 +263,15 @@ int main(int argc, char * argv[])
         /*
          * generating data to support other silicon
          */
-        if (([sd.extra[0] rangeOfString:@"Pro"].location != NSNotFound) ||
-            ([sd.extra[0] rangeOfString:@"Max"].location != NSNotFound))
+        
+        NSString* name = [sd.extra[0] lowercaseString];
+        
+        if ([name rangeOfString:@"virtual"].location != NSNotFound) {
+            error(1, "Running this tool in a Virtual Machine is not allowed");
+        }
+        
+        if (([sd.extra[0] rangeOfString:@"pro"].location != NSNotFound) ||
+            ([sd.extra[0] rangeOfString:@"max"].location != NSNotFound))
         {
             sd.complex_pwr_channels = @[@"EACC_CPU", @"PACC0_CPU", @"PACC1_CPU", @"GPU0"];
             sd.core_pwr_channels    = @[@"EACC_CPU", @"PACC0_CPU", @"PACC1_CPU"];
@@ -278,7 +284,7 @@ int main(int argc, char * argv[])
                                sd.dvfm_states_holder[1],
                                sd.dvfm_states_holder[2]];
             
-        } else if ([sd.extra[0] rangeOfString:@"Ultra"].location != NSNotFound) {
+        } else if ([sd.extra[0] rangeOfString:@"ultra"].location != NSNotFound) {
             sd.complex_pwr_channels = @[@"DIE_0_EACC_CPU", @"DIE_1_EACC_CPU", @"DIE_0_PACC0_CPU", @"DIE_0_PACC1_CPU", @"DIE_1_PACC0_CPU", @"DIE_1_PACC1_CPU", @"GPU0_0"];
             sd.core_pwr_channels    = @[@"DIE_0_EACC_CPU", @"DIE_1_EACC_CPU", @"DIE_0_PACC0_CPU", @"DIE_0_PACC1_CPU", @"DIE_1_PACC0_CPU", @"DIE_1_PACC1_CPU"];
 
@@ -373,7 +379,7 @@ int main(int argc, char * argv[])
                 fprintf(cmd.file_out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
                 fprintf(cmd.file_out, "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n");
                 fprintf(cmd.file_out, "<plist version=\"1.0\">\n");
-                
+
                 fprintf(cmd.file_out, "<dict>\n");
                 plistOutput(&iorep, &sd, &vd, &bd, &cmd, current_loop);
                 fprintf(cmd.file_out, "</dict>\n</plist>\n");
@@ -413,7 +419,7 @@ int main(int argc, char * argv[])
 static void usage(cmd_data*cmd)
 {
     fprintf(cmd->file_out, "\e[1m\nUsage: %s [-wgap] [-i interval] [-s samples]\n\n\e[0m", getprogname());
-    fprintf(cmd->file_out, "  A sudoless implementation to profile your Apple M-Series CPU+GPU active core\n  and cluster frequencies, residencies, power consumption, and other metrics.\n  Inspired by Powermetrics. Made with love by BitesPotatoBacks.\n\n\e[1mThe following command-line options are supported:\e[0m\n\n");
+    fprintf(cmd->file_out, "  A sudoless tool to profile your Apple M-Series CPU+GPU active core\n  and cluster frequencies, residencies, power consumption, and other metrics.\n  Inspired by Powermetrics. Made with love by BitesPotatoBacks.\n\n\e[1mThe following command-line options are supported:\e[0m\n\n");
 
     for (int i = 0; i < OPT_COUNT; i++)
         fprintf(cmd->file_out, "    -%c, --%s%s", long_opts_set[i].getopt_long.val, long_opts_set[i].getopt_long.name, long_opts_set[i].description);
@@ -449,7 +455,7 @@ static struct option* unextended_long_opts_extended(void)
 }
 
 /*
- * nice error formatting and with exitting
+ * nice error formatting with exitting
  */
 void error(int exitcode, const char* format, ...) {
     va_list args;
