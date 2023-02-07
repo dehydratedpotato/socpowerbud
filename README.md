@@ -173,7 +173,9 @@ Here's a sick table.
 | M1 Pro | t6000 | Fully Working |
 | M1 Max | t6001 | Fully Working |
 | M1 Ultra | t6002 | Should work (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5) and patch [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)) |
-| M2 | t8112 | Untested, should work |
+| M2 | t8112 | Should work |
+| M2 Pro | t6020 | Untested |
+| M2 Max | t6021 | Untested |
 
 ## Contribution
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section. If the problem is related to missing IOReport entries, please share your `iorepdump` output.
