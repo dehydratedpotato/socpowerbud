@@ -63,18 +63,18 @@ void textOutput(iorep_data*     iorep,
             
             if (bd->dvfm) {
                 if ([vd->cluster_freqs[i] floatValue] > 0) {
-                    fprintf(cmd->file_out, "\t\tDvfm Distribution: (");
+                    fprintf(cmd->file_out, "\t\tDvfm Distribution: ");
                     
                     for (int iii = 0; iii < [sd->dvfm_states[i] count]; iii++) {
                         float res = [vd->cluster_residencies[i][iii] floatValue];
                         
                         if (res > 0) {
                             fprintf(cmd->file_out, "%.f MHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
-                            if (bd->dvfm_ms) fprintf(cmd->file_out, " [%.fms]", res * cmd->interval);
+                            if (bd->dvfm_ms) fprintf(cmd->file_out, " (%.fms)", res * cmd->interval);
                             fprintf(cmd->file_out, "   ");
                         }
                     }
-                    fprintf(cmd->file_out, "\b\b\b)\n");
+                    fprintf(cmd->file_out, "\n");
                 }
             }
             fprintf(cmd->file_out, "\n");
@@ -89,18 +89,18 @@ void textOutput(iorep_data*     iorep,
                     
                     if (bd->dvfm) {
                         if ([vd->core_freqs[i][ii] floatValue] > 0) {
-                            fprintf(cmd->file_out, "\t\t\tDvfm Distribution: (");
+                            fprintf(cmd->file_out, "\t\t\tDvfm Distribution: ");
                             
                             for (int iii = 0; iii < [sd->dvfm_states[i] count]; iii++) {
                                 float res = [vd->core_residencies[i][ii][iii] floatValue];
                                 
                                 if (res > 0) {
                                     fprintf(cmd->file_out, "%.f MHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
-                                    if (bd->dvfm_ms) fprintf(cmd->file_out, " [%.fms]", res * cmd->interval);
+                                    if (bd->dvfm_ms) fprintf(cmd->file_out, " (%.fms)", res * cmd->interval);
                                     fprintf(cmd->file_out, "   ");
                                 }
                             }
-                            fprintf(cmd->file_out, "\b\b\b)\n");
+                            fprintf(cmd->file_out, "\n");
                         } else {
                             fprintf(cmd->file_out, "\t\t\tDvfm Distribution: None\n");
                         }

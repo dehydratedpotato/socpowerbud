@@ -155,7 +155,7 @@ void format(static_data*, variating_data*);
 void generateDvfmTable(static_data*);
 void generateCoreCounts(static_data*);
 void generateProcessorName(static_data*);
-void generateSiliconsIds(static_data*);
+void generateSiliconCodename(static_data*);
 void generateMicroArchs(static_data*);
 
 #endif /* socpwrbud_h */

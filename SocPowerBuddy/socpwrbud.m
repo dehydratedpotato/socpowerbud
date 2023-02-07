@@ -257,7 +257,7 @@ int main(int argc, char * argv[])
         
         generateDvfmTable(&sd);
         generateCoreCounts(&sd);
-        generateSiliconsIds(&sd);
+        generateSiliconCodename(&sd);
         generateMicroArchs(&sd);
         
         /*

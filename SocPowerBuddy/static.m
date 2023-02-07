@@ -138,7 +138,7 @@ void generateCoreCounts(static_data* sd)
 /*
  * find silicon id from ioreg
  */
-void generateSiliconsIds(static_data * sd)
+void generateSiliconCodename(static_data * sd)
 {
     io_registry_entry_t entry;
     io_iterator_t       iter;
@@ -177,7 +177,7 @@ void generateSiliconsIds(static_data * sd)
     return;
     
 error:
-    /* find the silicon id using stored strings if can't access ioreg */
+    /* find the silicon codename using stored strings if can't access ioreg */
     if ([sd->extra[0] rangeOfString:@"M1"].location != NSNotFound) {
         if ([sd->extra[0] rangeOfString:@"M1 Pro"].location != NSNotFound)
             [sd->extra addObject:@"T6000"];
@@ -187,8 +187,15 @@ error:
             [sd->extra addObject:@"T6002"];
         else
             [sd->extra addObject:@"T8103"];
-    } else if ([sd->extra[0] isEqual:@"Apple M2"])
-        [sd->extra addObject:@"T8112"];
+    } else if ([sd->extra[0] rangeOfString:@"M2"].location != NSNotFound)
+        if ([sd->extra[0] rangeOfString:@"M2 Pro"].location != NSNotFound)
+            [sd->extra addObject:@"T6020"];
+        else if ([sd->extra[0] rangeOfString:@"M2 Max"].location != NSNotFound)
+            [sd->extra addObject:@"T6021"];
+        else if ([sd->extra[0] rangeOfString:@"M2 Ultra"].location != NSNotFound)
+            [sd->extra addObject:@"T6022"];
+        else
+            [sd->extra addObject:@"T8112"];
     else
         [sd->extra addObject:@"T****"];
 }
