@@ -1,13 +1,16 @@
 <h1 align="center">SoC Power Buddy</h1>
 <p align="center">
-A Sudoless Mac command to profile Apple Silicon (CPU and GPU) per-core active frequencies, dvfm, residency, power, and more!
+A sudoless command-line tool to get per-core active frequencies, residency, power, and more (for Apple Silicon CPUs and GPUs).
 </p>
 <p align="center">
-    <a href="">
-       <img alt="Silicon Support" src="https://img.shields.io/badge/support-M1_Series-orange.svg"/>
-    </a>
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/SocPowerBuddy.svg"/>
+    </a>
+    <a href="">
+       <img alt="Platform" src="https://img.shields.io/badge/platform-macOS-lightgray.svg"/>
+    </a>
+    <a href="">
+       <img alt="Silicon Support" src="https://img.shields.io/badge/support-M1_Series-orange.svg"/>
     </a>
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/SocPowerBuddy.svg"/>
@@ -17,18 +20,36 @@ A Sudoless Mac command to profile Apple Silicon (CPU and GPU) per-core active fr
     </a>
 </p>
 
-# Project Deets
-## Wat it do?
+___
+
+- **Table of contents**
+  - **[Project Deets](#project-deets)**
+    - [Wat it do?](#wat-it-do)
+    - [Why it do?](#why-it-do)
+    - [Example Output](#example-output)
+  - [Features](#features)
+  - **[Installation, Usage, and Making](#installation-usage-and-making)**
+    - [Install using Homebrew](#install-using-homebrew)
+    - [Install manually](#install-manually)
+    - [Building yourself](#building-yourself)
+  - [Outside Influence](#outside-influence)
+  - [Compatibility Notes](#compatibility-notes)
+  - [Contribution](#contribution)
+
+___
+
+## Project Deets
+### Wat it do
 SocPowerBuddy samples counter values from the IOReport (across a sampling interval) and returns accurate averages of the related metric.
 
 It is based on reverse engineering `powermetrics`, and reports every statistic offered by `powermetrics -s cpu_power,gpu_power` (see [full metric list](#features) and [example output](#example)), yet without needing `sudo`. Note that some metrics and features are exclusive to this project, those of which you will not find in `powermetrics`.
 
 Officially tested on M1, as well as M1 Pro, Max, and Ultra (see [compatibility notes](#compatibility-notes))
 
-## Why it do?
+### Why it do
 Because needing to be system admin in order to monitor Apple Silicon frequencies is dumb (yeah, I'm looking at you, `powermetrics`). So here you go! No administrative privileges needed! 
 
-## Example Output
+### Example Output
 **Note:** The following is a single output from the project on a Macmini9,1.
 <details>
 
@@ -125,7 +146,7 @@ Apple M1 T8103 (Sample 1):
 
 </details>
 
-## Features
+# Features
 
 The following is sampled per-cluster and is available for all sampled compute units!
 - Active and Idle Residencies
@@ -143,22 +164,19 @@ The following is sampled per-cluster but exclusive to the CPU!
 # Installation, Usage, and Making
 **Note:** Tool usage is listed by `socpwrbud --help`
 
-## Install using Homebrew
+### Install using Homebrew
 1. If you dont have Hombrew, [install it](https://brew.sh/index_ko)!
 2. Add my tap using `brew tap BitesPotatoBacks/tap`
 3. Install the tool with `brew install socpwrbud`
 4. Run `socpwrbud`!
 
-## Install Manually
+### Install manually
 1. Download the bin from [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases).
 2. Unzip the downloaded file into your desired dir (such as `/usr/bin`) 
 4. Run `socpwrbud`!
 
-### Building the project
+### Building yourself
 The source is bundled in a Xcode project and contains a make file. Simply run `make` or build via Xcode! The choice is yours.
-
-### Diagnosing missing entries for your system
-A diagnostic dumping tool is included within each release: `iorepdump`. It dumps all IOReport groups matching those used by SocPowerBuddy. It's helpful for discovering entries on new silicon. 
 
 ___
 
@@ -178,8 +196,7 @@ Here's a sick table.
 | M2 Max | t6021 | Untested |
 
 ## Contribution
-If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section. If the problem is related to missing IOReport entries, please share your `iorepdump` output.
-
+If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section. If the problem is related to missing IOReport entries, please share the output of the `iorepdump` tool found in the [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/latest). Feel free to open a PR if you know what you're doing :smile:
 
 
 
