@@ -37,6 +37,8 @@ ___
   - [Contribution](#contribution)
 
 ___
+# 📰 News!
+I just started a new project, [Frequency Stats](https://github.com/BitesPotatoBacks/FrequencyStats), which is a menubar app that provides CPU and GPU frequency metrics without needing to install a dameon or a kext. It was inspired by this tool, check it out if you want something more convenient for frequency monitoring! New features to come!
 
 ## Project Deets
 ### Wat it do
