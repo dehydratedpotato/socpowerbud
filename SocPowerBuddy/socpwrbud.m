@@ -203,6 +203,8 @@ int main(int argc, char * argv[])
                                         [NSString stringWithUTF8String: METRIC_IDLE],
                                         [NSString stringWithUTF8String: METRIC_DVFM],
                                         [NSString stringWithUTF8String: METRIC_DVFMMS],
+                                        [NSString stringWithUTF8String: METRIC_DVFMVOLTS],
+                                        [NSString stringWithUTF8String: METRIC_VOLTS],
                                         [NSString stringWithUTF8String: METRIC_POWER],
                                         [NSString stringWithUTF8String: METRIC_INSTRCTS],
                                         [NSString stringWithUTF8String: METRIC_FREQ],
@@ -233,10 +235,12 @@ int main(int argc, char * argv[])
                 continue;
             }
             if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_DVFMMS]]) {
+                bd.dvfm = true;
                 bd.dvfm_ms = true;
                 continue;
             }
             if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_DVFMVOLTS]]) {
+                bd.dvfm = true;
                 bd.dvfm_volts = true;
                 continue;
             }
