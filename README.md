@@ -52,98 +52,112 @@ Officially tested on M1, as well as M1 Pro, Max, and Ultra (see [compatibility n
 Because needing to be system admin in order to monitor Apple Silicon frequencies is dumb (yeah, I'm looking at you, `powermetrics`). So here you go! No administrative privileges needed! 
 
 ### Example Output
-**Note:** The following is a single output from the project on a Macmini9,1.
+**Note:** The following is a nice big juicy output of `socpwrbud` running on a Macmini9,1.
 <details>
 
-<summary>Expand Example</summary>
+<summary>Expand Example to see!</summary>
 
 ```
 Apple M1 T8103 (Sample 1):
 
 	4-Core Icestorm ECPU:
 
-		Supposed Cycles Spent:  59481201
-		Instructions Retired:   5.64512e+07
-		Instructions Per-Clock: 0.94906
+		Supposed Cycles Spent:  1318404262
+		Instructions Retired:   1.66480e+09
+		Instructions Per-Clock: 1.26274
 
-		Power Consumption: 14.55 mW
-		Active Frequency:  983.11 MHz
+		Power Consumption: 65.89 mW
 
-		Active Residency:  14.00%
-		Idle Residency:    86.00%
-		Dvfm Distribution: (972 MHz: 98.98% [272ms]   2064 MHz: 1.02% [3ms])  
+		Active Voltage:    825.13 mV
+		Active Frequency:  1323.49 MHz
+
+		Active Residency:  29.4%
+		Idle Residency:    70.6%
+		Dvfm Distribution: 972MHz, 771mV: 52.64% (1086ms)   1332MHz, 800mV: 19.08% (394ms)   1704MHz, 887mV: 7.24% (149ms)   2064MHz, 962mV: 21.05% (434ms)   
 
 		Core 0:
-			Power Consumption: 3.64 mW
-			Active Frequency:  981.60 MHz
-			Active Residency:  10.10%
-			Idle Residency:    89.90%
-			Dvfm Distribution: (972 MHz: 99.12% [273ms]   2064 MHz: 0.88% [2ms])  
+			Power Consumption: 14.53 mW
+			Active Voltage:    831.05 mV
+			Active Frequency:  1356.95 MHz
+			Active Residency:  15.6%
+			Idle Residency:    84.4%
+			Dvfm Distribution: 972MHz, 771mV: 49.64% (1025ms)   1332MHz, 800mV: 18.59% (384ms)   1704MHz, 887mV: 8.02% (166ms)   2064MHz, 962mV: 23.75% (490ms)   
 		Core 1:
-			Power Consumption: 3.64 mW
-			Active Frequency:  986.19 MHz
-			Active Residency:  4.49%
-			Idle Residency:    95.51%
-			Dvfm Distribution: (972 MHz: 98.70% [271ms]   2064 MHz: 1.30% [4ms])  
+			Power Consumption: 13.57 mW
+			Active Voltage:    831.42 mV
+			Active Frequency:  1361.03 MHz
+			Active Residency:  14.9%
+			Idle Residency:    85.1%
+			Dvfm Distribution: 972MHz, 771mV: 48.81% (1007ms)   1332MHz, 800mV: 20.44% (422ms)   1704MHz, 887mV: 5.65% (117ms)   2064MHz, 962mV: 25.10% (518ms)   
 		Core 2:
-			Power Consumption: 0 mW
-			Active Frequency:  983.45 MHz
-			Active Residency:  2.13%
-			Idle Residency:    97.87%
-			Dvfm Distribution: (972 MHz: 98.95% [272ms]   2064 MHz: 1.05% [3ms])  
+			Power Consumption: 12.11 mW
+			Active Voltage:    838.65 mV
+			Active Frequency:  1397.5 MHz
+			Active Residency:  12.1%
+			Idle Residency:    87.9%
+			Dvfm Distribution: 972MHz, 771mV: 47.09% (972ms)   1332MHz, 800mV: 17.68% (365ms)   1704MHz, 887mV: 6.34% (131ms)   2064MHz, 962mV: 28.88% (596ms)   
 		Core 3:
-			Power Consumption: 3.64 mW
-			Active Frequency:  978.33 MHz
-			Active Residency:  2.70%
-			Idle Residency:    97.30%
-			Dvfm Distribution: (972 MHz: 99.42% [273ms]   2064 MHz: 0.58% [2ms])  
+			Power Consumption: 7.75 mW
+			Active Voltage:    845.17 mV
+			Active Frequency:  1424.25 MHz
+			Active Residency:  9.0%
+			Idle Residency:    91.0%
+			Dvfm Distribution: 972MHz, 771mV: 48.17% (994ms)   1332MHz, 800mV: 11.96% (247ms)   1704MHz, 887mV: 7.28% (150ms)   2064MHz, 962mV: 32.60% (673ms)   
 
 	4-Core Firestorm PCPU:
 
-		Supposed Cycles Spent:  313447262
-		Instructions Retired:   8.14210e+08
-		Instructions Per-Clock: 2.59760
+		Supposed Cycles Spent:  3590801722
+		Instructions Retired:   1.37992e+10
+		Instructions Per-Clock: 3.84294
 
-		Power Consumption: 723.64 mW
-		Active Frequency:  3191.44 MHz
+		Power Consumption: 1912.79 mW
 
-		Active Residency:  29.01%
-		Idle Residency:    70.99%
-		Dvfm Distribution: (600 MHz: 0.36% [1ms]   1500 MHz: 0.03% [0ms]   1956 MHz: 0.21% [1ms]   3204 MHz: 99.40% [273ms])  
+		Active Voltage:    1051.20 mV
+		Active Frequency:  3003.88 MHz
+
+		Active Residency:  53.3%
+		Idle Residency:    46.7%
+		Dvfm Distribution: 600MHz, 781mV: 0.20% (4ms)   828MHz, 781mV: 0.70% (15ms)   1056MHz, 781mV: 1.85% (38ms)   1284MHz, 800mV: 2.17% (45ms)   1500MHz, 812mV: 1.62% (33ms)   1728MHz, 831mV: 1.62% (34ms)   1956MHz, 865mV: 1.63% (34ms)   2184MHz, 909mV: 1.06% (22ms)   2388MHz, 953mV: 0.95% (20ms)   2592MHz, 1003mV: 0.36% (7ms)   2772MHz, 1053mV: 0.72% (15ms)   2988MHz, 1081mV: 0.36% (7ms)   3096MHz, 1081mV: 0.03% (1ms)   3144MHz, 1081mV: 0.43% (9ms)   3204MHz, 1081mV: 86.30% (1781ms)   
 
 		Core 4:
-			Power Consumption: 530.91 mW
-			Active Frequency:  3194.33 MHz
-			Active Residency:  28.95%
-			Idle Residency:    71.05%
-			Dvfm Distribution: (600 MHz: 0.28% [1ms]   1500 MHz: 0.03% [0ms]   1956 MHz: 0.16% [0ms]   3204 MHz: 99.54% [274ms])  
+			Power Consumption: 1038.76 mW
+			Active Voltage:    1034.99 mV
+			Active Frequency:  2895.56 MHz
+			Active Residency:  33.9%
+			Idle Residency:    66.1%
+			Dvfm Distribution: 600MHz, 781mV: 0.31% (6ms)   828MHz, 781mV: 1.07% (22ms)   1056MHz, 781mV: 2.68% (55ms)   1284MHz, 800mV: 3.42% (71ms)   1500MHz, 812mV: 2.54% (52ms)   1728MHz, 831mV: 2.55% (53ms)   1956MHz, 865mV: 2.56% (53ms)   2184MHz, 909mV: 1.65% (34ms)   2388MHz, 953mV: 1.48% (31ms)   2592MHz, 1003mV: 0.56% (12ms)   2772MHz, 1053mV: 1.13% (23ms)   2988MHz, 1081mV: 0.56% (12ms)   3096MHz, 1081mV: 0.05% (1ms)   3144MHz, 1081mV: 0.67% (14ms)   3204MHz, 1081mV: 78.77% (1626ms)   
 		Core 5:
-			Power Consumption: 14.55 mW
-			Active Frequency:  3103.99 MHz
-			Active Residency:  0.90%
-			Idle Residency:    99.10%
-			Dvfm Distribution: (600 MHz: 2.78% [8ms]   1956 MHz: 2.22% [6ms]   3204 MHz: 95.00% [261ms])  
+			Power Consumption: 687.02 mW
+			Active Voltage:    1044.88 mV
+			Active Frequency:  2970.58 MHz
+			Active Residency:  21.5%
+			Idle Residency:    78.5%
+			Dvfm Distribution: 600MHz, 781mV: 0.02% (0ms)   828MHz, 781mV: 0.25% (5ms)   1056MHz, 781mV: 2.36% (49ms)   1284MHz, 800mV: 2.66% (55ms)   1500MHz, 812mV: 2.22% (46ms)   1728MHz, 831mV: 2.20% (45ms)   1956MHz, 865mV: 2.41% (50ms)   2184MHz, 909mV: 1.72% (35ms)   2388MHz, 953mV: 0.81% (17ms)   2592MHz, 1003mV: 0.11% (2ms)   2988MHz, 1081mV: 0.01% (0ms)   3096MHz, 1081mV: 0.01% (0ms)   3204MHz, 1081mV: 85.22% (1759ms)   
 		Core 6:
-			Power Consumption: 0 mW
-			Active Frequency:  0 MHz
-			Active Residency:  0%
-			Idle Residency:    100%
-			Dvfm Distribution: None
+			Power Consumption: 23.26 mW
+			Active Voltage:    836.13 mV
+			Active Frequency:  1626.58 MHz
+			Active Residency:  3.1%
+			Idle Residency:    96.9%
+			Dvfm Distribution: 600MHz, 781mV: 0.19% (4ms)   828MHz, 781mV: 0.54% (11ms)   1056MHz, 781mV: 15.96% (329ms)   1284MHz, 800mV: 18.74% (387ms)   1500MHz, 812mV: 15.62% (322ms)   1728MHz, 831mV: 15.51% (320ms)   1956MHz, 865mV: 15.60% (322ms)   2184MHz, 909mV: 11.87% (245ms)   2388MHz, 953mV: 5.66% (117ms)   3204MHz, 1081mV: 0.31% (6ms)   
 		Core 7:
-			Power Consumption: 0 mW
-			Active Frequency:  0 MHz
-			Active Residency:  0%
-			Idle Residency:    100%
-			Dvfm Distribution: None
+			Power Consumption: 60.56 mW
+			Active Voltage:    895.57 mV
+			Active Frequency:  2009.28 MHz
+			Active Residency:  4.0%
+			Idle Residency:    96.0%
+			Dvfm Distribution: 828MHz, 781mV: 0.17% (4ms)   1056MHz, 781mV: 12.91% (266ms)   1284MHz, 800mV: 14.16% (292ms)   1500MHz, 812mV: 11.83% (244ms)   1728MHz, 831mV: 11.81% (244ms)   1956MHz, 865mV: 11.79% (243ms)   2184MHz, 909mV: 8.32% (172ms)   2388MHz, 953mV: 4.13% (85ms)   3204MHz, 1081mV: 24.89% (514ms)   
 
 	8-Core Integrated Graphics:
 
-		Power Consumption: 0 mW
-		Active Frequency:  705.69 MHz
+		Power Consumption: 2.42 mW
 
-		Active Residency:  1.56%
-		Idle Residency:    98.44%
-		Dvfm Distribution: (396 MHz: 4.42% [12ms]   720 MHz: 95.58% [263ms])  
+		Active Voltage:    627.71 mV
+		Active Frequency:  711.288 MHz
+
+		Active Residency:  2.6%
+		Idle Residency:    97.4%
+		Dvfm Distribution: 396MHz, 400mV: 2.69% (56ms)   720MHz, 634mV: 97.31% (2008ms)   
 ```
 
 </details>
