@@ -13,15 +13,16 @@
 /*
  * Main Macros
  */
-#define __DEBUG__
-#define __RELEASE__       "v0.3.3"
+#define __RELEASE__       "v0.4"
 
 #define METRIC_ACTIVE     "%active"
 #define METRIC_IDLE       "%idle"
 #define METRIC_FREQ       "freq"
 #define METRIC_DVFM       "dvfm"
 #define METRIC_DVFMMS     "dvfm_ms"
+#define METRIC_DVFMVOLTS  "dvfm_volts"
 #define METRIC_POWER      "power"
+#define METRIC_VOLTS      "volts"
 #define METRIC_INSTRCTS   "intstrcts"
 #define METRIC_CYCLES     "cycles"
 #define METRIC_CORES      "cores"
@@ -47,16 +48,18 @@ typedef struct long_opts_extended {
 /*
  * Global misc
  */
-#define METRIC_COUNT 9
+#define METRIC_COUNT 11
 
 static struct param_set metrics_set[] =
 {
-    { METRIC_ACTIVE,   "show active residencies of units" },
-    { METRIC_IDLE,     "show idle residencies of units" },
-    { METRIC_FREQ,     "show active frequencies of units" },
-    { METRIC_DVFM,     "show dvfm state distribution of units" },
-    { METRIC_DVFMMS,   "show time spent in dvfm states during sample of units" },
+    { METRIC_ACTIVE,   "show active residencies" },
+    { METRIC_IDLE,     "show idle residencies" },
+    { METRIC_FREQ,     "show active frequencies" },
+    { METRIC_DVFM,     "show dvfm state distributions" },
+    { METRIC_DVFMVOLTS, "show (milli)volts of dvfm states" },
+    { METRIC_DVFMMS,   "show time spent in ms of dvfm states" },
     { METRIC_POWER,    "show power consumption of units" },
+    { METRIC_VOLTS,    "show voltage of units" },
     { METRIC_INSTRCTS, "show instructions retired / per-clock metrics of supporting units" },
     { METRIC_CYCLES,   "show the supposed cycles spent during sample of supporting units" },
     { METRIC_CORES,    "show per-core stats for selected metrics on supporting units" }
@@ -139,7 +142,7 @@ int main(int argc, char * argv[])
         cmd.plist            = false;
         cmd.file_out         = stdout;
         
-        cmd.interval   = 175;
+        cmd.interval   = 275;
         cmd.samples    = 1;
         cmd.hide_units = [NSArray array];
         cmd.metrics    = [NSArray arrayWithObjects:[NSString stringWithUTF8String: METRIC_ACTIVE],
@@ -160,6 +163,8 @@ int main(int argc, char * argv[])
         bd.dvfm      = false;
         bd.dvfm_ms   = false;
         bd.power     = false;
+        bd.volts     = true;
+        bd.dvfm_volts = false;
         bd.intstrcts = false;
         bd.cycles    = false;
         
@@ -207,16 +212,52 @@ int main(int argc, char * argv[])
         }
         
         for (int i = 0; i < [cmd.metrics count]; i++) {
-            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_ACTIVE]])         bd.res        = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_IDLE]])      bd.idle       = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_FREQ]])      bd.freq       = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_CORES]])     bd.cores      = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_DVFM]])      bd.dvfm       = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_DVFMMS]])    bd.dvfm_ms    = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_POWER]])     bd.power      = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_INSTRCTS]])  bd.intstrcts  = true;
-            else if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_CYCLES]])    bd.cycles     = true;
-            else error(1, "Incorrect metric option \"%s\" in list", [cmd.metrics[i] UTF8String]);
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_ACTIVE]]) {
+                bd.res = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_IDLE]]) {
+                bd.idle = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_FREQ]]) {
+                bd.freq = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_CORES]]) {
+                bd.cores = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_DVFM]]) {
+                bd.dvfm = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_DVFMMS]]) {
+                bd.dvfm_ms = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_DVFMVOLTS]]) {
+                bd.dvfm_volts = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_POWER]]) {
+                bd.power = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_VOLTS]]) {
+                bd.volts = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_INSTRCTS]]) {
+                bd.intstrcts = true;
+                continue;
+            }
+            if ([cmd.metrics[i] isEqual:[NSString stringWithUTF8String:METRIC_CYCLES]]) {
+                bd.cycles = true;
+                continue;
+            }
+            
+            error(1, "Incorrect metric option \"%s\" in list", [cmd.metrics[i] UTF8String]);
         }
 
         for (int i = 0; i < [cmd.hide_units count]; i++) {
@@ -234,6 +275,7 @@ int main(int argc, char * argv[])
          */
         sd.gpu_core_count       = 0;
         sd.dvfm_states_holder   = [[NSMutableArray alloc] init];
+        sd.dvfm_states_voltages_holder = [[NSMutableArray alloc] init];
         sd.cluster_core_counts  = [[NSMutableArray alloc] init];
         sd.extra                = [[NSMutableArray alloc] init];
         
@@ -249,6 +291,9 @@ int main(int argc, char * argv[])
         
         vd.cluster_pwrs         = [[NSMutableArray alloc] init];
         vd.core_pwrs            = [[NSMutableArray alloc] init];
+        
+        vd.cluster_volts         = [[NSMutableArray alloc] init];
+        vd.core_volts            = [[NSMutableArray alloc] init];
         
         vd.cluster_instrcts_ret = [[NSMutableArray alloc] init];
         vd.cluster_instrcts_clk = [[NSMutableArray alloc] init];
@@ -284,6 +329,11 @@ int main(int argc, char * argv[])
                                sd.dvfm_states_holder[1],
                                sd.dvfm_states_holder[2]];
             
+            sd.dvfm_states_voltages = @[sd.dvfm_states_voltages_holder[0],
+                                        sd.dvfm_states_voltages_holder[1],
+                                        sd.dvfm_states_voltages_holder[1],
+                                        sd.dvfm_states_voltages_holder[2]];
+            
         } else if ([sd.extra[0] rangeOfString:@"ultra"].location != NSNotFound) {
             sd.complex_pwr_channels = @[@"DIE_0_EACC_CPU", @"DIE_1_EACC_CPU", @"DIE_0_PACC0_CPU", @"DIE_0_PACC1_CPU", @"DIE_1_PACC0_CPU", @"DIE_1_PACC1_CPU", @"GPU0_0"];
             sd.core_pwr_channels    = @[@"DIE_0_EACC_CPU", @"DIE_1_EACC_CPU", @"DIE_0_PACC0_CPU", @"DIE_0_PACC1_CPU", @"DIE_1_PACC0_CPU", @"DIE_1_PACC1_CPU"];
@@ -298,6 +348,14 @@ int main(int argc, char * argv[])
                                sd.dvfm_states_holder[1],
                                sd.dvfm_states_holder[1],
                                sd.dvfm_states_holder[2]];
+            
+            sd.dvfm_states_voltages = @[sd.dvfm_states_voltages_holder[0],
+                                        sd.dvfm_states_voltages_holder[0],
+                                        sd.dvfm_states_voltages_holder[1],
+                                        sd.dvfm_states_voltages_holder[1],
+                                        sd.dvfm_states_voltages_holder[1],
+                                        sd.dvfm_states_voltages_holder[1],
+                                        sd.dvfm_states_voltages_holder[2]];
         } else {
             sd.complex_pwr_channels = @[@"ECPU", @"PCPU", @"GPU"];
             sd.core_pwr_channels    = @[@"ECPU", @"PCPU"];
@@ -308,6 +366,10 @@ int main(int argc, char * argv[])
             sd.dvfm_states = @[sd.dvfm_states_holder[0],
                                sd.dvfm_states_holder[1],
                                sd.dvfm_states_holder[2]];
+            
+            sd.dvfm_states_voltages = @[sd.dvfm_states_voltages_holder[0],
+                                        sd.dvfm_states_voltages_holder[1],
+                                        sd.dvfm_states_voltages_holder[2]];
         }
 
         /*
@@ -316,12 +378,14 @@ int main(int argc, char * argv[])
         for (int i = 0; i < ([sd.cluster_core_counts count]+1); i++) {
             [vd.cluster_residencies addObject:[NSMutableArray array]];
             [vd.cluster_pwrs addObject:@0];
+            [vd.cluster_volts addObject:@0];
             [vd.cluster_freqs addObject:@0];
             [vd.cluster_use addObject:@0];
             [vd.cluster_sums addObject:@0];
             
             if (i <= ([sd.cluster_core_counts count]-1)) {
                 [vd.core_pwrs addObject:[NSMutableArray array]];
+                [vd.core_volts addObject:[NSMutableArray array]];
                 [vd.core_residencies addObject:[NSMutableArray array]];
                 [vd.core_freqs addObject:[NSMutableArray array]];
                 [vd.core_use addObject:[NSMutableArray array]];
@@ -335,6 +399,7 @@ int main(int argc, char * argv[])
                 [vd.core_residencies[i] addObject:[NSMutableArray array]];
                 [vd.core_use[i] addObject:@0];
                 [vd.core_freqs[i] addObject:@0];
+                [vd.core_volts[i] addObject:@0];
                 [vd.core_sums[i] addObject:@0];
             }
         }
@@ -391,6 +456,7 @@ int main(int argc, char * argv[])
             for (int i = 0; i < ([sd.cluster_core_counts count]+1); i++) {
                 [vd.cluster_residencies[i] removeAllObjects];
                 vd.cluster_pwrs[i]  = @0;
+                vd.cluster_volts[i]  = @0;
                 vd.cluster_use[i]   = @0;
                 vd.cluster_sums[i]  = @0;
                 vd.cluster_freqs[i] = @0;
@@ -400,6 +466,7 @@ int main(int argc, char * argv[])
                 for (int ii = 0; ii < [sd.cluster_core_counts[i] intValue]; ii++) {
                     [vd.core_residencies[i][ii] removeAllObjects];
                     vd.core_pwrs[i][ii]  = @0;
+                    vd.core_volts[i][ii]  = @0;
                     vd.core_use[i][ii]   = @0;
                     vd.core_freqs[i][ii] = @0;
                     vd.core_sums[i][ii]  = @0;

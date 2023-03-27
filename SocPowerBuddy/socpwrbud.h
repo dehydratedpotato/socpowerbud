@@ -76,6 +76,10 @@ typedef struct {
     
     NSMutableArray* dvfm_states_holder;
     NSArray* dvfm_states;
+    
+    NSMutableArray* dvfm_states_voltages_holder;
+    NSArray* dvfm_states_voltages;
+    
     NSMutableArray* cluster_core_counts;
     int gpu_core_count;
     
@@ -97,6 +101,10 @@ typedef struct {
     /* data for power draw */
     NSMutableArray* cluster_pwrs;
     NSMutableArray* core_pwrs;
+    
+    /* data for (milli)voltage */
+    NSMutableArray* cluster_volts;
+    NSMutableArray* core_volts;
     
     /* data for instructions and cycles  */
     NSMutableArray* cluster_instrcts_ret;
@@ -136,7 +144,9 @@ typedef struct {
     bool cores;
     bool dvfm;
     bool dvfm_ms;
+    bool dvfm_volts;
     bool power;
+    bool volts;
     bool intstrcts;
     bool cycles;
 } bool_data;

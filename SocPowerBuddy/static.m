@@ -46,6 +46,7 @@ void generateDvfmTable(static_data* sd)
                 
                 if (data != nil) {
                     [sd->dvfm_states_holder addObject:[NSMutableArray array]];
+                    [sd->dvfm_states_voltages_holder addObject:[NSMutableArray array]];
                     
                     frmt_data = (NSData*)CFBridgingRelease(data);
                     databytes = [frmt_data bytes];
@@ -56,8 +57,17 @@ void generateDvfmTable(static_data* sd)
                         
                         float freq = atof([datastrng UTF8String]) * 1e-6;
                         
-                        if (freq != 0) // this will just skip the dvfm freqs of 0 mhz
-                            [sd->dvfm_states_holder[2-i] addObject:[NSNumber numberWithFloat:atof([datastrng UTF8String]) * 1e-6]];
+                        if (freq != 0) [sd->dvfm_states_holder[2-i] addObject:[NSNumber numberWithFloat:freq]];
+                        
+                        datastrng = nil;
+                    }
+                    
+                    for (int ii = 4; ii < ([frmt_data length]); ii += 8) {
+                        NSString* datastrng = [[NSString alloc] initWithFormat:@"0x%02x%02x%02x%02x", databytes[ii+3], databytes[ii+2], databytes[ii+1], databytes[ii]];
+                        
+                        float volts = atof([datastrng UTF8String]);
+
+                        if (volts != 0) [sd->dvfm_states_voltages_holder[2-i] addObject:[NSNumber numberWithFloat:volts]];
                         
                         datastrng = nil;
                     }

@@ -129,9 +129,9 @@ void sample(iorep_data* iorep,  // holds our channel subs from the iorep
         NSString* group       = IOReportChannelGetGroup(sample);
         long      value       = IOReportSimpleGetIntegerValue(sample, 0);
         
-        for (int ii = 0; ii < [sd->complex_freq_channels count]; ii++) {
-            if ([group isEqual:@"Energy Model"])
-            {
+        if ([group isEqual:@"Energy Model"]) {
+            for (int ii = 0; ii < [sd->complex_freq_channels count]; ii++) {
+                
                 if ([chann_name isEqual:sd->complex_pwr_channels[ii]])
                 {
                     NSNumber* a = [[NSNumber alloc] initWithFloat:(float)value/(cmd->interval*1e-3)];
@@ -164,22 +164,20 @@ void sample(iorep_data* iorep,  // holds our channel subs from the iorep
                     }
                 }
             }
-            
-            /*
-             * the GPU entry doen't seem to exist on Apple M1 Energy Model (probably same with M2)
-             * so we are grabbing that from the PMP
-             */
-            if ([sd->extra[0] isEqual:@"Apple M1"] || [sd->extra[0] isEqual:@"Apple M2"]){
-                if ([group isEqual:@"PMP"]) {
-                    if ([chann_name isEqual:@"GPU"])
-                    {
-                        NSNumber* a = [[NSNumber alloc] initWithFloat:(float)value/(cmd->interval*1e-3)];
-                        
-                        vd->cluster_pwrs[[vd->cluster_pwrs count]-1] = a;
-                        
-                        a = nil;
-                    }
-                }
+        }
+        
+        /*
+         * the GPU entry doen't seem to exist on Apple M1 Energy Model (probably same with M2)
+         * so we are grabbing that from the PMP
+         */
+        if ([group isEqual:@"PMP"] && [chann_name isEqual:@"GPU"]) {
+            if ([sd->extra[0] isEqual:@"Apple M1"] || [sd->extra[0] isEqual:@"Apple M2"]) {
+                
+                NSNumber* a = [[NSNumber alloc] initWithFloat:(float)value/(cmd->interval*1e-3)];
+                
+                vd->cluster_pwrs[[vd->cluster_pwrs count]-1] = a;
+                
+                a = nil;
             }
         }
         
@@ -205,8 +203,7 @@ void sample(iorep_data* iorep,  // holds our channel subs from the iorep
             a = nil;
         }
         
-        if ([vd->cluster_instrcts_ret count] == [sd->cluster_core_counts count])
-            return kIOReportIterFailed; // probably not correct, but allows stopping the loop once the data is here
+        if ([vd->cluster_instrcts_ret count] == [sd->cluster_core_counts count]) return kIOReportIterFailed; // Naming makes this an incorrect usage but it exits our iteration, so...
         
         chann_name = nil;
         
@@ -233,16 +230,19 @@ void format(static_data* sd, variating_data* vd)
                 
                 if (res != 0)
                 {
-                    float perc = (res / [vd->cluster_sums[i] floatValue]);
+                    float perc = (res / [vd->cluster_sums[i] floatValue]);\
                     
                     NSNumber* a = [[NSNumber alloc] initWithFloat: perc];
                     NSNumber* b = [[NSNumber alloc] initWithFloat: ([vd->cluster_freqs[i] floatValue] + ([sd->dvfm_states[i][ii] floatValue]*perc))];
+                    NSNumber* v = [[NSNumber alloc] initWithFloat: ([vd->cluster_volts[i] floatValue] + ([sd->dvfm_states_voltages[i][ii] floatValue]*perc))];
                     
                     vd->cluster_freqs[i] = b;
+                    vd->cluster_volts[i] = v;
                     [vd->cluster_residencies[i] replaceObjectAtIndex:ii withObject:a];
                     
                     a = nil;
                     b = nil;
+                    v = nil;
                 }
                 
                 if (i <= ([sd->cluster_core_counts count]-1)) {
@@ -258,12 +258,17 @@ void format(static_data* sd, variating_data* vd)
                             NSNumber* b = [[NSNumber alloc] initWithFloat: ([vd->core_freqs[i][iii] floatValue] +
                                                                             ([sd->dvfm_states[i][ii] floatValue] *
                                                                              core_perc))];
+                            NSNumber* v = [[NSNumber alloc] initWithFloat: ([vd->core_volts[i][iii] floatValue] +
+                                                                            ([sd->dvfm_states_voltages[i][ii] floatValue] *
+                                                                             core_perc))];
                             
                             vd->core_freqs[i][iii] = b;
+                            vd->core_volts[i][iii] = v;
                             [vd->core_residencies[i][iii] replaceObjectAtIndex:ii withObject:a];
                             
                             a = nil;
                             b = nil;
+                            v = nil;
                         }
                     }
                 }

@@ -56,6 +56,7 @@ void textOutput(iorep_data*     iorep,
              * printing outputs based on tuned cmd args
              */
             if (bd->power) fprintf(cmd->file_out, "\t\tPower Consumption: %.2f %s\n", (float)([vd->cluster_pwrs[i] floatValue] * cmd->power_measure), cmd->power_measure_un);
+            if (bd->volts) fprintf(cmd->file_out, "\n\t\tActive Voltage:    %.2f mV\n", [vd->cluster_volts[i] floatValue]);
             if (bd->freq)  fprintf(cmd->file_out, "\t\tActive Frequency:  %g %s\n", (float)(fabs([vd->cluster_freqs[i] floatValue] * cmd->freq_measure)), cmd->freq_measure_un);
             if (bd->idle)  fprintf(cmd->file_out, "\n");
             if (bd->res)   fprintf(cmd->file_out, "\t\tActive Residency:  %.1f%%\n",  fabs(100-[vd->cluster_use[i] floatValue]));
@@ -69,7 +70,12 @@ void textOutput(iorep_data*     iorep,
                         float res = [vd->cluster_residencies[i][iii] floatValue];
                         
                         if (res > 0) {
-                            fprintf(cmd->file_out, "%.f MHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
+                            if (!bd->dvfm_volts) {
+                                fprintf(cmd->file_out, "%.fMHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
+                            } else {
+                                fprintf(cmd->file_out, "%.fMHz, %.fmV: %.2f%%",[sd->dvfm_states[i][iii] floatValue], [sd->dvfm_states_voltages[i][iii] floatValue], res*100);
+                            }
+
                             if (bd->dvfm_ms) fprintf(cmd->file_out, " (%.fms)", res * cmd->interval);
                             fprintf(cmd->file_out, "   ");
                         }
@@ -82,7 +88,9 @@ void textOutput(iorep_data*     iorep,
             if (i <= ([sd->cluster_core_counts count]-1)) {
                 for (int ii = 0; ii < [sd->cluster_core_counts[i] intValue]; ii++) {
                     fprintf(cmd->file_out, "\t\tCore %d:\n", current_core);
+                    
                     if (bd->power) fprintf(cmd->file_out, "\t\t\tPower Consumption: %.2f %s\n",  (float)([vd->core_pwrs[i][ii] floatValue] * cmd->power_measure), cmd->power_measure_un);
+                    if (bd->volts) fprintf(cmd->file_out, "\t\t\tActive Voltage:    %.2f mV\n", [vd->core_volts[i][ii] floatValue]);
                     if (bd->freq)  fprintf(cmd->file_out, "\t\t\tActive Frequency:  %g %s\n",  (float)(fabs([vd->core_freqs[i][ii] floatValue] * cmd->freq_measure)), cmd->freq_measure_un);
                     if (bd->res)   fprintf(cmd->file_out, "\t\t\tActive Residency:  %.1f%%\n",  (float)(fabs([vd->core_use[i][ii] floatValue])));
                     if (bd->idle)  fprintf(cmd->file_out, "\t\t\tIdle Residency:    %.1f%%\n",  (float)(fabs(100-[vd->core_use[i][ii] floatValue])));
@@ -95,7 +103,11 @@ void textOutput(iorep_data*     iorep,
                                 float res = [vd->core_residencies[i][ii][iii] floatValue];
                                 
                                 if (res > 0) {
-                                    fprintf(cmd->file_out, "%.f MHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
+                                    if (!bd->dvfm_volts) {
+                                        fprintf(cmd->file_out, "%.fMHz: %.2f%%",[sd->dvfm_states[i][iii] floatValue], res*100);
+                                    } else {
+                                        fprintf(cmd->file_out, "%.fMHz, %.fmV: %.2f%%",[sd->dvfm_states[i][iii] floatValue], [sd->dvfm_states_voltages[i][iii] floatValue], res*100);
+                                    }
                                     if (bd->dvfm_ms) fprintf(cmd->file_out, " (%.fms)", res * cmd->interval);
                                     fprintf(cmd->file_out, "   ");
                                 }
@@ -168,6 +180,7 @@ void plistOutput(iorep_data*     iorep,
              * printing outputs based on tuned cmd args
              */
             if (bd->power) fprintf(cmd->file_out, "\t<key>power</key><real>%.2f</real>\n", [vd->cluster_pwrs[i] floatValue]);
+            if (bd->volts)  fprintf(cmd->file_out, "\t<key>mvolts</key><real>%.f</real>\n", fabs([vd->cluster_volts[i] floatValue]));
             if (bd->freq)  fprintf(cmd->file_out, "\t<key>freq</key><real>%.2f</real>\n", fabs([vd->cluster_freqs[i] floatValue]));
             if (bd->res)   fprintf(cmd->file_out, "\t<key>active_res</key><real>%.2f</real>\n", fabs(100-[vd->cluster_use[i] floatValue]));
             if (bd->idle)  fprintf(cmd->file_out, "\t<key>idle_res</key><real>%.2f</real>\n", fabs([vd->cluster_use[i] floatValue]));
@@ -177,6 +190,7 @@ void plistOutput(iorep_data*     iorep,
 
                 for (int iii = 0; iii < [sd->dvfm_states[i] count]; iii++) {
                     fprintf(cmd->file_out, "\t\t<key>%ld</key>\n\t\t<dict>\n", [sd->dvfm_states[i][iii] longValue]);
+                    if (bd->dvfm_volts) fprintf(cmd->file_out, "\t\t\t<key>state_mvolts</key><real>%.f</real>\n", [sd->dvfm_states_voltages[i][iii] floatValue]);
                     fprintf(cmd->file_out, "\t\t\t<key>residency</key><real>%.2f</real>\n", [vd->cluster_residencies[i][iii] floatValue]*100);
                     if (bd->dvfm_ms) fprintf(cmd->file_out, "\t\t\t<key>time_ms</key><real>%.f</real>\n", [vd->cluster_residencies[i][iii] floatValue] * cmd->interval);
                     fprintf(cmd->file_out, "\t\t</dict>\n");
@@ -190,6 +204,7 @@ void plistOutput(iorep_data*     iorep,
                     fprintf(cmd->file_out, "\t<key>core_%d</key>\n\t<dict>\n", current_core);
 
                     if (bd->power) fprintf(cmd->file_out, "\t\t<key>power</key><real>%.2f</real>\n", [vd->core_pwrs[i][ii] floatValue]);
+                    if (bd->volts)  fprintf(cmd->file_out, "\t\t<key>mvolts</key><real>%.f</real>\n", fabs([vd->core_volts[i][ii] floatValue]));
                     if (bd->freq)  fprintf(cmd->file_out, "\t\t<key>freq</key><real>%.2f</real>\n", fabs([vd->core_freqs[i][ii] floatValue]));
                     if (bd->res)   fprintf(cmd->file_out, "\t\t<key>active_res</key><real>%.2f</real>\n", fabs([vd->core_use[i][ii] floatValue]));
                     if (bd->idle)   fprintf(cmd->file_out, "\t\t<key>idle_res</key><real>%.2f</real>\n", fabs(100-[vd->core_use[i][ii] floatValue]));
@@ -199,6 +214,7 @@ void plistOutput(iorep_data*     iorep,
 
                         for (int iii = 0; iii < [sd->dvfm_states[i] count]; iii++) {
                             fprintf(cmd->file_out, "\t\t\t<key>%ld</key>\n\t\t\t<dict>\n", [sd->dvfm_states[i][iii] longValue]);
+                            if (bd->dvfm_volts) fprintf(cmd->file_out, "\t\t\t\t<key>state_mvolts</key><real>%.f</real>\n", [sd->dvfm_states_voltages[i][iii] floatValue]);
                             fprintf(cmd->file_out, "\t\t\t\t<key>residency</key><real>%.2f</real>\n", [vd->core_residencies[i][ii][iii] floatValue]*100);
                             if (bd->dvfm_ms) fprintf(cmd->file_out, "\t\t\t\t<key>time_ms</key><real>%.f</real>\n", [vd->core_residencies[i][ii][iii] floatValue] * cmd->interval);
                             fprintf(cmd->file_out, "\t\t\t</dict>\n");
