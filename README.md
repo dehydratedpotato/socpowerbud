@@ -1,6 +1,6 @@
 <h1 align="center">SoC Power Buddy</h1>
 <p align="center">
-A sudoless command-line tool to get per-core active frequencies, residency, power, and more (for Apple Silicon CPUs and GPUs).
+A sudoless command-line utility designed to profile per-core frequencies, cycles, instructions, power, and more - for Apple Silicon CPUs and GPUs!
 </p>
 <p align="center">
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/releases">
@@ -10,7 +10,7 @@ A sudoless command-line tool to get per-core active frequencies, residency, powe
        <img alt="Platform" src="https://img.shields.io/badge/platform-macOS-lightgray.svg"/>
     </a>
     <a href="">
-       <img alt="Silicon Support" src="https://img.shields.io/badge/support-M1_Series-orange.svg"/>
+       <img alt="Silicon Support" src="https://img.shields.io/badge/support-Apple_Silicon-orange.svg"/>
     </a>
     <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/SocPowerBuddy.svg"/>
@@ -200,16 +200,16 @@ ___
 This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Yay! Go check it out :heart:
 
 ## Compatibility Notes
-Here's a sick table.
+Here's a sick table. 
 | Silicon | Codename | Support Status |
 |----|---|---|
 | M1 | t8103 | Fully Working |
-| M1 Pro | t6000 | Fully Working |
+| M1 Pro | t6000 | Works (But no tests for binned 8-Core model) |
 | M1 Max | t6001 | Fully Working |
-| M1 Ultra | t6002 | Should work (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5) and patch [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)) |
-| M2 | t8112 | Should work |
-| M2 Pro | t6020 | Untested |
-| M2 Max | t6021 | Untested |
+| M1 Ultra | t6002 | Fully Working (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5) and patch [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)) |
+| M2 | t8112 | Should work? |
+| M2 Pro | t6020 | Should work? |
+| M2 Max | t6021 | Should work? |
 
 ## Contribution
 If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section. If the problem is related to missing IOReport entries, please share the output of the `iorepdump` tool found in the [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/latest). Feel free to open a PR if you know what you're doing :smile:
