@@ -1,26 +1,21 @@
-<h1 align="center">SoC Power Buddy</h1>
-<p align="center">
-A sudoless command-line utility designed to profile per-core frequencies, cycles, instructions, power, and more - for Apple Silicon CPUs and GPUs!
-</p>
-<p align="center">
-    <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/releases">
+
+<h1>
+    socpowerbud 
+    <a href="https://github.com/dehydratedpotato/socpowerbud/releases">
         <img alt="Releases" src="https://img.shields.io/github/release/BitesPotatoBacks/SocPowerBuddy.svg"/>
     </a>
-    <a href="">
+<!--     <a href="">
        <img alt="Platform" src="https://img.shields.io/badge/platform-macOS-lightgray.svg"/>
-    </a>
-    <a href="">
-       <img alt="Silicon Support" src="https://img.shields.io/badge/support-Apple_Silicon-orange.svg"/>
-    </a>
-    <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/blob/main/LICENSE">
+    </a> -->
+    <a href="https://github.com/dehydratedpotato/socpowerbud/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/BitesPotatoBacks/SocPowerBuddy.svg"/>
     </a>
-    <a href="https://github.com/BitesPotatoBacks/SocPowerBuddy/stargazers">
+    <a href="https://github.com/dehydratedpotato/socpowerbud/stargazers">
         <img alt="Stars" src="https://img.shields.io/github/stars/BitesPotatoBacks/SocPowerBuddy.svg"/>
     </a>
-</p>
+</h1>
 
-___
+Sudoless utility to profile current frequency, cycles, voltage, residency, and more on Apple Silicon!
 
 - **Table of contents**
   - **[Project Deets](#project-deets)**
@@ -37,22 +32,20 @@ ___
   - [Contribution](#contribution)
 
 ___
-# 📰 News!
-I just started a new project, [Frequency Stats](https://github.com/BitesPotatoBacks/FrequencyStats), which is a menubar app that provides CPU and GPU frequency metrics without needing to install a dameon or a kext. It was inspired by this tool, check it out if you want something more convenient for frequency monitoring! New features to come!
 
 ## Project Deets
 ### Wat it do
-SocPowerBuddy samples counter values from the IOReport (across a sampling interval) and returns accurate averages of the related metric.
+SocPowerBuddy samples counter values from the IOReport and returns formatted results for various metrics! It's written in Objective-C because NS types made things easier, it could be better if I rewrote it in plain C (but I've got better projects to work on then to spend time on this one).
 
-It is based on reverse engineering `powermetrics`, and reports every statistic offered by `powermetrics -s cpu_power,gpu_power` (see [full metric list](#features) and [example output](#example)), yet without needing `sudo`. Note that some metrics and features are exclusive to this project, those of which you will not find in `powermetrics`.
+It is based on reverse engineering `powermetrics`, and reports every statistic offered by `powermetrics -s cpu_power,gpu_power` (see [full metric list](#features) and [example output](#example)), but without needing `sudo`! I've also added some added some other metrics, like per-core power and voltage :smile:
 
-Officially tested on M1, as well as M1 Pro, Max, and Ultra (see [compatibility notes](#compatibility-notes))
+***Please check compatibility with your silicon before use, If you want a good experience (see [compatibility notes](#compatibility-notes))***
 
 ### Why it do
-Because needing to be system admin in order to monitor Apple Silicon frequencies is dumb (yeah, I'm looking at you, `powermetrics`). So here you go! No administrative privileges needed! 
+Because needing to be system admin in order to monitor Apple Silicon frequencies is dumb (yeah, I'm looking at you, `powermetrics`). So here you go! No administrative privileges needed! Yaaay.
 
 ### Example Output
-**Note:** The following is a nice big juicy output of `socpwrbud` running on a Macmini9,1.
+**Note:** The following is a big, nice, juicy output of `socpwrbud -a` running on a Macmini9,1 (cause I'm a pleb who didn't buy a M1 pro).
 <details>
 
 <summary>Expand Example to see!</summary>
@@ -165,54 +158,54 @@ Apple M1 T8103 (Sample 1):
 # Features
 
 The following is sampled per-cluster and is available for all sampled compute units!
-- Active and Idle Residencies
-- Active Frequencies
-- DVFM (Similar to P-State) Distribution and Time Spent
-- Power Consumption
-- (Static) Silicon IDs
+- CPU/GPU
+	- Active and Idle Residencies
+	- Active Frequencies and Voltage
+	- DVFS Distribution and Time Spent
+	- Power Consumption
+- CPU Only
+	- Total (cluster) Instructions Retired and Per-cylce
+	- Total (cluster) Supposed CPU Cycles Spent
+	- Per-core metrics
+	- Micro architecture names
 
-The following is sampled per-cluster but exclusive to the CPU!
-- Instructions Retired and Per-cylce
-- Supposed CPU Cycles Spent
-- (Static) Per-Core metrics
-- (Static) Micro architecture names
+I would love to support ANE stuff too but thats just a false dream encouraged by compiled remnanats in `powermetrics`... 
 
 # Installation, Usage, and Making
-**Note:** Tool usage is listed by `socpwrbud --help`
+**Note:** Tool usage is listed by `socpwrbud --help`!
 
 ### Install using Homebrew
-1. If you dont have Hombrew, [install it](https://brew.sh/index_ko)!
-2. Add my tap using `brew tap BitesPotatoBacks/tap`
+1. If you dont have Hombrew, then what the heck? [Install it already, geez](https://brew.sh/index_ko).
+2. Add my tap using `brew tap dehydratedpotato/tap`
 3. Install the tool with `brew install socpwrbud`
-4. Run `socpwrbud`!
+4. Run `socpwrbud`! (dont ask why "power" is shortened for the binary name)
 
 ### Install manually
-1. Download the bin from [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases).
+1. Download the bin from [latest release](https://github.com/dehydratedpotato/socpowerbud/releases).
 2. Unzip the downloaded file into your desired dir (such as `/usr/bin`) 
-4. Run `socpwrbud`!
+4. Run `socpwrbud`! (still, dont ask why "power" is shortened for the binary name)
 
 ### Building yourself
-The source is bundled in a Xcode project and contains a make file. Simply run `make` or build via Xcode! The choice is yours.
-
+Xcode proj is in source but you can build with `make` if you so desire...
 ___
 
 ## Outside Influence
 This project has recently influenced the CPU/GPU power related metric gathering on [NeoAsitop](https://github.com/op06072/NeoAsitop)! Yay! Go check it out :heart:
 
 ## Compatibility Notes
-Here's a sick table. 
+Here's a sick table. Depending on what Apple decides to break, it doesn't mean anything. How cool is that?
 | Silicon | Codename | Support Status |
 |----|---|---|
-| M1 | t8103 | Fully Working |
+| M1 | t8103 | Fully working |
 | M1 Pro | t6000 | Works (But no tests for binned 8-Core model) |
-| M1 Max | t6001 | Fully Working |
-| M1 Ultra | t6002 | Fully Working (see [#5](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues/5) and patch [v0.3.1](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/tag/v0.3.1)) |
+| M1 Max | t6001 | Fully working |
+| M1 Ultra | t6002 | Should work maybe? (see [#5](https://github.com/dehydratedpotato/socpowerbud/issues/5) and patch [v0.3.1](https://github.com/dehydratedpotato/socpowerbud/releases/tag/v0.3.1)) |
 | M2 | t8112 | Should work? |
-| M2 Pro | t6020 | Should work? |
-| M2 Max | t6021 | Should work? |
+| M2 Pro | t6020 | i dont know man |
+| M2 Max | t6021 | like for real |
 
 ## Contribution
-If any bugs or issues are found, please let me know in the [issues](https://github.com/BitesPotatoBacks/SocPowerBuddy/issues) section. If the problem is related to missing IOReport entries, please share the output of the `iorepdump` tool found in the [latest release](https://github.com/BitesPotatoBacks/SocPowerBuddy/releases/latest). Feel free to open a PR if you know what you're doing :smile:
+If any bugs or issues are found, please let me know in the [issues](https://github.com/dehydratedpotato/socpowerbud/issues) section. If the problem is related to missing IOReport entries, please share the output of the `iorepdump` tool found in the [latest release](https://github.com/dehydratedpotato/socpowerbud/releases/latest). Feel free to open a PR if you know what you're doing :smile:
 
 
 
