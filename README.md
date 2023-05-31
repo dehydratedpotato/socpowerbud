@@ -169,7 +169,7 @@ The following is sampled per-cluster and is available for all sampled compute un
 	- Per-core metrics
 	- Micro architecture names
 
-I would love to support ANE stuff too but thats just a false dream encouraged by compiled remnanats in `powermetrics`... 
+I would love to support ANE stuff too but thats just a false dream encouraged by compiled remnants in `powermetrics`... 
 
 # Installation, Usage, and Making
 **Note:** Tool usage is listed by `socpwrbud --help`!
