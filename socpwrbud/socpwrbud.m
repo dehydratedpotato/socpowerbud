@@ -672,7 +672,8 @@ static void format(unit_data* unit_data) {
                     for (int iii = 0; iii < [unit_data->percluster_ncores[i] intValue]; iii++) {
                         
                         /* sometimes a state is missing for cores on M2 so break when the index is too big */
-                        if (ii > [unit_data->soc_samples.core_perf_data.distribution[i][iii] count] - 1) break;
+                        int state_count = (int)[unit_data->soc_samples.core_perf_data.distribution[i][iii] count] - 1;
+                        if (ii > state_count) break;
                         
                         core_res = [unit_data->soc_samples.core_perf_data.distribution[i][iii][ii] unsignedLongLongValue];
                         
