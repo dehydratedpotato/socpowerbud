@@ -45,8 +45,8 @@ static const struct param_set metrics_set[METRIC_COUNT] = {
     { METRIC_DVFSMS,   "show time spent in ms of dvfs states" },
     { METRIC_POWER,    "show power consumption of units" },
     { METRIC_VOLTS,    "show voltage of units" },
-    { METRIC_INSNS,    "show instructions retired / per-clock metrics of supporting units" },
-    { METRIC_CYCLES,   "show the supposed cycles spent during sample of supporting units" },
+    { METRIC_INSNS,    "show instructions retired / per-clock metrics when available" },
+    { METRIC_CYCLES,   "show the supposed cycles spent during sample when available" },
     { METRIC_CORES,    "show per-core stats for selected metrics on supporting units" }
 };
 
@@ -477,12 +477,12 @@ static void sample(unit_data* unit_data, cmd_data* cmd_data) {
     CFDictionaryRef pwr_delta  = IOReportCreateSamplesDelta(pwrsamp_a, pwrsamp_b, NULL);
     CFDictionaryRef clpc_delta = IOReportCreateSamplesDelta(clpcsamp_a, clpcsamp_b, NULL);
     
-    CFRelease(cpusamp_a);
-    CFRelease(cpusamp_b);
-    CFRelease(pwrsamp_a);
-    CFRelease(pwrsamp_b);
-    CFRelease(clpcsamp_a);
-    CFRelease(clpcsamp_b);
+    if (cpusamp_a != NULL) CFRelease(cpusamp_a);
+    if (cpusamp_b != NULL) CFRelease(cpusamp_b);
+    if (pwrsamp_a != NULL) CFRelease(pwrsamp_a);
+    if (pwrsamp_b != NULL) CFRelease(pwrsamp_b);
+    if (clpcsamp_a != NULL) CFRelease(clpcsamp_a);
+    if (clpcsamp_b != NULL) CFRelease(clpcsamp_b);
     
     IOReportIterate(cpu_delta, ^int(IOReportSampleRef sample) {
         for (int i = 0; i < IOReportStateGetCount(sample); i++) {
@@ -637,9 +637,9 @@ static void sample(unit_data* unit_data, cmd_data* cmd_data) {
         return kIOReportIterOk;
     });
     
-    CFRelease(cpu_delta);
-    CFRelease(pwr_delta);
-    CFRelease(clpc_delta);
+    if (cpu_delta != NULL) CFRelease(cpu_delta);
+    if (pwr_delta != NULL) CFRelease(pwr_delta);
+    if (clpc_delta != NULL) CFRelease(clpc_delta);
 }
 
 static void format(unit_data* unit_data) {
@@ -746,10 +746,10 @@ static inline void output_text(unit_data* unit_data, cmd_data* cmd_data, int* cu
         if ([unit_data->soc_samples.complex_channkeys[i] rangeOfString:@"CPU"].location != NSNotFound) {
             fprintf(cmd_data->file_out, "\t%d-Core %s %s:\n\n", [unit_data->percluster_ncores[i] intValue], microarch, [unit_data->soc_samples.complex_channkeys[i] UTF8String]);
             
-            if (cmd_data->flags.show_cycles) fprintf(cmd_data->file_out, "\t\tSupposed Cycles Spent:  %ld\n", [unit_data->clpc_samples.perf_data.insn_perclk[i] longValue]);
+            if (cmd_data->flags.show_cycles && unit_data->clpc_samples.clpc_sub != NULL) fprintf(cmd_data->file_out, "\t\tSupposed Cycles Spent:  %ld\n", [unit_data->clpc_samples.perf_data.insn_perclk[i] longValue]);
             
             /* instructions metrics are only available on CPU clusters */
-            if (cmd_data->flags.show_insns) {
+            if (cmd_data->flags.show_insns && unit_data->clpc_samples.clpc_sub != NULL) {
                 float retired = [unit_data->clpc_samples.perf_data.insn_retired[i] floatValue];
                 
                 if (retired > 0) {
